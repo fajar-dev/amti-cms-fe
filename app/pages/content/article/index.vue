@@ -6,49 +6,6 @@
       :description="$t('pages.article.description')"
     />
 
-    <!-- Filter Bar -->
-    <div class="flex flex-wrap items-center gap-3 bg-white dark:bg-neutral-900 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800">
-      <div class="w-full sm:w-64">
-        <UInput
-          v-model="search"
-          icon="i-lucide-search"
-          :placeholder="$t('pages.article.searchPlaceholder')"
-          class="w-full"
-        />
-      </div>
-
-      <div class="w-full sm:w-48">
-        <USelect
-          v-model="selectedCategoryFilter"
-          :items="categoryFilterOptions"
-          :placeholder="$t('pages.article.filterCategory')"
-          class="w-full"
-          @change="fetchArticles"
-        />
-      </div>
-
-      <div class="w-full sm:w-40">
-        <USelect
-          v-model="selectedStatusFilter"
-          :items="statusFilterOptions"
-          :placeholder="$t('pages.article.filterStatus')"
-          class="w-full"
-          @change="fetchArticles"
-        />
-      </div>
-
-      <div class="ml-auto">
-        <UButton
-          color="primary"
-          variant="solid"
-          icon="i-lucide-plus-circle"
-          to="/content/article/create"
-        >
-          {{ $t('pages.article.addArticle') }}
-        </UButton>
-      </div>
-    </div>
-
     <!-- Data Table -->
     <DataTable
       v-model:search="search"
@@ -61,9 +18,37 @@
       :from="meta.from"
       :to="meta.to"
       :search-placeholder="$t('pages.article.searchPlaceholder')"
-      :show-search="false"
       table-class="min-w-4xl"
-    />
+    >
+      <template #filters>
+        <div class="flex flex-col sm:flex-row items-center gap-2">
+          <USelect
+            v-model="selectedCategoryFilter"
+            :items="categoryFilterOptions"
+            :placeholder="$t('pages.article.filterCategory')"
+            class="w-full sm:w-44"
+          />
+          <USelect
+            v-model="selectedStatusFilter"
+            :items="statusFilterOptions"
+            :placeholder="$t('pages.article.filterStatus')"
+            class="w-full sm:w-36"
+          />
+        </div>
+      </template>
+
+      <template #actions>
+        <UButton
+          color="primary"
+          variant="solid"
+          icon="i-lucide-plus-circle"
+          class="w-full sm:w-auto justify-center"
+          to="/content/article/create"
+        >
+          {{ $t('pages.article.addArticle') }}
+        </UButton>
+      </template>
+    </DataTable>
 
     <!-- Delete Modal -->
     <DeleteModal

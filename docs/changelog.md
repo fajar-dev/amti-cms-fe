@@ -6,6 +6,17 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ## [Unreleased]
 
+### Added
+- Modul Content Management System yang mencakup manajemen Kategori dan Artikel:
+  - Halaman CRUD Kategori di `app/pages/content/category/index.vue` dengan modal `ContentCategoryAddModal` dan `ContentCategoryUpdateModal`.
+  - Halaman daftar Artikel di `app/pages/content/article/index.vue` terintegrasi dengan filter kategori dan status di slot `DataTable`.
+  - Halaman formulir pembuatan dan pengubahan artikel di `app/pages/content/article/create.vue` dan `[id].vue` dengan editor rich text WYSIWYG Tiptap, upload cover image ke MinIO, dan konfigurasi optimasi mesin pencari (SEO & Open Graph).
+  - Komponen editor konten `CommonTiptapEditor` (`app/components/common/TiptapEditor.vue`) dengan toolbar format lengkap, heading, list, blockquote, link, dan upload gambar.
+  - Service API `category-service.ts` dan `article-service.ts`.
+  - Tipe TypeScript di `app/types/content.d.ts` dan `app/types/tiptap.d.ts`.
+  - Menu navigasi CMS (`/content/category` dan `/content/article`) di `useNavigation.ts`.
+  - Seluruh teks UI dilokalisasi 100% pada `en.json` dan `id.json` (`pages.category.*` dan `pages.article.*`).
+
 ### Fixed
 - Memperbaiki arbitrary Tailwind CSS classes (`max-w-[420px]` -> `max-w-md`, `table-class="min-w-[768px]"` -> `min-w-3xl`, `opacity-[0.40]` -> `opacity-40`) sesuai panduan `coding-standards.md`.
 - Menghapus komponen non-existent `<TenantSwitcher />` pada `Sidebar.vue`.
