@@ -1,4 +1,14 @@
 {
+  "common": {
+    "id": "ID",
+    "action": "Action",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "createdAt": "Created At",
+    "loading": "Loading"
+  },
   "components": {
     "languageSwitcher": {
       "ariaLabel": "Change language"
@@ -13,6 +23,9 @@
       "nav": {
         "dashboard": "Dashboard",
         "cms": "Content Management",
+        "content": "Content",
+        "category": "Category",
+        "article": "Article",
         "menu": "Menu",
         "subMenu1": "Sub Menu 1",
         "subMenu2": "Sub Menu 2",
@@ -45,6 +58,28 @@
     "dataTable": {
       "searchPlaceholder": "Search...",
       "showing": "Showing {from} to {to} of {total} results"
+    },
+    "category": {
+      "addModal": {
+        "title": "Add Category",
+        "description": "Create a new content category.",
+        "nameLabel": "Name",
+        "namePlaceholder": "e.g. Technology",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Category description (optional)",
+        "nameRequired": "Name is required",
+        "createdSuccess": "Category created successfully!"
+      },
+      "updateModal": {
+        "title": "Update Category",
+        "description": "Modify category information.",
+        "nameLabel": "Name",
+        "namePlaceholder": "e.g. Technology",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Category description (optional)",
+        "nameRequired": "Name is required",
+        "updatedSuccess": "Category updated successfully!"
+      }
     },
     "contact": {
       "addModal": {
@@ -304,6 +339,80 @@
         "passwordMismatch": "Passwords don't match",
         "updatedSuccess": "Password updated successfully!"
       }
+    },
+    "category": {
+      "title": "Categories",
+      "description": "Manage categories for organizing your articles and content",
+      "searchPlaceholder": "Search categories...",
+      "addCategory": "Add Category",
+      "columnName": "Name",
+      "columnSlug": "Slug",
+      "columnDescription": "Description",
+      "deleteTitle": "Delete Category",
+      "deletedSuccess": "Category deleted successfully!"
+    },
+    "article": {
+      "title": "Articles",
+      "description": "Manage blog posts, news, and SEO-optimized content",
+      "searchPlaceholder": "Search articles...",
+      "addArticle": "Add Article",
+      "filterCategory": "Category",
+      "allCategories": "All Categories",
+      "filterStatus": "Status",
+      "allStatuses": "All Statuses",
+      "statusDraft": "Draft",
+      "statusPublish": "Publish",
+      "columnCover": "Cover",
+      "columnTitle": "Title",
+      "columnCategory": "Category",
+      "columnStatus": "Status",
+      "columnViews": "Views",
+      "deleteTitle": "Delete Article",
+      "deletedSuccess": "Article deleted successfully!",
+      "createTitle": "Create Article",
+      "createDescription": "Write and publish a new SEO-optimized article with Tiptap editor",
+      "editTitle": "Edit Article",
+      "editDescription": "Update article content, media, and search engine optimization settings",
+      "saveDraft": "Save as Draft",
+      "publish": "Publish",
+      "fieldTitle": "Article Title",
+      "placeholderTitle": "Enter an engaging article title...",
+      "fieldSlug": "URL Slug",
+      "placeholderSlug": "auto-generated-slug",
+      "fieldContent": "Content",
+      "placeholderContent": "Write your rich text article content...",
+      "seoSectionTitle": "Search Engine Optimization (SEO)",
+      "seoSectionSubtitle": "Configure metadata for search results and social previews",
+      "fieldMetaTitle": "Meta Title",
+      "placeholderMetaTitle": "Target keyword title (approx 50-60 characters)",
+      "fieldMetaDescription": "Meta Description",
+      "placeholderMetaDescription": "Brief summary displayed in search engine results (approx 150-160 characters)",
+      "fieldMetaKeywords": "Meta Keywords",
+      "placeholderMetaKeywords": "keyword1, keyword2, keyword3",
+      "fieldCanonicalUrl": "Canonical URL",
+      "placeholderCanonicalUrl": "https://example.com/articles/your-slug",
+      "socialMetaTitle": "Open Graph (Social Sharing)",
+      "fieldOgTitle": "OG Title",
+      "placeholderOgTitle": "Title when shared on Twitter/Facebook/LinkedIn",
+      "fieldOgDescription": "OG Description",
+      "placeholderOgDescription": "Summary when shared on social platforms",
+      "settingsTitle": "Publishing Settings",
+      "fieldCategory": "Category",
+      "selectCategory": "Select category",
+      "noCategory": "None",
+      "fieldTags": "Tags",
+      "placeholderTags": "nuxt, vue, tips",
+      "tagsHelp": "Separate tags with commas",
+      "coverTitle": "Featured Image (Cover)",
+      "uploadCover": "Upload cover image",
+      "chooseFile": "Choose File",
+      "coverUploaded": "Cover image uploaded successfully!",
+      "coverUploadFailed": "Failed to upload cover image",
+      "titleRequired": "Article title is required",
+      "contentRequired": "Article content is required",
+      "createdSuccess": "Article created successfully!",
+      "updatedSuccess": "Article updated successfully!",
+      "totalViews": "Total Views"
     }
   }
 }

@@ -36,13 +36,13 @@ export const useNavigation = () => {
       title: t('components.sidebar.nav.cms'),
       items: [
         {
-          id: 'menu',
-          label: t('components.sidebar.nav.menu'),
-          to: '#',
-          icon: 'i-lucide-list',
+          id: 'content',
+          label: t('components.sidebar.nav.content'),
+          to: '/content',
+          icon: 'i-lucide-file-text',
           children: [
-            { id: 'sub menu 1', label: t('components.sidebar.nav.subMenu1'), to: '#' },
-            { id: 'sub Menu 2', label: t('components.sidebar.nav.subMenu2'), to: '#' }
+            { id: 'category', label: t('components.sidebar.nav.category'), to: '/content/category' },
+            { id: 'article', label: t('components.sidebar.nav.article'), to: '/content/article' }
           ]
         },
         {
