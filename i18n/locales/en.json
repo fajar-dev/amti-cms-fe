@@ -399,7 +399,7 @@
       "deleteTitle": "Delete Article",
       "deletedSuccess": "Article deleted successfully!",
       "createTitle": "Create Article",
-      "createDescription": "Write and publish articles with Tiptap editor",
+      "createDescription": "Write and publish a new article",
       "editTitle": "Edit Article",
       "editDescription": "Update article content, media, and publishing settings",
       "saveDraft": "Save as Draft",
