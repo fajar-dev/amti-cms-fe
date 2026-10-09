@@ -30,6 +30,7 @@
         "subMenu1": "Sub Menu 1",
         "subMenu2": "Sub Menu 2",
         "contact": "Contact",
+        "faq": "FAQ",
         "userManagement": "User Management",
         "users": "Users",
         "feedback": "Feedback"
@@ -151,6 +152,46 @@
         "genericError": "An error occurred"
       }
     },
+    "faq": {
+      "addModal": {
+        "title": "Add FAQ",
+        "description": "Fill in the details to create a new FAQ entry.",
+        "questionLabel": "Question",
+        "questionPlaceholder": "Enter question",
+        "answerLabel": "Answer",
+        "answerPlaceholder": "Enter answer",
+        "categoryLabel": "Category",
+        "categoryPlaceholder": "e.g. Account, General, Billing",
+        "orderLabel": "Order",
+        "orderPlaceholder": "0",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "questionRequired": "Question is required",
+        "questionTooLong": "Question must not exceed 500 characters",
+        "answerRequired": "Answer is required",
+        "createdSuccess": "FAQ created successfully!"
+      },
+      "updateModal": {
+        "title": "Edit FAQ",
+        "description": "Update the FAQ details below.",
+        "questionLabel": "Question",
+        "questionPlaceholder": "Enter question",
+        "answerLabel": "Answer",
+        "answerPlaceholder": "Enter answer",
+        "categoryLabel": "Category",
+        "categoryPlaceholder": "e.g. Account, General, Billing",
+        "orderLabel": "Order",
+        "orderPlaceholder": "0",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "questionRequired": "Question is required",
+        "questionTooLong": "Question must not exceed 500 characters",
+        "answerRequired": "Answer is required",
+        "updatedSuccess": "FAQ updated successfully!"
+      }
+    },
     "user": {
       "addModal": {
         "title": "Add User",
@@ -231,6 +272,29 @@
       "typeOther": "Other",
       "active": "Active",
       "inactive": "Inactive"
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Frequently Asked Questions management",
+      "searchPlaceholder": "Search questions or answers...",
+      "addFaq": "Add FAQ",
+      "filterStatus": "Status",
+      "allStatus": "All Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "columnId": "#",
+      "columnQuestion": "Question",
+      "columnAnswer": "Answer",
+      "columnCategory": "Category",
+      "columnOrder": "Order",
+      "columnStatus": "Status",
+      "columnCreatedAt": "Created At",
+      "columnAction": "Action",
+      "actionsDropdown": "Actions dropdown",
+      "editFaq": "Edit FAQ",
+      "deleteFaq": "Delete FAQ",
+      "deleteTitle": "Delete FAQ",
+      "deletedSuccess": "FAQ deleted successfully!"
     },
     "user": {
       "title": "User Management",

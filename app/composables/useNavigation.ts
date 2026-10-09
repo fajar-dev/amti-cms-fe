@@ -50,6 +50,12 @@ export const useNavigation = () => {
           label: t('components.sidebar.nav.contact'),
           to: '/contact',
           icon: 'i-lucide-notebook-text'
+        },
+        {
+          id: 'faq',
+          label: t('components.sidebar.nav.faq'),
+          to: '/faq',
+          icon: 'i-lucide-help-circle'
         }
       ]
     },

@@ -7,6 +7,13 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 ## [Unreleased]
 
 ### Added
+- Modul Frequently Asked Questions (FAQ) dengan fitur CRUD lengkap:
+  - Halaman CRUD FAQ di `app/pages/faq/index.vue` dengan `DataTable`, pencarian, pengurutan, filter status (Active/Inactive), dan konfirmasi hapus via `DeleteModal`.
+  - Modal tambah dan ubah FAQ di `app/components/faq/AddModal.vue` dan `UpdateModal.vue` dengan validasi Zod schema.
+  - Service API `faq-service.ts` (`app/services/faq-service.ts`) terintegrasi dengan backend endpoints `/faq`.
+  - Definisi tipe TypeScript di `app/types/faq.d.ts` (`Faq`, `FaqPayload`).
+  - Menu navigasi FAQ (`/faq`) di `useNavigation.ts` di bawah grup CMS.
+  - Lokalisasi lengkap pada `en.json` dan `id.json` (`pages.faq.*` dan `components.faq.*`).
 - Modul Content Management System yang mencakup manajemen Kategori dan Artikel:
   - Halaman CRUD Kategori di `app/pages/content/category/index.vue` dengan modal `ContentCategoryAddModal` dan `ContentCategoryUpdateModal`.
   - Halaman daftar Artikel di `app/pages/content/article/index.vue` terintegrasi dengan filter kategori dan status di slot `DataTable`.

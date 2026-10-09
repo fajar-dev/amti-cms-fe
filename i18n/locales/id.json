@@ -30,6 +30,7 @@
         "subMenu1": "Sub Menu 1",
         "subMenu2": "Sub Menu 2",
         "contact": "Kontak",
+        "faq": "FAQ",
         "userManagement": "Manajemen Pengguna",
         "users": "Pengguna",
         "feedback": "Feedback"
@@ -151,6 +152,46 @@
         "genericError": "Terjadi kesalahan"
       }
     },
+    "faq": {
+      "addModal": {
+        "title": "Tambah FAQ",
+        "description": "Isi detail berikut untuk membuat pertanyaan umum baru.",
+        "questionLabel": "Pertanyaan",
+        "questionPlaceholder": "Masukkan pertanyaan",
+        "answerLabel": "Jawaban",
+        "answerPlaceholder": "Masukkan jawaban",
+        "categoryLabel": "Kategori",
+        "categoryPlaceholder": "misal: Akun, Umum, Pembayaran",
+        "orderLabel": "Urutan",
+        "orderPlaceholder": "0",
+        "statusLabel": "Status",
+        "active": "Aktif",
+        "inactive": "Tidak Aktif",
+        "questionRequired": "Pertanyaan wajib diisi",
+        "questionTooLong": "Pertanyaan tidak boleh lebih dari 500 karakter",
+        "answerRequired": "Jawaban wajib diisi",
+        "createdSuccess": "FAQ berhasil ditambahkan!"
+      },
+      "updateModal": {
+        "title": "Edit FAQ",
+        "description": "Perbarui informasi FAQ di bawah ini.",
+        "questionLabel": "Pertanyaan",
+        "questionPlaceholder": "Masukkan pertanyaan",
+        "answerLabel": "Jawaban",
+        "answerPlaceholder": "Masukkan jawaban",
+        "categoryLabel": "Kategori",
+        "categoryPlaceholder": "misal: Akun, Umum, Pembayaran",
+        "orderLabel": "Urutan",
+        "orderPlaceholder": "0",
+        "statusLabel": "Status",
+        "active": "Aktif",
+        "inactive": "Tidak Aktif",
+        "questionRequired": "Pertanyaan wajib diisi",
+        "questionTooLong": "Pertanyaan tidak boleh lebih dari 500 karakter",
+        "answerRequired": "Jawaban wajib diisi",
+        "updatedSuccess": "FAQ berhasil diperbarui!"
+      }
+    },
     "user": {
       "addModal": {
         "title": "Tambah Pengguna",
@@ -231,6 +272,29 @@
       "typeOther": "Lainnya",
       "active": "Aktif",
       "inactive": "Nonaktif"
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Pengelolaan Tanya Jawab (Frequently Asked Questions)",
+      "searchPlaceholder": "Cari pertanyaan atau jawaban...",
+      "addFaq": "Tambah FAQ",
+      "filterStatus": "Status",
+      "allStatus": "Semua Status",
+      "active": "Aktif",
+      "inactive": "Tidak Aktif",
+      "columnId": "#",
+      "columnQuestion": "Pertanyaan",
+      "columnAnswer": "Jawaban",
+      "columnCategory": "Kategori",
+      "columnOrder": "Urutan",
+      "columnStatus": "Status",
+      "columnCreatedAt": "Tanggal Dibuat",
+      "columnAction": "Aksi",
+      "actionsDropdown": "Menu aksi",
+      "editFaq": "Edit FAQ",
+      "deleteFaq": "Hapus FAQ",
+      "deleteTitle": "Hapus FAQ",
+      "deletedSuccess": "FAQ berhasil dihapus!"
     },
     "user": {
       "title": "Manajemen Pengguna",
