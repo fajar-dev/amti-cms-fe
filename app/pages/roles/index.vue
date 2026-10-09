@@ -66,6 +66,8 @@ definePageMeta({
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UBadge = resolveComponent('UBadge')
+const UAvatarGroup = resolveComponent('UAvatarGroup')
+const UAvatar = resolveComponent('UAvatar')
 const { t } = useI18n()
 const toast = useToast()
 
@@ -154,14 +156,23 @@ const columns: TableColumn<Role>[] = [
     accessorKey: 'users',
     header: () => t('pages.roles.columnUsers'),
     cell: ({ row }) => {
-      const count = row.original.userCount ?? 0
+      const users = row.original.users || []
+      if (!users.length) {
+        return h('span', { class: 'text-sm text-muted' }, '-')
+      }
       return h(
-        UBadge,
-        {
-          color: count > 0 ? 'primary' : 'neutral',
-          variant: 'subtle'
-        },
-        () => `${count} ${t('pages.roles.usersBadge')}`
+        UAvatarGroup,
+        { max: 5 },
+        () =>
+          users.map(user =>
+            h(UAvatar, {
+              key: user.id,
+              src: user.photo || undefined,
+              alt: user.name,
+              loading: 'lazy',
+              title: user.name
+            })
+          )
       )
     }
   },

@@ -5,6 +5,13 @@ export interface Permission {
   description: string | null
 }
 
+export interface RoleUser {
+  id: number
+  name: string
+  email: string
+  photo: string | null
+}
+
 export interface Role {
   id: number
   name: string
@@ -12,6 +19,7 @@ export interface Role {
   permissions?: Permission[]
   permissionCount?: number
   userCount?: number
+  users?: RoleUser[]
   createdAt: string
   updatedAt: string
 }
