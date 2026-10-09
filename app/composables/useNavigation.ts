@@ -62,6 +62,12 @@ export const useNavigation = () => {
           label: t('components.sidebar.nav.users'),
           to: '/user',
           icon: 'i-lucide-user'
+        },
+        {
+          id: 'roles',
+          label: t('components.sidebar.nav.roles'),
+          to: '/user/roles',
+          icon: 'i-lucide-shield-check'
         }
       ]
     }

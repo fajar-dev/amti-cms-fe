@@ -7,7 +7,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "createdAt": "Created At",
-    "loading": "Loading"
+    "loading": "Loading",
+    "error": "An error occurred"
   },
   "components": {
     "languageSwitcher": {
@@ -32,6 +33,7 @@
         "faq": "FAQ",
         "userManagement": "User Management",
         "users": "Users",
+        "roles": "Roles & Permissions",
         "feedback": "Feedback"
       }
     },
@@ -129,6 +131,9 @@
         "emailPlaceholder": "Enter email address",
         "passwordLabel": "Password",
         "passwordPlaceholder": "Enter password",
+        "roleLabel": "Role",
+        "rolePlaceholder": "Select a role",
+        "noRole": "No Role",
         "statusLabel": "Status",
         "active": "Active",
         "inactive": "Inactive",
@@ -153,6 +158,9 @@
         "emailPlaceholder": "Enter email address",
         "passwordLabel": "New Password (optional)",
         "passwordPlaceholder": "Leave empty to keep unchanged",
+        "roleLabel": "Role",
+        "rolePlaceholder": "Select a role",
+        "noRole": "No Role",
         "statusLabel": "Status",
         "active": "Active",
         "inactive": "Inactive",
@@ -165,6 +173,51 @@
         "photoUploadSuccess": "Photo uploaded successfully!",
         "photoUploadFailed": "Failed to upload photo",
         "updatedSuccess": "User updated successfully!"
+      }
+    },
+    "rbac": {
+      "addModal": {
+        "title": "Add Role",
+        "description": "Create a new role and configure its system permissions.",
+        "displayNameLabel": "Display Name",
+        "displayNamePlaceholder": "e.g. Content Editor",
+        "displayNameRequired": "Display name is required (min 2 chars)",
+        "nameLabel": "Role Identifier",
+        "nameHelp": "Unique system identifier (lowercase, numbers, underscores)",
+        "namePlaceholder": "e.g. content_editor",
+        "nameRequired": "Role identifier is required (min 2 chars)",
+        "nameInvalid": "Only lowercase letters, numbers, hyphens, and underscores allowed",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Brief description of this role's purpose...",
+        "permissionsLabel": "Role Permissions",
+        "permissionsHelp": "{count} of {total} permissions selected",
+        "selectAll": "Select All",
+        "clearAll": "Clear All",
+        "selectModule": "Select all",
+        "deselectModule": "Deselect all",
+        "createdSuccess": "Role created successfully!"
+      },
+      "updateModal": {
+        "title": "Edit Role",
+        "description": "Modify role details and assigned permissions.",
+        "displayNameLabel": "Display Name",
+        "displayNamePlaceholder": "e.g. Content Editor",
+        "displayNameRequired": "Display name is required (min 2 chars)",
+        "nameLabel": "Role Identifier",
+        "nameHelp": "Unique system identifier",
+        "nameRequired": "Role identifier is required (min 2 chars)",
+        "nameInvalid": "Only lowercase letters, numbers, hyphens, and underscores allowed",
+        "systemRoleLocked": "System role identifiers cannot be renamed",
+        "systemBadge": "System Protected",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Brief description of this role's purpose...",
+        "permissionsLabel": "Role Permissions",
+        "permissionsHelp": "{count} of {total} permissions selected",
+        "selectAll": "Select All",
+        "clearAll": "Clear All",
+        "selectModule": "Select all",
+        "deselectModule": "Deselect all",
+        "updatedSuccess": "Role updated successfully!"
       }
     }
   },
@@ -200,6 +253,7 @@
       "searchPlaceholder": "Search...",
       "addUser": "Add User",
       "columnProfile": "User Profile",
+      "columnRole": "Role",
       "columnStatus": "Status",
       "columnJoinedDate": "Joined Date",
       "columnAction": "Action",
@@ -210,6 +264,29 @@
       "deleteUser": "Delete User",
       "deleteTitle": "Delete User",
       "deletedSuccess": "User deleted successfully!"
+    },
+    "roles": {
+      "title": "Roles & Permissions",
+      "description": "Manage user roles and assign access permissions across the system",
+      "searchPlaceholder": "Search roles by name or identifier...",
+      "addRole": "Add Role",
+      "columnRole": "Role",
+      "columnDescription": "Description",
+      "columnPermissions": "Permissions",
+      "columnUsers": "Users",
+      "columnType": "Type",
+      "columnAction": "Action",
+      "permissionsBadge": "{count} permissions",
+      "usersBadge": "{count} users",
+      "systemRole": "System",
+      "customRole": "Custom",
+      "actionsDropdown": "Actions dropdown",
+      "editRole": "Edit Role",
+      "deleteRole": "Delete Role",
+      "cannotDeleteSystem": "System roles cannot be deleted",
+      "cannotDeleteWithUsers": "Reassign active users before deleting this role",
+      "deleteTitle": "Delete Role",
+      "deletedSuccess": "Role deleted successfully!"
     },
     "auth": {
       "signIn": {

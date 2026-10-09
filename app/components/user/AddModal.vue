@@ -114,6 +114,19 @@
           />
         </UFormField>
         <UFormField
+          :label="$t('components.user.addModal.roleLabel')"
+          name="roleId"
+        >
+          <USelectMenu
+            v-model="form.roleId"
+            :items="roleOptions"
+            value-key="value"
+            :placeholder="$t('components.user.addModal.rolePlaceholder')"
+            class="w-full"
+          />
+        </UFormField>
+
+        <UFormField
           :label="$t('components.user.addModal.statusLabel')"
           name="isActive"
         >
@@ -146,6 +159,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import { userService } from '~/services/user-service'
+import { rbacService } from '~/services/rbac-service'
 import type { UserPayload } from '~/types/user'
 
 const open = defineModel<boolean>({ default: false })
@@ -155,14 +169,29 @@ const isSubmitting = ref(false)
 const isUploading = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 const previewUrl = ref<string | null>(null)
+const roleOptions = ref<Array<{ label: string, value: number | null }>>([])
 
 const { t } = useI18n()
+
+async function loadRoles() {
+  const res = await rbacService.getAllList()
+  if (res.success && res.data) {
+    roleOptions.value = [
+      { label: t('components.user.addModal.noRole'), value: null },
+      ...res.data.map(r => ({
+        label: r.displayName,
+        value: r.id
+      }))
+    ]
+  }
+}
 
 const schema = z.object({
   name: z.string().min(1, t('components.user.addModal.nameRequired')),
   email: z.string().min(1, t('components.user.addModal.emailRequired')).email(t('components.user.addModal.emailInvalid')),
   password: z.string().min(6, t('components.user.addModal.passwordMin')),
-  isActive: z.boolean()
+  isActive: z.boolean(),
+  roleId: z.number().nullable().optional()
 })
 
 const form = reactive<UserPayload>({
@@ -170,7 +199,8 @@ const form = reactive<UserPayload>({
   email: '',
   password: '',
   photo: null,
-  isActive: true
+  isActive: true,
+  roleId: null
 })
 
 const resetForm = () => {
@@ -179,11 +209,20 @@ const resetForm = () => {
   form.password = ''
   form.photo = null
   form.isActive = true
+  form.roleId = null
   previewUrl.value = null
   if (fileInput.value) {
     fileInput.value.value = ''
   }
 }
+
+watch(open, (isOpen) => {
+  if (isOpen) {
+    loadRoles()
+  } else {
+    resetForm()
+  }
+})
 
 const triggerFileInput = () => {
   fileInput.value?.click()

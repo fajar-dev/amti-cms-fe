@@ -113,6 +113,18 @@
           />
         </UFormField>
         <UFormField
+          :label="$t('components.user.updateModal.roleLabel')"
+          name="roleId"
+        >
+          <USelectMenu
+            v-model="form.roleId"
+            :items="roleOptions"
+            value-key="value"
+            :placeholder="$t('components.user.updateModal.rolePlaceholder')"
+            class="w-full"
+          />
+        </UFormField>
+        <UFormField
           :label="$t('components.user.updateModal.statusLabel')"
           name="isActive"
         >
@@ -145,6 +157,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import { userService } from '~/services/user-service'
+import { rbacService } from '~/services/rbac-service'
 import type { User, UserPayload } from '~/types/user'
 
 const open = defineModel<boolean>({ default: false })
@@ -159,15 +172,30 @@ const isSubmitting = ref(false)
 const isUploading = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 const previewUrl = ref<string | null>(null)
+const roleOptions = ref<Array<{ label: string, value: number | null }>>([])
 
 const { t } = useI18n()
+
+async function loadRoles() {
+  const res = await rbacService.getAllList()
+  if (res.success && res.data) {
+    roleOptions.value = [
+      { label: t('components.user.updateModal.noRole'), value: null },
+      ...res.data.map(r => ({
+        label: r.displayName,
+        value: r.id
+      }))
+    ]
+  }
+}
 
 // Schema for updating (password is optional, min 6 if filled)
 const schema = z.object({
   name: z.string().min(1, t('components.user.updateModal.nameRequired')),
   email: z.string().min(1, t('components.user.updateModal.emailRequired')).email(t('components.user.updateModal.emailInvalid')),
   password: z.string().min(6, t('components.user.updateModal.passwordMin')).optional().or(z.literal('')),
-  isActive: z.boolean()
+  isActive: z.boolean(),
+  roleId: z.number().nullable().optional()
 })
 
 const form = reactive<UserPayload>({
@@ -175,7 +203,8 @@ const form = reactive<UserPayload>({
   email: '',
   password: '',
   photo: null,
-  isActive: true
+  isActive: true,
+  roleId: null
 })
 
 const populateForm = () => {
@@ -185,6 +214,7 @@ const populateForm = () => {
     form.password = ''
     form.photo = props.user.photo // will contain the MinIO presigned URL (or path)
     form.isActive = props.user.isActive
+    form.roleId = props.user.roleId ?? props.user.role?.id ?? null
     previewUrl.value = props.user.photo // display existing photo
   }
 }
@@ -247,7 +277,8 @@ const handleSubmit = async () => {
     name: form.name,
     email: form.email,
     photo: form.photo,
-    isActive: form.isActive
+    isActive: form.isActive,
+    roleId: form.roleId ?? null
   }
 
   // Only send password if user filled it
@@ -271,8 +302,9 @@ const handleSubmit = async () => {
   }
 }
 
-watch(open, (val) => {
+watch(open, async (val) => {
   if (val) {
+    await loadRoles()
     populateForm()
   } else {
     previewUrl.value = null

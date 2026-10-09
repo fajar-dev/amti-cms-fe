@@ -7,6 +7,16 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 ## [Unreleased]
 
 ### Added
+- Modul Role-Based Access Control (RBAC) pada grup User Management:
+  - Halaman CRUD Roles & Permissions di `app/pages/user/roles/index.vue` dengan `DataTable`, pencarian, badge jumlah permissions, badge jumlah pengguna, indikator System/Custom role, dan konfirmasi hapus via `DeleteModal`.
+  - Modal tambah peran `RbacAddModal` (`app/components/rbac/AddModal.vue`) dengan input nama tampilan, slug identifier otomatis/manual, deskripsi, dan matriks hak akses yang dikelompokkan berdasarkan modul dengan opsi "Pilih Semua" per modul maupun global.
+  - Modal ubah peran `RbacUpdateModal` (`app/components/rbac/UpdateModal.vue`) dengan proteksi penguncian nama peran sistem default (`super_admin`) dan matriks hak akses.
+  - Pemilihan peran pada modal tambah & ubah pengguna (`UserAddModal` & `UserUpdateModal`) menggunakan `<USelectMenu>` yang terhubung ke daftar peran aktif via `rbacService.getAllList()`.
+  - Kolom Role pada tabel daftar pengguna (`app/pages/user/index.vue`).
+  - Menu navigasi "Roles & Permissions" (`/user/roles`) di `useNavigation.ts` di bawah grup navigasi `userManagement`.
+  - Service API `rbac-service.ts` (`app/services/rbac-service.ts`) terhubung ke endpoint `/rbac/roles` dan `/rbac/permissions`.
+  - Definisi tipe TypeScript di `app/types/rbac.d.ts` (`Role`, `Permission`, `RolePayload`, `PermissionsData`) dan pembaruan `app/types/user.d.ts` dengan `roleId` & `role`.
+  - Lokalisasi lengkap pada `en.json` dan `id.json` (`pages.roles.*`, `components.rbac.*`, `components.sidebar.nav.roles`, dan label peran pengguna).
 - Modul Frequently Asked Questions (FAQ) dengan fitur CRUD lengkap:
   - Halaman CRUD FAQ di `app/pages/faq/index.vue` dengan `DataTable`, pencarian, pengurutan, filter status (Active/Inactive), dan konfirmasi hapus via `DeleteModal`.
   - Modal tambah dan ubah FAQ di `app/components/faq/AddModal.vue` dan `UpdateModal.vue` dengan validasi Zod schema.

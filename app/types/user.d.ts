@@ -4,6 +4,12 @@ export interface User {
   email: string
   photo: string | null
   isActive: boolean
+  roleId?: number | null
+  role?: {
+    id: number
+    name: string
+    displayName: string
+  } | null
   createdAt: string
 }
 
@@ -13,4 +19,5 @@ export interface UserPayload {
   password?: string
   photo?: string | null
   isActive: boolean
+  roleId?: number | null
 }

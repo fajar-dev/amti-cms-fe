@@ -7,7 +7,8 @@
     "save": "Simpan",
     "cancel": "Batal",
     "createdAt": "Dibuat Pada",
-    "loading": "Memuat"
+    "loading": "Memuat",
+    "error": "Terjadi kesalahan"
   },
   "components": {
     "languageSwitcher": {
@@ -32,6 +33,7 @@
         "faq": "FAQ",
         "userManagement": "Manajemen Pengguna",
         "users": "Pengguna",
+        "roles": "Peran & Hak Akses",
         "feedback": "Feedback"
       }
     },
@@ -129,6 +131,9 @@
         "emailPlaceholder": "Masukkan alamat email",
         "passwordLabel": "Kata Sandi",
         "passwordPlaceholder": "Masukkan kata sandi",
+        "roleLabel": "Peran",
+        "rolePlaceholder": "Pilih peran",
+        "noRole": "Tanpa Peran",
         "statusLabel": "Status",
         "active": "Aktif",
         "inactive": "Nonaktif",
@@ -153,6 +158,9 @@
         "emailPlaceholder": "Masukkan alamat email",
         "passwordLabel": "Kata Sandi Baru (opsional)",
         "passwordPlaceholder": "Kosongkan jika tidak diubah",
+        "roleLabel": "Peran",
+        "rolePlaceholder": "Pilih peran",
+        "noRole": "Tanpa Peran",
         "statusLabel": "Status",
         "active": "Aktif",
         "inactive": "Nonaktif",
@@ -165,6 +173,51 @@
         "photoUploadSuccess": "Foto berhasil diunggah!",
         "photoUploadFailed": "Gagal mengunggah foto",
         "updatedSuccess": "Pengguna berhasil diperbarui!"
+      }
+    },
+    "rbac": {
+      "addModal": {
+        "title": "Tambah Peran",
+        "description": "Buat peran baru dan atur hak akses sistemnya.",
+        "displayNameLabel": "Nama Tampilan",
+        "displayNamePlaceholder": "contoh: Editor Konten",
+        "displayNameRequired": "Nama tampilan wajib diisi (min 2 karakter)",
+        "nameLabel": "Pengenal Peran",
+        "nameHelp": "Pengenal sistem unik (huruf kecil, angka, garis bawah)",
+        "namePlaceholder": "contoh: editor_konten",
+        "nameRequired": "Pengenal peran wajib diisi (min 2 karakter)",
+        "nameInvalid": "Hanya huruf kecil, angka, tanda hubung, dan garis bawah yang diperbolehkan",
+        "descriptionLabel": "Deskripsi",
+        "descriptionPlaceholder": "Deskripsi singkat tentang fungsi peran ini...",
+        "permissionsLabel": "Hak Akses Peran",
+        "permissionsHelp": "{count} dari {total} hak akses dipilih",
+        "selectAll": "Pilih Semua",
+        "clearAll": "Kosongkan Semua",
+        "selectModule": "Pilih semua",
+        "deselectModule": "Batal pilih",
+        "createdSuccess": "Peran berhasil dibuat!"
+      },
+      "updateModal": {
+        "title": "Ubah Peran",
+        "description": "Perbarui detail peran dan hak akses yang diberikan.",
+        "displayNameLabel": "Nama Tampilan",
+        "displayNamePlaceholder": "contoh: Editor Konten",
+        "displayNameRequired": "Nama tampilan wajib diisi (min 2 karakter)",
+        "nameLabel": "Pengenal Peran",
+        "nameHelp": "Pengenal sistem unik",
+        "nameRequired": "Pengenal peran wajib diisi (min 2 karakter)",
+        "nameInvalid": "Hanya huruf kecil, angka, tanda hubung, dan garis bawah yang diperbolehkan",
+        "systemRoleLocked": "Pengenal peran sistem tidak dapat diubah namanya",
+        "systemBadge": "Dilindungi Sistem",
+        "descriptionLabel": "Deskripsi",
+        "descriptionPlaceholder": "Deskripsi singkat tentang fungsi peran ini...",
+        "permissionsLabel": "Hak Akses Peran",
+        "permissionsHelp": "{count} dari {total} hak akses dipilih",
+        "selectAll": "Pilih Semua",
+        "clearAll": "Kosongkan Semua",
+        "selectModule": "Pilih semua",
+        "deselectModule": "Batal pilih",
+        "updatedSuccess": "Peran berhasil diperbarui!"
       }
     }
   },
@@ -200,6 +253,7 @@
       "searchPlaceholder": "Cari...",
       "addUser": "Tambah Pengguna",
       "columnProfile": "Profil Pengguna",
+      "columnRole": "Peran",
       "columnStatus": "Status",
       "columnJoinedDate": "Tanggal Bergabung",
       "columnAction": "Aksi",
@@ -210,6 +264,29 @@
       "deleteUser": "Hapus Pengguna",
       "deleteTitle": "Hapus Pengguna",
       "deletedSuccess": "Pengguna berhasil dihapus!"
+    },
+    "roles": {
+      "title": "Peran & Hak Akses",
+      "description": "Kelola peran pengguna dan tentukan hak akses sistem",
+      "searchPlaceholder": "Cari peran berdasarkan nama atau pengenal...",
+      "addRole": "Tambah Peran",
+      "columnRole": "Peran",
+      "columnDescription": "Deskripsi",
+      "columnPermissions": "Hak Akses",
+      "columnUsers": "Pengguna",
+      "columnType": "Tipe",
+      "columnAction": "Aksi",
+      "permissionsBadge": "{count} hak akses",
+      "usersBadge": "{count} pengguna",
+      "systemRole": "Sistem",
+      "customRole": "Kustom",
+      "actionsDropdown": "Menu aksi",
+      "editRole": "Ubah Peran",
+      "deleteRole": "Hapus Peran",
+      "cannotDeleteSystem": "Peran bawaan sistem tidak dapat dihapus",
+      "cannotDeleteWithUsers": "Pindahkan pengguna aktif terlebih dahulu sebelum menghapus peran ini",
+      "deleteTitle": "Hapus Peran",
+      "deletedSuccess": "Peran berhasil dihapus!"
     },
     "auth": {
       "signIn": {

@@ -131,6 +131,24 @@ const columns: TableColumn<User>[] = [
     }
   },
   {
+    accessorKey: 'role',
+    header: () => t('pages.user.columnRole'),
+    cell: ({ row }) => {
+      const role = row.original.role
+      if (!role) {
+        return h('span', { class: 'text-sm text-dimmed' }, '-')
+      }
+      return h(
+        UBadge,
+        {
+          color: 'neutral',
+          variant: 'subtle'
+        },
+        () => role.displayName || role.name
+      )
+    }
+  },
+  {
     accessorKey: 'isActive',
     header: sortHeader(() => t('pages.user.columnStatus'), 'isActive'),
     cell: ({ row }) => {

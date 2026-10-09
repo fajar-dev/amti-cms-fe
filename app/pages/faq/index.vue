@@ -162,7 +162,7 @@ const columns: TableColumn<Faq>[] = [
   {
     accessorKey: 'order',
     header: sortHeader(() => t('pages.faq.columnOrder'), 'order'),
-    cell: ({ row }) => h('span', { class: 'text-sm font-mono' }, String(row.original.order))
+    cell: ({ row }) => h('span', { class: 'text-sm' }, String(row.original.order))
   },
   {
     accessorKey: 'isActive',
