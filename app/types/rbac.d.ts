@@ -8,9 +8,7 @@ export interface Permission {
 export interface Role {
   id: number
   name: string
-  displayName: string
   description: string | null
-  isSystem: boolean
   permissions?: Permission[]
   permissionCount?: number
   userCount?: number
@@ -20,7 +18,6 @@ export interface Role {
 
 export interface RolePayload {
   name: string
-  displayName: string
   description?: string
   permissionIds: number[]
 }

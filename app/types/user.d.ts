@@ -8,7 +8,6 @@ export interface User {
   role?: {
     id: number
     name: string
-    displayName: string
   } | null
   createdAt: string
 }

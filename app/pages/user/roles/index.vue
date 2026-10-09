@@ -45,7 +45,7 @@
     <DeleteModal
       v-model="showDeleteModal"
       :title="$t('pages.roles.deleteTitle')"
-      :item-name="selectedRole?.displayName"
+      :item-name="selectedRole?.name"
       :loading="isDeleting"
       @confirm="handleDelete"
     />
@@ -116,14 +116,14 @@ const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetch
 // Table columns
 const columns: TableColumn<Role>[] = [
   {
-    accessorKey: 'displayName',
-    header: sortHeader(() => t('pages.roles.columnRole'), 'displayName'),
+    accessorKey: 'name',
+    header: sortHeader(() => t('pages.roles.columnRole'), 'name'),
     cell: ({ row }) => {
-      const displayName = row.original.displayName
       const name = row.original.name
+      const id = row.original.id
       return h('div', { class: 'flex flex-col gap-0.5' }, [
-        h('span', { class: 'font-medium text-highlighted' }, displayName),
-        h('span', { class: 'text-xs text-muted' }, `@${name}`)
+        h('span', { class: 'font-medium text-highlighted' }, name),
+        h('span', { class: 'text-xs text-muted' }, `#${id}`)
       ])
     }
   },
@@ -144,8 +144,7 @@ const columns: TableColumn<Role>[] = [
         UBadge,
         {
           color: 'neutral',
-          variant: 'subtle',
-          size: 'sm'
+          variant: 'subtle'
         },
         () => `${count} ${t('pages.roles.permissionsBadge')}`
       )
@@ -160,26 +159,9 @@ const columns: TableColumn<Role>[] = [
         UBadge,
         {
           color: count > 0 ? 'primary' : 'neutral',
-          variant: 'subtle',
-          size: 'sm'
+          variant: 'subtle'
         },
         () => `${count} ${t('pages.roles.usersBadge')}`
-      )
-    }
-  },
-  {
-    accessorKey: 'isSystem',
-    header: sortHeader(() => t('pages.roles.columnType'), 'isSystem'),
-    cell: ({ row }) => {
-      const isSystem = row.original.isSystem
-      return h(
-        UBadge,
-        {
-          color: isSystem ? 'warning' : 'neutral',
-          variant: 'subtle',
-          size: 'sm'
-        },
-        () => (isSystem ? t('pages.roles.systemRole') : t('pages.roles.customRole'))
       )
     }
   },
@@ -215,7 +197,7 @@ const columns: TableColumn<Role>[] = [
 ]
 
 function getRowItems(row: Row<Role>): DropdownMenuItem[] {
-  const items: DropdownMenuItem[] = [
+  return [
     {
       label: t('pages.roles.editRole'),
       icon: 'i-lucide-edit',
@@ -223,12 +205,8 @@ function getRowItems(row: Row<Role>): DropdownMenuItem[] {
         selectedRole.value = row.original
         showUpdateModal.value = true
       }
-    }
-  ]
-
-  // System roles cannot be deleted
-  if (!row.original.isSystem) {
-    items.push({
+    },
+    {
       label: t('pages.roles.deleteRole'),
       color: 'error' as const,
       icon: 'i-lucide-trash',
@@ -236,10 +214,8 @@ function getRowItems(row: Row<Role>): DropdownMenuItem[] {
         selectedRole.value = row.original
         showDeleteModal.value = true
       }
-    })
-  }
-
-  return items
+    }
+  ]
 }
 
 // Handle delete

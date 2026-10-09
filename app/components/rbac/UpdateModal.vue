@@ -13,40 +13,17 @@
         class="space-y-4"
         @submit="handleSubmit"
       >
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <UFormField
-            :label="$t('components.rbac.updateModal.displayNameLabel')"
-            name="displayName"
-            required
-          >
-            <UInput
-              v-model="form.displayName"
-              :placeholder="$t('components.rbac.updateModal.displayNamePlaceholder')"
-              class="w-full"
-            />
-          </UFormField>
-
-          <UFormField
-            :label="$t('components.rbac.updateModal.nameLabel')"
-            name="name"
-            :help="role?.isSystem ? $t('components.rbac.updateModal.systemRoleLocked') : $t('components.rbac.updateModal.nameHelp')"
-            required
-          >
-            <div class="relative">
-              <UInput
-                v-model="form.name"
-                :disabled="role?.isSystem"
-                class="w-full text-sm"
-              />
-              <span
-                v-if="role?.isSystem"
-                class="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted italic"
-              >
-                {{ $t('components.rbac.updateModal.systemBadge') }}
-              </span>
-            </div>
-          </UFormField>
-        </div>
+        <UFormField
+          :label="$t('components.rbac.updateModal.nameLabel')"
+          name="name"
+          required
+        >
+          <UInput
+            v-model="form.name"
+            :placeholder="$t('components.rbac.updateModal.namePlaceholder')"
+            class="w-full"
+          />
+        </UFormField>
 
         <UFormField
           :label="$t('components.rbac.updateModal.descriptionLabel')"
@@ -207,17 +184,13 @@ const groupedPermissions = ref<Record<string, Permission[]>>({})
 
 const form = reactive({
   name: '',
-  displayName: '',
   description: '',
   permissionIds: [] as number[]
 })
 
 const schema = computed(() =>
   z.object({
-    displayName: z.string().min(2, t('components.rbac.updateModal.displayNameRequired')),
-    name: z.string()
-      .min(2, t('components.rbac.updateModal.nameRequired'))
-      .regex(/^[a-z0-9_-]+$/, t('components.rbac.updateModal.nameInvalid')),
+    name: z.string().min(2, t('components.rbac.updateModal.nameRequired')),
     description: z.string().optional(),
     permissionIds: z.array(z.number())
   })
@@ -248,7 +221,6 @@ watch([open, () => props.role], async ([isOpen, currentRole]) => {
     const roleData = res.success ? res.data : currentRole
 
     form.name = roleData.name
-    form.displayName = roleData.displayName
     form.description = roleData.description || ''
     form.permissionIds = (roleData.permissions || []).map(p => p.id)
   }
@@ -313,8 +285,7 @@ async function handleSubmit() {
   isSubmitting.value = true
   try {
     const res = await rbacService.update(props.role.id, {
-      name: props.role.isSystem ? undefined : form.name,
-      displayName: form.displayName,
+      name: form.name,
       description: form.description || undefined,
       permissionIds: form.permissionIds
     })

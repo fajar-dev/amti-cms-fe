@@ -144,7 +144,7 @@ const columns: TableColumn<User>[] = [
           color: 'neutral',
           variant: 'subtle'
         },
-        () => role.displayName || role.name
+        () => role.name
       )
     }
   },

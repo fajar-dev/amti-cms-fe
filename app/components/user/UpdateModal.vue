@@ -182,7 +182,7 @@ async function loadRoles() {
     roleOptions.value = [
       { label: t('components.user.updateModal.noRole'), value: null },
       ...res.data.map(r => ({
-        label: r.displayName,
+        label: r.name,
         value: r.id
       }))
     ]

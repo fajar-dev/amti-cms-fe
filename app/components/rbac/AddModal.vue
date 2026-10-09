@@ -13,34 +13,17 @@
         class="space-y-4"
         @submit="handleSubmit"
       >
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <UFormField
-            :label="$t('components.rbac.addModal.displayNameLabel')"
-            name="displayName"
-            required
-          >
-            <UInput
-              v-model="form.displayName"
-              :placeholder="$t('components.rbac.addModal.displayNamePlaceholder')"
-              class="w-full"
-              @input="onDisplayNameChange"
-            />
-          </UFormField>
-
-          <UFormField
-            :label="$t('components.rbac.addModal.nameLabel')"
-            name="name"
-            :help="$t('components.rbac.addModal.nameHelp')"
-            required
-          >
-            <UInput
-              v-model="form.name"
-              :placeholder="$t('components.rbac.addModal.namePlaceholder')"
-              class="w-full text-sm"
-              @input="isNameManual = true"
-            />
-          </UFormField>
-        </div>
+        <UFormField
+          :label="$t('components.rbac.addModal.nameLabel')"
+          name="name"
+          required
+        >
+          <UInput
+            v-model="form.name"
+            :placeholder="$t('components.rbac.addModal.namePlaceholder')"
+            class="w-full"
+          />
+        </UFormField>
 
         <UFormField
           :label="$t('components.rbac.addModal.descriptionLabel')"
@@ -193,22 +176,17 @@ const toast = useToast()
 
 const isSubmitting = ref(false)
 const isLoadingPermissions = ref(false)
-const isNameManual = ref(false)
 const groupedPermissions = ref<Record<string, Permission[]>>({})
 
 const form = reactive({
   name: '',
-  displayName: '',
   description: '',
   permissionIds: [] as number[]
 })
 
 const schema = computed(() =>
   z.object({
-    displayName: z.string().min(2, t('components.rbac.addModal.displayNameRequired')),
-    name: z.string()
-      .min(2, t('components.rbac.addModal.nameRequired'))
-      .regex(/^[a-z0-9_-]+$/, t('components.rbac.addModal.nameInvalid')),
+    name: z.string().min(2, t('components.rbac.addModal.nameRequired')),
     description: z.string().optional(),
     permissionIds: z.array(z.number())
   })
@@ -217,16 +195,6 @@ const schema = computed(() =>
 const totalPermissionsCount = computed(() => {
   return Object.values(groupedPermissions.value).reduce((sum, list) => sum + list.length, 0)
 })
-
-function onDisplayNameChange() {
-  if (!isNameManual.value) {
-    form.name = form.displayName
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '_')
-      .replace(/^_+|_+$/g, '')
-  }
-}
 
 async function loadPermissions() {
   if (Object.keys(groupedPermissions.value).length > 0) return
@@ -244,10 +212,8 @@ async function loadPermissions() {
 watch(open, (isOpen) => {
   if (isOpen) {
     form.name = ''
-    form.displayName = ''
     form.description = ''
     form.permissionIds = []
-    isNameManual.value = false
     loadPermissions()
   }
 })
@@ -311,7 +277,6 @@ async function handleSubmit() {
   try {
     const res = await rbacService.create({
       name: form.name,
-      displayName: form.displayName,
       description: form.description || undefined,
       permissionIds: form.permissionIds
     })

@@ -32,9 +32,9 @@ export class RbacService {
     }
   }
 
-  async getAllList(): Promise<ApiResponse<Array<{ id: number, name: string, displayName: string, isSystem: boolean }>>> {
+  async getAllList(): Promise<ApiResponse<Array<{ id: number, name: string }>>> {
     try {
-      const response = await apiService.client.get<ApiResponse<Array<{ id: number, name: string, displayName: string, isSystem: boolean }>>>(
+      const response = await apiService.client.get<ApiResponse<Array<{ id: number, name: string }>>>(
         `/rbac/roles/all`,
         this.authHeaders
       )
