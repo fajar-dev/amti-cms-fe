@@ -35,22 +35,42 @@ export class AuthService {
     }
   }
 
-  private async validateSession() {
-    if (typeof window === 'undefined') return
-    const accessToken = this.token.value
-    if (!accessToken) return
+  private validateSessionPromise: Promise<User | null> | null = null
 
-    try {
-      const response = await apiService.client.get<{ success: boolean, data: User }>('/auth/me', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-      this.user.value = response.data.data
-      localStorage.setItem(this.USER_KEY, JSON.stringify(this.user.value))
-    } catch {
-      // Validation failed, let interceptor handle it
+  public async validateSession(): Promise<User | null> {
+    if (typeof window === 'undefined') return null
+    const accessToken = this.token.value
+    if (!accessToken) return null
+
+    if (this.validateSessionPromise) {
+      return this.validateSessionPromise
     }
+
+    this.validateSessionPromise = (async () => {
+      try {
+        const response = await apiService.client.get<{ success: boolean, data: User }>('/auth/me', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        this.user.value = response.data.data
+        localStorage.setItem(this.USER_KEY, JSON.stringify(this.user.value))
+        return this.user.value
+      } catch {
+        return null
+      } finally {
+        this.validateSessionPromise = null
+      }
+    })()
+
+    return this.validateSessionPromise
+  }
+
+  public async ensureUserLoaded(): Promise<User | null> {
+    if (typeof window === 'undefined') return null
+    if (this.user.value?.role) return this.user.value
+    if (!this.token.value) return null
+    return await this.validateSession()
   }
 
   async refreshToken(): Promise<string | null> {

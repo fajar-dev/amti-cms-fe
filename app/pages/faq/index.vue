@@ -33,6 +33,7 @@
 
       <template #actions>
         <UButton
+          v-if="can('faqs.create')"
           color="primary"
           variant="solid"
           icon="i-lucide-plus-circle"
@@ -66,7 +67,7 @@
 
 <script setup lang="ts">
 import { h, resolveComponent } from 'vue'
-import type { TableColumn } from '@nuxt/ui'
+import type { TableColumn, DropdownMenuItem } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
 import { faqService } from '~/services/faq-service'
 import type { Faq } from '~/types/faq'
@@ -137,6 +138,7 @@ async function fetchFaqs() {
   }
 }
 
+const { can } = usePermission()
 const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchFaqs, {
   defaultSortBy: 'order',
   defaultOrder: 'ASC'
@@ -148,95 +150,105 @@ watch(selectedStatusFilter, () => {
 })
 
 // Table columns
-const columns: TableColumn<Faq>[] = [
-  {
-    accessorKey: 'question',
-    header: sortHeader(() => t('pages.faq.columnQuestion'), 'question'),
-    cell: ({ row }) => h('div', { class: 'font-medium max-w-xs md:max-w-sm truncate' }, row.original.question)
-  },
-  {
-    accessorKey: 'answer',
-    header: () => t('pages.faq.columnAnswer'),
-    cell: ({ row }) => h('div', { class: 'text-toned max-w-xs md:max-w-md line-clamp-2 text-sm' }, row.original.answer)
-  },
-  {
-    accessorKey: 'order',
-    header: sortHeader(() => t('pages.faq.columnOrder'), 'order'),
-    cell: ({ row }) => h('span', { class: 'text-sm' }, String(row.original.order))
-  },
-  {
-    accessorKey: 'isActive',
-    header: () => t('pages.faq.columnStatus'),
-    cell: ({ row }) => {
-      const isActive = row.original.isActive
-      return h(
-        UBadge,
-        {
-          color: isActive ? 'primary' : 'error',
-          variant: 'subtle'
-        },
-        () => (isActive ? t('pages.faq.active') : t('pages.faq.inactive'))
-      )
-    }
-  },
-  {
-    accessorKey: 'createdAt',
-    header: sortHeader(() => t('pages.faq.columnCreatedAt'), 'createdAt'),
-    cell: ({ row }) => {
-      const val = row.getValue('createdAt') as string
-      if (!val) return '-'
-      return new Date(val).toLocaleString('en-US', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      })
-    }
-  },
-  {
-    id: 'actions',
-    header: () => t('pages.faq.columnAction'),
-    meta: {
-      class: {
-        td: 'text-right',
-        th: 'text-right'
+const columns = computed<TableColumn<Faq>[]>(() => {
+  const cols: TableColumn<Faq>[] = [
+    {
+      accessorKey: 'question',
+      header: sortHeader(() => t('pages.faq.columnQuestion'), 'question'),
+      cell: ({ row }) => h('div', { class: 'font-medium max-w-xs md:max-w-sm truncate' }, row.original.question)
+    },
+    {
+      accessorKey: 'answer',
+      header: () => t('pages.faq.columnAnswer'),
+      cell: ({ row }) => h('div', { class: 'text-toned max-w-xs md:max-w-md line-clamp-2 text-sm' }, row.original.answer)
+    },
+    {
+      accessorKey: 'order',
+      header: sortHeader(() => t('pages.faq.columnOrder'), 'order'),
+      cell: ({ row }) => h('span', { class: 'text-sm' }, String(row.original.order))
+    },
+    {
+      accessorKey: 'isActive',
+      header: () => t('pages.faq.columnStatus'),
+      cell: ({ row }) => {
+        const isActive = row.original.isActive
+        return h(
+          UBadge,
+          {
+            color: isActive ? 'primary' : 'error',
+            variant: 'subtle'
+          },
+          () => (isActive ? t('pages.faq.active') : t('pages.faq.inactive'))
+        )
       }
     },
-    cell: ({ row }) => {
-      return h(
-        UDropdownMenu,
-        {
-          'content': {
-            align: 'end'
-          },
-          'items': getRowItems(row),
-          'aria-label': t('pages.faq.actionsDropdown')
-        },
-        () =>
-          h(UButton, {
-            'icon': 'i-lucide-ellipsis-vertical',
-            'color': 'neutral',
-            'variant': 'ghost',
-            'aria-label': t('pages.faq.actionsDropdown')
-          })
-      )
-    }
-  }
-]
-
-function getRowItems(row: Row<Faq>) {
-  return [
     {
+      accessorKey: 'createdAt',
+      header: sortHeader(() => t('pages.faq.columnCreatedAt'), 'createdAt'),
+      cell: ({ row }) => {
+        const val = row.getValue('createdAt') as string
+        if (!val) return '-'
+        return new Date(val).toLocaleString('en-US', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        })
+      }
+    }
+  ]
+
+  if (can('faqs.update') || can('faqs.delete')) {
+    cols.push({
+      id: 'actions',
+      header: () => t('pages.faq.columnAction'),
+      meta: {
+        class: {
+          td: 'text-right',
+          th: 'text-right'
+        }
+      },
+      cell: ({ row }) => {
+        return h(
+          UDropdownMenu,
+          {
+            'content': {
+              align: 'end'
+            },
+            'items': getRowItems(row),
+            'aria-label': t('pages.faq.actionsDropdown')
+          },
+          () =>
+            h(UButton, {
+              'icon': 'i-lucide-ellipsis-vertical',
+              'color': 'neutral',
+              'variant': 'ghost',
+              'aria-label': t('pages.faq.actionsDropdown')
+            })
+        )
+      }
+    })
+  }
+
+  return cols
+})
+
+function getRowItems(row: Row<Faq>): DropdownMenuItem[] {
+  const items: DropdownMenuItem[] = []
+  if (can('faqs.update')) {
+    items.push({
       label: t('pages.faq.editFaq'),
       icon: 'i-lucide-edit',
       onSelect() {
         selectedFaq.value = row.original
         showUpdateModal.value = true
       }
-    },
-    {
+    })
+  }
+  if (can('faqs.delete')) {
+    items.push({
       label: t('pages.faq.deleteFaq'),
       color: 'error' as const,
       icon: 'i-lucide-trash',
@@ -244,8 +256,9 @@ function getRowItems(row: Row<Faq>) {
         selectedFaq.value = row.original
         showDeleteModal.value = true
       }
-    }
-  ]
+    })
+  }
+  return items
 }
 
 // Handle delete

@@ -30,7 +30,20 @@ export class ApiService {
 
         if (error.response?.status === 403) {
           if (typeof window !== 'undefined') {
-            navigateTo('/')
+            try {
+              const toast = useToast()
+              toast.add({
+                title: 'Akses Ditolak',
+                description: error.response?.data?.message || 'Anda tidak memiliki izin untuk melakukan tindakan ini.',
+                icon: 'i-lucide-circle-x',
+                color: 'error'
+              })
+            } catch {
+              // Toast fallback
+            }
+            if (window.location.pathname !== '/') {
+              navigateTo('/')
+            }
           }
         }
 

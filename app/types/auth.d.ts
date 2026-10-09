@@ -1,5 +1,11 @@
 import type { ApiResponse } from './api'
 
+export interface UserRole {
+  id: number
+  name: string
+  permissions: string[]
+}
+
 export interface User {
   id: number
   name: string
@@ -7,6 +13,8 @@ export interface User {
   photo: string
   isActive: boolean
   hasPassword?: boolean
+  role?: UserRole | null
+  roleId?: number | null
 }
 
 export interface AuthData {

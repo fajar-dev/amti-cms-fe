@@ -17,61 +17,89 @@ export interface NavGroup {
 export const useNavigation = () => {
   const route = useRoute()
   const { t } = useI18n()
+  const { can } = usePermission()
   const isCollapsed = useState('sidebar-collapsed', () => false)
   const expandedItems = useState<string[]>('sidebar-expanded', () => ['group:cms', 'group:userManagement'])
 
-  const navGroups = computed<NavGroup[]>(() => [
-    {
-      items: [
-        {
-          id: 'dashboard',
-          label: t('components.sidebar.nav.dashboard'),
-          to: '/',
-          icon: 'i-lucide-layout-dashboard'
-        }
-      ]
-    },
-    {
-      id: 'cms',
-      title: t('components.sidebar.nav.cms'),
-      items: [
-        {
-          id: 'content',
-          label: t('components.sidebar.nav.content'),
-          to: '/content',
-          icon: 'i-lucide-file-text',
-          children: [
-            { id: 'category', label: t('components.sidebar.nav.category'), to: '/content/category' },
-            { id: 'article', label: t('components.sidebar.nav.article'), to: '/content/article' }
-          ]
-        },
-        {
-          id: 'faq',
-          label: t('components.sidebar.nav.faq'),
-          to: '/faq',
-          icon: 'i-lucide-help-circle'
-        }
-      ]
-    },
-    {
-      id: 'userManagement',
-      title: t('components.sidebar.nav.userManagement'),
-      items: [
-        {
-          id: 'users',
-          label: t('components.sidebar.nav.users'),
-          to: '/user',
-          icon: 'i-lucide-user'
-        },
-        {
-          id: 'roles',
-          label: t('components.sidebar.nav.roles'),
-          to: '/roles',
-          icon: 'i-lucide-shield-check'
-        }
-      ]
+  const navGroups = computed<NavGroup[]>(() => {
+    const groups: NavGroup[] = [
+      {
+        items: [
+          {
+            id: 'dashboard',
+            label: t('components.sidebar.nav.dashboard'),
+            to: '/',
+            icon: 'i-lucide-layout-dashboard'
+          }
+        ]
+      }
+    ]
+
+    // CMS Group
+    const contentChildren: NavItem[] = []
+    if (can('categories.view')) {
+      contentChildren.push({ id: 'category', label: t('components.sidebar.nav.category'), to: '/content/category' })
     }
-  ])
+    if (can('articles.view')) {
+      contentChildren.push({ id: 'article', label: t('components.sidebar.nav.article'), to: '/content/article' })
+    }
+
+    const cmsItems: NavItem[] = []
+    if (contentChildren.length > 0) {
+      cmsItems.push({
+        id: 'content',
+        label: t('components.sidebar.nav.content'),
+        to: contentChildren[0]?.to || '/content',
+        icon: 'i-lucide-file-text',
+        children: contentChildren
+      })
+    }
+    if (can('faqs.view')) {
+      cmsItems.push({
+        id: 'faq',
+        label: t('components.sidebar.nav.faq'),
+        to: '/faq',
+        icon: 'i-lucide-help-circle'
+      })
+    }
+
+    if (cmsItems.length > 0) {
+      groups.push({
+        id: 'cms',
+        title: t('components.sidebar.nav.cms'),
+        items: cmsItems
+      })
+    }
+
+    // User Management Group
+    const userMgmtItems: NavItem[] = []
+    if (can('users.view')) {
+      userMgmtItems.push({
+        id: 'users',
+        label: t('components.sidebar.nav.users'),
+        to: '/user',
+        icon: 'i-lucide-user'
+      })
+    }
+    if (can('roles.view')) {
+      userMgmtItems.push({
+        id: 'roles',
+        label: t('components.sidebar.nav.roles'),
+        to: '/roles',
+        icon: 'i-lucide-shield-check'
+      })
+    }
+
+    if (userMgmtItems.length > 0) {
+      groups.push({
+        id: 'userManagement',
+        title: t('components.sidebar.nav.userManagement'),
+        items: userMgmtItems
+      })
+    }
+
+    return groups
+  })
 
   const bottomNavItems = computed<NavItem[]>(() => [
     {

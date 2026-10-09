@@ -21,6 +21,7 @@
     >
       <template #actions>
         <UButton
+          v-if="can('categories.create')"
           color="primary"
           variant="solid"
           icon="i-lucide-plus-circle"
@@ -54,7 +55,7 @@
 
 <script setup lang="ts">
 import { h, resolveComponent } from 'vue'
-import type { TableColumn } from '@nuxt/ui'
+import type { TableColumn, DropdownMenuItem } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
 import { categoryService } from '~/services/category-service'
 import type { Category } from '~/types/content'
@@ -104,80 +105,91 @@ async function fetchCategories() {
   }
 }
 
+const { can } = usePermission()
 const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchCategories)
 
 // Table columns
-const columns: TableColumn<Category>[] = [
-  {
-    accessorKey: 'name',
-    header: sortHeader(() => t('pages.category.columnName'), 'name')
-  },
-  {
-    accessorKey: 'slug',
-    header: () => t('pages.category.columnSlug')
-  },
-  {
-    accessorKey: 'description',
-    header: () => t('pages.category.columnDescription'),
-    cell: ({ row }) => row.original.description || '-'
-  },
-  {
-    accessorKey: 'createdAt',
-    header: sortHeader(() => t('common.createdAt'), 'createdAt'),
-    cell: ({ row }) => {
-      const val = row.getValue('createdAt') as string
-      if (!val) return '-'
-      return new Date(val).toLocaleDateString('id-ID', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      })
-    }
-  },
-  {
-    id: 'actions',
-    header: () => t('common.action'),
-    meta: {
-      class: {
-        td: 'text-right',
-        th: 'text-right'
-      }
-    },
-    cell: ({ row }) => {
-      return h(
-        'div',
-        { class: 'flex justify-end' },
-        h(
-          UDropdownMenu,
-          {
-            items: getRowItems(row),
-            content: { align: 'end' }
-          },
-          () =>
-            h(UButton, {
-              'icon': 'i-lucide-ellipsis-vertical',
-              'color': 'neutral',
-              'variant': 'ghost',
-              'size': 'xs',
-              'aria-label': 'Actions'
-            })
-        )
-      )
-    }
-  }
-]
-
-function getRowItems(row: Row<Category>) {
-  return [
+const columns = computed<TableColumn<Category>[]>(() => {
+  const cols: TableColumn<Category>[] = [
     {
+      accessorKey: 'name',
+      header: sortHeader(() => t('pages.category.columnName'), 'name')
+    },
+    {
+      accessorKey: 'slug',
+      header: () => t('pages.category.columnSlug')
+    },
+    {
+      accessorKey: 'description',
+      header: () => t('pages.category.columnDescription'),
+      cell: ({ row }) => row.original.description || '-'
+    },
+    {
+      accessorKey: 'createdAt',
+      header: sortHeader(() => t('common.createdAt'), 'createdAt'),
+      cell: ({ row }) => {
+        const val = row.getValue('createdAt') as string
+        if (!val) return '-'
+        return new Date(val).toLocaleDateString('id-ID', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })
+      }
+    }
+  ]
+
+  if (can('categories.update') || can('categories.delete')) {
+    cols.push({
+      id: 'actions',
+      header: () => t('common.action'),
+      meta: {
+        class: {
+          td: 'text-right',
+          th: 'text-right'
+        }
+      },
+      cell: ({ row }) => {
+        return h(
+          'div',
+          { class: 'flex justify-end' },
+          h(
+            UDropdownMenu,
+            {
+              items: getRowItems(row),
+              content: { align: 'end' }
+            },
+            () =>
+              h(UButton, {
+                'icon': 'i-lucide-ellipsis-vertical',
+                'color': 'neutral',
+                'variant': 'ghost',
+                'size': 'xs',
+                'aria-label': 'Actions'
+              })
+          )
+        )
+      }
+    })
+  }
+
+  return cols
+})
+
+function getRowItems(row: Row<Category>): DropdownMenuItem[] {
+  const items: DropdownMenuItem[] = []
+  if (can('categories.update')) {
+    items.push({
       label: t('common.edit'),
       icon: 'i-lucide-pencil',
       onSelect: () => {
         selectedCategory.value = row.original
         showUpdateModal.value = true
       }
-    },
-    {
+    })
+  }
+  if (can('categories.delete')) {
+    items.push({
       label: t('common.delete'),
       icon: 'i-lucide-trash',
       color: 'error' as const,
@@ -185,8 +197,9 @@ function getRowItems(row: Row<Category>) {
         selectedCategory.value = row.original
         showDeleteModal.value = true
       }
-    }
-  ]
+    })
+  }
+  return items
 }
 
 async function handleDelete() {
