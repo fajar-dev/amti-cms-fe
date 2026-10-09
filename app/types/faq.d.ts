@@ -4,7 +4,6 @@ export interface Faq {
   id: number
   question: string
   answer: string
-  category: string | null
   order: number
   isActive: boolean
   createdAt: string
@@ -14,7 +13,6 @@ export interface Faq {
 export interface FaqPayload {
   question: string
   answer: string
-  category?: string | null
   order?: number
   isActive: boolean
 }

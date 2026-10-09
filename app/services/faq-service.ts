@@ -14,7 +14,6 @@ export class FaqService {
     q = '',
     sortBy = '',
     order: SortOrder = 'ASC',
-    category?: string,
     isActive?: boolean
   ): Promise<ApiResponse<Faq[]>> {
     try {
@@ -22,9 +21,6 @@ export class FaqService {
       if (sortBy) {
         params.set('sortBy', sortBy)
         params.set('order', order)
-      }
-      if (category) {
-        params.set('category', category)
       }
       if (isActive !== undefined) {
         params.set('isActive', String(isActive))

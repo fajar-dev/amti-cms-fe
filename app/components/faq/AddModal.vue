@@ -38,17 +38,6 @@
         </UFormField>
 
         <UFormField
-          :label="$t('components.faq.addModal.categoryLabel')"
-          name="category"
-        >
-          <UInput
-            v-model="form.category"
-            :placeholder="$t('components.faq.addModal.categoryPlaceholder')"
-            class="w-full"
-          />
-        </UFormField>
-
-        <UFormField
           :label="$t('components.faq.addModal.orderLabel')"
           name="order"
         >
@@ -106,7 +95,6 @@ const { t } = useI18n()
 const schema = z.object({
   question: z.string().min(1, t('components.faq.addModal.questionRequired')).max(500, t('components.faq.addModal.questionTooLong')),
   answer: z.string().min(1, t('components.faq.addModal.answerRequired')),
-  category: z.string().max(100).nullable().optional(),
   order: z.number().int().optional(),
   isActive: z.boolean()
 })
@@ -114,13 +102,11 @@ const schema = z.object({
 const form = reactive<{
   question: string
   answer: string
-  category: string
   order: number
   isActive: boolean
 }>({
   question: '',
   answer: '',
-  category: '',
   order: 0,
   isActive: true
 })
@@ -128,7 +114,6 @@ const form = reactive<{
 const resetForm = () => {
   form.question = ''
   form.answer = ''
-  form.category = ''
   form.order = 0
   form.isActive = true
 }
@@ -139,7 +124,6 @@ const handleSubmit = async () => {
     const payload: FaqPayload = {
       question: form.question,
       answer: form.answer,
-      category: form.category ? form.category.trim() : null,
       order: form.order,
       isActive: form.isActive
     }

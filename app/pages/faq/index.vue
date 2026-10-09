@@ -121,7 +121,6 @@ async function fetchFaqs() {
       search.value,
       sortBy.value,
       order.value,
-      undefined,
       isActiveParam
     )
 
@@ -164,14 +163,6 @@ const columns: TableColumn<Faq>[] = [
     accessorKey: 'answer',
     header: () => t('pages.faq.columnAnswer'),
     cell: ({ row }) => h('div', { class: 'text-toned max-w-xs md:max-w-md line-clamp-2 text-sm' }, row.original.answer)
-  },
-  {
-    accessorKey: 'category',
-    header: () => t('pages.faq.columnCategory'),
-    cell: ({ row }) => {
-      const cat = row.original.category
-      return cat ? h(UBadge, { color: 'neutral', variant: 'subtle' }, () => cat) : '-'
-    }
   },
   {
     accessorKey: 'order',
