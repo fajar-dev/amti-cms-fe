@@ -18,19 +18,21 @@
       :from="meta.from"
       :to="meta.to"
       :search-placeholder="$t('pages.article.searchPlaceholder')"
-      table-class="min-w-4xl"
+      table-class="min-w-5xl"
     >
       <template #filters>
         <div class="flex flex-col sm:flex-row items-center gap-2">
-          <USelect
+          <USelectMenu
             v-model="selectedCategoryFilter"
             :items="categoryFilterOptions"
+            value-key="value"
             :placeholder="$t('pages.article.filterCategory')"
             class="w-full sm:w-44"
           />
-          <USelect
+          <USelectMenu
             v-model="selectedStatusFilter"
             :items="statusFilterOptions"
+            value-key="value"
             :placeholder="$t('pages.article.filterStatus')"
             class="w-full sm:w-36"
           />
@@ -76,6 +78,7 @@ definePageMeta({
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UBadge = resolveComponent('UBadge')
+const UAvatar = resolveComponent('UAvatar')
 const { t } = useI18n()
 const toast = useToast()
 
@@ -88,8 +91,8 @@ const showDeleteModal = ref(false)
 const isDeleting = ref(false)
 
 // Filters
-const selectedCategoryFilter = ref<number | ''>('')
-const selectedStatusFilter = ref<ArticleStatus | ''>('')
+const selectedCategoryFilter = ref<string>('all')
+const selectedStatusFilter = ref<string>('all')
 
 // Pagination meta
 const meta = reactive({
@@ -99,12 +102,12 @@ const meta = reactive({
 })
 
 const categoryFilterOptions = computed(() => [
-  { label: t('pages.article.allCategories'), value: '' },
-  ...categories.value.map(c => ({ label: c.name, value: c.id }))
+  { label: t('pages.article.allCategories'), value: 'all' },
+  ...categories.value.map(c => ({ label: c.name, value: String(c.id) }))
 ])
 
 const statusFilterOptions = computed(() => [
-  { label: t('pages.article.allStatuses'), value: '' },
+  { label: t('pages.article.allStatuses'), value: 'all' },
   { label: t('pages.article.statusDraft'), value: 'draft' },
   { label: t('pages.article.statusPublish'), value: 'publish' }
 ])
@@ -119,13 +122,15 @@ async function fetchCategories() {
 async function fetchArticles() {
   isLoading.value = true
   try {
+    const categoryId = selectedCategoryFilter.value !== 'all' ? Number(selectedCategoryFilter.value) : undefined
+    const status = selectedStatusFilter.value !== 'all' ? (selectedStatusFilter.value as ArticleStatus) : undefined
     const res = await articleService.getAll(
       page.value,
       perPage.value,
       search.value,
       {
-        categoryId: selectedCategoryFilter.value,
-        status: selectedStatusFilter.value || undefined
+        categoryId,
+        status
       },
       sortBy.value,
       order.value
@@ -147,6 +152,7 @@ const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetch
 
 onMounted(() => {
   fetchCategories()
+  fetchArticles()
 })
 
 watch([selectedCategoryFilter, selectedStatusFilter], () => {
@@ -156,36 +162,35 @@ watch([selectedCategoryFilter, selectedStatusFilter], () => {
 
 const columns: TableColumn<Article>[] = [
   {
-    accessorKey: 'cover',
-    header: () => t('pages.article.columnCover'),
-    cell: ({ row }) => {
-      const url = row.original.coverUrl
-      if (!url) {
-        return h('div', { class: 'w-12 h-12 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400' }, [
-          h('span', { class: 'i-lucide-image text-lg' })
-        ])
-      }
-      return h('img', {
-        src: url,
-        alt: row.original.title,
-        class: 'w-12 h-12 rounded-lg object-cover border border-neutral-200 dark:border-neutral-800'
-      })
-    }
-  },
-  {
     accessorKey: 'title',
     header: sortHeader(() => t('pages.article.columnTitle'), 'title'),
     cell: ({ row }) => {
-      return h('div', { class: 'space-y-0.5' }, [
-        h('p', { class: 'font-medium text-neutral-900 dark:text-neutral-100 line-clamp-1' }, row.original.title),
-        h('p', { class: 'text-xs text-neutral-400 line-clamp-1 font-mono' }, `/${row.original.slug}`)
+      const url = row.original.coverUrl
+      const title = row.original.title
+      const slug = row.original.slug
+
+      const thumbnail = url
+        ? h('img', {
+            src: url,
+            alt: title,
+            class: 'size-11 rounded-lg object-cover border border-default shrink-0'
+          })
+        : h('div', {
+            class: 'size-11 rounded-lg bg-muted border border-default flex items-center justify-center text-muted shrink-0'
+          }, [
+            h('span', { class: 'i-lucide-image text-lg' })
+          ])
+
+      const content = h('div', { class: 'flex flex-col min-w-0' }, [
+        h('span', { class: 'font-medium text-highlighted line-clamp-1 text-sm' }, title),
+        h('span', { class: 'text-xs text-muted' }, `${slug}`)
+      ])
+
+      return h('div', { class: 'flex items-center gap-3 py-0.5 min-w-[220px]' }, [
+        thumbnail,
+        content
       ])
     }
-  },
-  {
-    accessorKey: 'category',
-    header: () => t('pages.article.columnCategory'),
-    cell: ({ row }) => row.original.category?.name || '-'
   },
   {
     accessorKey: 'status',
@@ -195,18 +200,49 @@ const columns: TableColumn<Article>[] = [
       return h(
         UBadge,
         {
-          color: isPublish ? 'success' : 'warning',
-          variant: 'subtle'
+          color: isPublish ? 'success' : 'neutral',
+          variant: 'subtle',
+          class: 'capitalize'
         },
         () => (isPublish ? t('pages.article.statusPublish') : t('pages.article.statusDraft'))
       )
     }
   },
   {
+    accessorKey: 'category',
+    header: sortHeader(() => t('pages.article.columnCategory'), 'category'),
+    cell: ({ row }) => {
+      const categoryName = row.original.category?.name
+      return h('span', { class: categoryName ? 'text-highlighted text-sm' : 'text-muted text-sm' }, categoryName || '-')
+    }
+  },
+  {
+    accessorKey: 'author',
+    header: sortHeader(() => t('pages.article.columnAuthor'), 'author'),
+    cell: ({ row }) => {
+      const author = row.original.author
+      if (!author) {
+        return h('span', { class: 'text-muted text-sm' }, '-')
+      }
+      return h('div', { class: 'flex items-center gap-2.5 min-w-[160px]' }, [
+        h(UAvatar, {
+          src: author.photo || undefined,
+          alt: author.name,
+          size: 'md',
+          class: 'shrink-0'
+        }),
+        h('div', { class: 'flex flex-col min-w-0' }, [
+          h('span', { class: 'font-medium text-highlighted text-sm line-clamp-1' }, author.name),
+          author.email ? h('span', { class: 'text-xs text-muted truncate' }, author.email) : null
+        ])
+      ])
+    }
+  },
+  {
     accessorKey: 'viewsCount',
     header: sortHeader(() => t('pages.article.columnViews'), 'viewsCount'),
     cell: ({ row }) => {
-      return h('div', { class: 'flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400 text-sm' }, [
+      return h('div', { class: 'flex items-center gap-1.5 text-muted text-sm' }, [
         h('span', { class: 'i-lucide-eye text-xs' }),
         h('span', {}, String(row.original.viewsCount || 0))
       ])
@@ -218,31 +254,41 @@ const columns: TableColumn<Article>[] = [
     cell: ({ row }) => {
       const val = row.getValue('createdAt') as string
       if (!val) return '-'
-      return new Date(val).toLocaleDateString('id-ID', {
+      return h('span', { class: 'text-muted text-sm whitespace-nowrap' }, new Date(val).toLocaleDateString('id-ID', {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
-      })
+      }))
     }
   },
   {
     id: 'actions',
     header: () => t('common.action'),
+    meta: {
+      class: {
+        td: 'text-right',
+        th: 'text-right'
+      }
+    },
     cell: ({ row }) => {
       return h(
-        UDropdownMenu,
-        {
-          items: getRowItems(row),
-          content: { align: 'end' }
-        },
-        () =>
-          h(UButton, {
-            'icon': 'i-lucide-ellipsis-vertical',
-            'color': 'neutral',
-            'variant': 'ghost',
-            'size': 'xs',
-            'aria-label': 'Actions'
-          })
+        'div',
+        { class: 'flex justify-end' },
+        h(
+          UDropdownMenu,
+          {
+            items: getRowItems(row),
+            content: { align: 'end' }
+          },
+          () =>
+            h(UButton, {
+              'icon': 'i-lucide-ellipsis-vertical',
+              'color': 'neutral',
+              'variant': 'ghost',
+              'size': 'xs',
+              'aria-label': 'Actions'
+            })
+        )
       )
     }
   }

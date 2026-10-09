@@ -29,6 +29,18 @@ export class UserService {
     }
   }
 
+  async getAllList(): Promise<ApiResponse<User[]>> {
+    try {
+      const response = await apiService.client.get<ApiResponse<User[]>>(
+        `/user/list`,
+        this.authHeaders
+      )
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
   async getById(id: number): Promise<ApiResponse<User>> {
     try {
       const response = await apiService.client.get<ApiResponse<User>>(

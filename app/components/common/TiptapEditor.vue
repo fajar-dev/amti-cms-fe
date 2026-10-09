@@ -13,7 +13,7 @@
           color="neutral"
           icon="i-lucide-undo-2"
           :disabled="!editor.can().undo()"
-          @click="editor.chain().focus().undo().run()"
+          @click="() => { editor?.chain().focus().undo().run() }"
         />
         <UButton
           size="xs"
@@ -21,7 +21,7 @@
           color="neutral"
           icon="i-lucide-redo-2"
           :disabled="!editor.can().redo()"
-          @click="editor.chain().focus().redo().run()"
+          @click="() => { editor?.chain().focus().redo().run() }"
         />
       </div>
 
@@ -32,21 +32,21 @@
           :variant="editor.isActive('heading', { level: 1 }) ? 'solid' : 'ghost'"
           :color="editor.isActive('heading', { level: 1 }) ? 'primary' : 'neutral'"
           icon="i-lucide-heading-1"
-          @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+          @click="() => { editor?.chain().focus().toggleHeading({ level: 1 }).run() }"
         />
         <UButton
           size="xs"
           :variant="editor.isActive('heading', { level: 2 }) ? 'solid' : 'ghost'"
           :color="editor.isActive('heading', { level: 2 }) ? 'primary' : 'neutral'"
           icon="i-lucide-heading-2"
-          @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+          @click="() => { editor?.chain().focus().toggleHeading({ level: 2 }).run() }"
         />
         <UButton
           size="xs"
           :variant="editor.isActive('heading', { level: 3 }) ? 'solid' : 'ghost'"
           :color="editor.isActive('heading', { level: 3 }) ? 'primary' : 'neutral'"
           icon="i-lucide-heading-3"
-          @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
+          @click="() => { editor?.chain().focus().toggleHeading({ level: 3 }).run() }"
         />
       </div>
 
@@ -57,28 +57,28 @@
           :variant="editor.isActive('bold') ? 'solid' : 'ghost'"
           :color="editor.isActive('bold') ? 'primary' : 'neutral'"
           icon="i-lucide-bold"
-          @click="editor.chain().focus().toggleBold().run()"
+          @click="() => { editor?.chain().focus().toggleBold().run() }"
         />
         <UButton
           size="xs"
           :variant="editor.isActive('italic') ? 'solid' : 'ghost'"
           :color="editor.isActive('italic') ? 'primary' : 'neutral'"
           icon="i-lucide-italic"
-          @click="editor.chain().focus().toggleItalic().run()"
+          @click="() => { editor?.chain().focus().toggleItalic().run() }"
         />
         <UButton
           size="xs"
           :variant="editor.isActive('strike') ? 'solid' : 'ghost'"
           :color="editor.isActive('strike') ? 'primary' : 'neutral'"
           icon="i-lucide-strikethrough"
-          @click="editor.chain().focus().toggleStrike().run()"
+          @click="() => { editor?.chain().focus().toggleStrike().run() }"
         />
         <UButton
           size="xs"
           :variant="editor.isActive('code') ? 'solid' : 'ghost'"
           :color="editor.isActive('code') ? 'primary' : 'neutral'"
           icon="i-lucide-code"
-          @click="editor.chain().focus().toggleCode().run()"
+          @click="() => { editor?.chain().focus().toggleCode().run() }"
         />
       </div>
 
@@ -89,21 +89,21 @@
           :variant="editor.isActive('bulletList') ? 'solid' : 'ghost'"
           :color="editor.isActive('bulletList') ? 'primary' : 'neutral'"
           icon="i-lucide-list"
-          @click="editor.chain().focus().toggleBulletList().run()"
+          @click="() => { editor?.chain().focus().toggleBulletList().run() }"
         />
         <UButton
           size="xs"
           :variant="editor.isActive('orderedList') ? 'solid' : 'ghost'"
           :color="editor.isActive('orderedList') ? 'primary' : 'neutral'"
           icon="i-lucide-list-ordered"
-          @click="editor.chain().focus().toggleOrderedList().run()"
+          @click="() => { editor?.chain().focus().toggleOrderedList().run() }"
         />
         <UButton
           size="xs"
           :variant="editor.isActive('blockquote') ? 'solid' : 'ghost'"
           :color="editor.isActive('blockquote') ? 'primary' : 'neutral'"
           icon="i-lucide-quote"
-          @click="editor.chain().focus().toggleBlockquote().run()"
+          @click="() => { editor?.chain().focus().toggleBlockquote().run() }"
         />
       </div>
 
@@ -122,7 +122,7 @@
           variant="ghost"
           color="neutral"
           icon="i-lucide-unlink"
-          @click="editor.chain().focus().unsetLink().run()"
+          @click="() => { editor?.chain().focus().unsetLink().run() }"
         />
         <UButton
           size="xs"
@@ -136,7 +136,7 @@
           variant="ghost"
           color="neutral"
           icon="i-lucide-minus"
-          @click="editor.chain().focus().setHorizontalRule().run()"
+          @click="() => { editor?.chain().focus().setHorizontalRule().run() }"
         />
       </div>
 
@@ -146,14 +146,14 @@
         variant="ghost"
         color="neutral"
         icon="i-lucide-remove-formatting"
-        @click="editor.chain().focus().clearNodes().unsetAllMarks().run()"
+        @click="() => { editor?.chain().focus().clearNodes().unsetAllMarks().run() }"
       />
     </div>
 
     <!-- Editor Content Area -->
     <EditorContent
       :editor="editor"
-      class="tiptap-content p-4 min-h-[320px] max-h-[600px] overflow-y-auto outline-none focus:outline-none"
+      class="tiptap-content p-4 min-h-[420px] max-h-[800px] overflow-y-auto outline-none focus:outline-none"
     />
   </div>
 </template>

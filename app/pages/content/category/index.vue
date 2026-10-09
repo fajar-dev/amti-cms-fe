@@ -109,11 +109,6 @@ const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetch
 // Table columns
 const columns: TableColumn<Category>[] = [
   {
-    accessorKey: 'id',
-    header: () => t('common.id'),
-    cell: ({ row }) => `#${row.getValue('id')}`
-  },
-  {
     accessorKey: 'name',
     header: sortHeader(() => t('pages.category.columnName'), 'name')
   },
@@ -142,21 +137,31 @@ const columns: TableColumn<Category>[] = [
   {
     id: 'actions',
     header: () => t('common.action'),
+    meta: {
+      class: {
+        td: 'text-right',
+        th: 'text-right'
+      }
+    },
     cell: ({ row }) => {
       return h(
-        UDropdownMenu,
-        {
-          items: getRowItems(row),
-          content: { align: 'end' }
-        },
-        () =>
-          h(UButton, {
-            'icon': 'i-lucide-ellipsis-vertical',
-            'color': 'neutral',
-            'variant': 'ghost',
-            'size': 'xs',
-            'aria-label': 'Actions'
-          })
+        'div',
+        { class: 'flex justify-end' },
+        h(
+          UDropdownMenu,
+          {
+            items: getRowItems(row),
+            content: { align: 'end' }
+          },
+          () =>
+            h(UButton, {
+              'icon': 'i-lucide-ellipsis-vertical',
+              'color': 'neutral',
+              'variant': 'ghost',
+              'size': 'xs',
+              'aria-label': 'Actions'
+            })
+        )
       )
     }
   }
@@ -202,4 +207,9 @@ async function handleDelete() {
     isDeleting.value = false
   }
 }
+
+// Initial fetch
+onMounted(() => {
+  fetchCategories()
+})
 </script>

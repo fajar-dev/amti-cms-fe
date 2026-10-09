@@ -19,22 +19,23 @@ export type ArticleStatus = 'draft' | 'publish'
 
 export interface Article {
   id: number
+  authorId?: number | null
+  author?: {
+    id: number
+    name: string
+    email: string
+    photo?: string | null
+  } | null
   categoryId: number | null
   category: Category | null
   title: string
   slug: string
+  description?: string
   cover: string | null
   coverUrl: string | null
   content: string
   tags: string[]
   status: ArticleStatus
-  metaTitle: string | null
-  metaDescription: string | null
-  metaKeywords: string | null
-  canonicalUrl: string | null
-  ogTitle: string | null
-  ogDescription: string | null
-  ogImage: string | null
   viewsCount: number
   publishedAt: string | null
   createdAt: string
@@ -44,18 +45,13 @@ export interface Article {
 export interface ArticlePayload {
   title: string
   slug?: string
+  authorId?: number | null
   categoryId?: number | null
+  description?: string
   cover?: string | null
   content: string
   tags?: string[]
   status?: ArticleStatus
-  metaTitle?: string
-  metaDescription?: string
-  metaKeywords?: string
-  canonicalUrl?: string
-  ogTitle?: string
-  ogDescription?: string
-  ogImage?: string
 }
 
 export interface ArticleView {

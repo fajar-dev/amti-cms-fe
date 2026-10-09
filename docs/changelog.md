@@ -16,20 +16,24 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
   - Tipe TypeScript di `app/types/content.d.ts` dan `app/types/tiptap.d.ts`.
   - Menu navigasi CMS (`/content/category` dan `/content/article`) di `useNavigation.ts`.
   - Seluruh teks UI dilokalisasi 100% pada `en.json` dan `id.json` (`pages.category.*` dan `pages.article.*`).
-
-### Fixed
-- Memperbaiki arbitrary Tailwind CSS classes (`max-w-[420px]` -> `max-w-md`, `table-class="min-w-[768px]"` -> `min-w-3xl`, `opacity-[0.40]` -> `opacity-40`) sesuai panduan `coding-standards.md`.
-- Menghapus komponen non-existent `<TenantSwitcher />` pada `Sidebar.vue`.
-- Memperbaiki tab navigasi profil pada `profile.vue` yang menggunakan komponen non-existent `<TabLink>` dan route salah (`/organizer/...`), digantikan dengan `<NuxtLink>` dan middleware redirect `/profile` -> `/profile/information`.
-- Mengganti referensi icon set eksternal yang tidak terpasang (`circle-flags:*`) pada `LanguageSwitcher.vue` dan `UserPopover.vue` dengan `i-lucide-languages` sesuai aturan `i18n-guide.md`.
-- Memperbaiki atribut keliru `color="neutral" variant="soft" @click="open = false"` pada tag root `<UModal>` di `user/AddModal.vue` dan `user/UpdateModal.vue`.
-- Memperbaiki pelanggaran `vue/no-multiple-template-root` pada `sign-in.vue` dengan memindahkan elemen copyright ke dalam root container.
-- Menghilangkan penggunaan `any` dan memperbaiki error TypeScript/ESLint pada `error-helper.ts`, `auth-service.ts`, `contact-service.ts`, `user-service.ts`, `api-service.ts`, `user.d.ts`, `auth.d.ts`, dan `contact.d.ts`.
-- Menyinkronkan tema NuxtUI di `app.config.ts` (`primary: 'green'`, `neutral: 'slate'`) agar sesuai dengan standar design system.
-- Melokalisasi teks hero auth layout ke `en.json` dan `id.json` (`components.authLayout`).
+  - Integrasi pemilihan Author pada pembuatan dan pengubahan artikel (`create.vue` & `[id].vue`) menggunakan `<USelectMenu>` dengan avatar pengguna dan penarikan data via `userService.getAllList()`.
+  - Penggunaan `<UInputTags>` untuk manajemen tag artikel.
+  - Komponen `<UFileUpload>` untuk upload gambar cover lengkap dengan panduan dimensi rekomendasi (1600 × 840).
 
 ### Changed
-- Mengubah nama aplikasi dari "NusaCall" menjadi "Content Management System" pada metadata SEO, layout autentikasi, serta lokalisasi bahasa (i18n en & id).
+  - Redesain tampilan tabel daftar artikel (`app/pages/content/article/index.vue`):
+    - Kolom Artikel memadukan thumbnail cover berbingkai (`size-11 rounded-lg border border-default`) dengan judul artikel dan monospace slug.
+    - Kolom Status menggunakan pill badge `UBadge` varian `subtle` (`success` untuk Publish, `neutral` untuk Draft).
+    - Kolom Author menampilkan avatar bulat `UAvatar` beserta nama dan email penulis.
+    - Kolom Kategori dan Author terhubung dengan sorting server-side.
+  - Mengubah dropdown filter Kategori dan Status dari `<USelect>` menjadi `<USelectMenu>`.
+  - Mengubah pemilih Kategori pada form artikel menjadi `<USelectMenu>`.
+  - Tombol Cancel pada form artikel diseragamkan dengan gaya modal (`variant="soft" color="neutral"`).
+  - Field Deskripsi diposisikan pada panel Pengaturan Publikasi sebagai ringkasan singkat artikel.
+  - Mengubah nama aplikasi dari "NusaCall" menjadi "Content Management System" pada metadata SEO, layout autentikasi, serta lokalisasi bahasa (i18n en & id).
+
+### Removed
+  - Menghapus seluruh section konfigurasi SEO dan Open Graph (meta title, meta description, keywords, canonical URL, og image, og title) dari form pembuatan dan pengeditan artikel.
 
 ---
 
