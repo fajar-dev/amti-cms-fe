@@ -46,12 +46,6 @@ export const useNavigation = () => {
           ]
         },
         {
-          id: 'contact',
-          label: t('components.sidebar.nav.contact'),
-          to: '/contact',
-          icon: 'i-lucide-notebook-text'
-        },
-        {
           id: 'faq',
           label: t('components.sidebar.nav.faq'),
           to: '/faq',

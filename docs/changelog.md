@@ -40,6 +40,7 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
   - Mengubah nama aplikasi dari "NusaCall" menjadi "Content Management System" pada metadata SEO, layout autentikasi, serta lokalisasi bahasa (i18n en & id).
 
 ### Removed
+  - Menghapus seluruh fitur dan komponen terkait Contact (halaman `app/pages/contact/`, komponen `app/components/contact/`, API service `contact-service.ts`, tipe `contact.d.ts`, navigasi `/contact`, dan lokalisasi i18n).
   - Menghapus kolom ID pada tabel daftar FAQ di halaman frontend (`app/pages/faq/index.vue`).
   - Menghapus field kategori pada fitur FAQ sehingga entri FAQ fokus pada Pertanyaan, Jawaban, Urutan, dan Status Aktif.
   - Menghapus seluruh section konfigurasi SEO dan Open Graph (meta title, meta description, keywords, canonical URL, og image, og title) dari form pembuatan dan pengeditan artikel.
