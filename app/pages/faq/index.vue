@@ -150,11 +150,6 @@ watch(selectedStatusFilter, () => {
 // Table columns
 const columns: TableColumn<Faq>[] = [
   {
-    accessorKey: 'id',
-    header: () => t('pages.faq.columnId'),
-    cell: ({ row }) => `#${row.getValue('id')}`
-  },
-  {
     accessorKey: 'question',
     header: sortHeader(() => t('pages.faq.columnQuestion'), 'question'),
     cell: ({ row }) => h('div', { class: 'font-medium max-w-xs md:max-w-sm truncate' }, row.original.question)
