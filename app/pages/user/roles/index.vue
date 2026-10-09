@@ -123,7 +123,7 @@ const columns: TableColumn<Role>[] = [
       const name = row.original.name
       return h('div', { class: 'flex flex-col gap-0.5' }, [
         h('span', { class: 'font-medium text-highlighted' }, displayName),
-        h('span', { class: 'font-mono text-xs text-muted' }, `@${name}`)
+        h('span', { class: 'text-xs text-muted' }, `@${name}`)
       ])
     }
   },

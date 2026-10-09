@@ -38,6 +38,7 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
   - Komponen `<UFileUpload>` untuk upload gambar cover lengkap dengan panduan dimensi rekomendasi (1600 × 840).
 
 ### Changed
+  - Menghapus kelas `font-mono` dari seluruh elemen UI modul RBAC (`app/pages/user/roles/index.vue`, `app/components/rbac/AddModal.vue`, `app/components/rbac/UpdateModal.vue`) untuk menjaga konsistensi tipografi dengan seluruh dashboard.
   - Redesain tampilan tabel daftar artikel (`app/pages/content/article/index.vue`):
     - Kolom Artikel memadukan thumbnail cover berbingkai (`size-11 rounded-lg border border-default`) dengan judul artikel dan monospace slug.
     - Kolom Status menggunakan pill badge `UBadge` varian `subtle` (`success` untuk Publish, `neutral` untuk Draft).

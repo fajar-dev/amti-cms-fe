@@ -36,7 +36,7 @@
               <UInput
                 v-model="form.name"
                 :disabled="role?.isSystem"
-                class="w-full font-mono text-sm"
+                class="w-full text-sm"
               />
               <span
                 v-if="role?.isSystem"
@@ -150,7 +150,7 @@
                     @update:model-value="(val) => togglePermission(perm.id, !!val)"
                   />
                   <div class="flex flex-col text-xs leading-tight">
-                    <span class="font-medium text-highlighted font-mono text-[11px]">{{ perm.name }}</span>
+                    <span class="font-medium text-highlighted text-xs">{{ perm.name }}</span>
                     <span
                       v-if="perm.description"
                       class="text-muted text-[10px] mt-0.5"
