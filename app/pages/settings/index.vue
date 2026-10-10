@@ -57,21 +57,6 @@
           {{ $t('pages.settings.tabSocial') }}
         </button>
       </template>
-
-      <template
-        v-if="can('settings.update')"
-        #actions
-      >
-        <UButton
-          color="primary"
-          variant="solid"
-          icon="i-lucide-save"
-          :loading="isSaving"
-          @click="handleSave"
-        >
-          {{ isSaving ? $t('pages.settings.savingButton') : $t('pages.settings.saveButton') }}
-        </UButton>
-      </template>
     </Header>
 
     <!-- Loading Skeleton -->
