@@ -36,6 +36,7 @@
         "roles": "Roles & Permissions",
         "settings": "Settings",
         "settingsGroup": "System Settings",
+        "messages": "Messages",
         "feedback": "Feedback"
       }
     },
@@ -503,6 +504,38 @@
       "removeMedia": "Remove",
       "changeMedia": "Change",
       "chooseFile": "Choose File"
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Manage and respond to customer inquiries and contact messages",
+      "searchPlaceholder": "Search by name, email, subject, or message...",
+      "filterStatus": "Filter Status",
+      "allStatus": "All Messages",
+      "unread": "Unread",
+      "read": "Read",
+      "columnStatus": "Status",
+      "columnSender": "Sender",
+      "columnSubject": "Subject & Snippet",
+      "columnDate": "Received At",
+      "columnAction": "Action",
+      "actionsDropdown": "Message Actions",
+      "viewDetail": "View Message",
+      "markAsRead": "Mark as Read",
+      "markAsUnread": "Mark as Unread",
+      "reply": "Reply via Email",
+      "deleteMessage": "Delete Message",
+      "deleteTitle": "Delete Message",
+      "detailTitle": "Message Details",
+      "senderInfo": "Sender Information",
+      "phone": "Phone",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "noPhone": "No phone provided",
+      "sentAt": "Sent At",
+      "close": "Close",
+      "statusUpdatedSuccess": "Message status updated successfully!",
+      "deletedSuccess": "Message deleted successfully!"
     }
   }
 }

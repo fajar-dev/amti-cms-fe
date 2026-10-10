@@ -62,6 +62,14 @@ export const useNavigation = () => {
         icon: 'i-lucide-help-circle'
       })
     }
+    if (can('messages.view')) {
+      cmsItems.push({
+        id: 'messages',
+        label: t('components.sidebar.nav.messages'),
+        to: '/messages',
+        icon: 'i-lucide-mail'
+      })
+    }
     if (can('settings.view') || can('settings.meta.view') || can('settings.contact.view') || can('settings.social.view')) {
       cmsItems.push({
         id: 'settings',

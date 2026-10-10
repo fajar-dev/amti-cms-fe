@@ -36,6 +36,7 @@
         "roles": "Peran & Hak Akses",
         "settings": "Pengaturan",
         "settingsGroup": "Pengaturan Sistem",
+        "messages": "Pesan",
         "feedback": "Feedback"
       }
     },
@@ -503,6 +504,38 @@
       "removeMedia": "Hapus",
       "changeMedia": "Ganti",
       "chooseFile": "Pilih Berkas"
+    },
+    "messages": {
+      "title": "Pesan Masuk",
+      "description": "Kelola dan tanggapi pesan dan pertanyaan dari pengunjung website",
+      "searchPlaceholder": "Cari berdasarkan nama, email, subjek, atau pesan...",
+      "filterStatus": "Filter Status",
+      "allStatus": "Semua Pesan",
+      "unread": "Belum Dibaca",
+      "read": "Dibaca",
+      "columnStatus": "Status",
+      "columnSender": "Pengirim",
+      "columnSubject": "Subjek & Cuplikan",
+      "columnDate": "Diterima Pada",
+      "columnAction": "Aksi",
+      "actionsDropdown": "Aksi Pesan",
+      "viewDetail": "Lihat Pesan",
+      "markAsRead": "Tandai Dibaca",
+      "markAsUnread": "Tandai Belum Dibaca",
+      "reply": "Balas via Email",
+      "deleteMessage": "Hapus Pesan",
+      "deleteTitle": "Hapus Pesan",
+      "detailTitle": "Detail Pesan",
+      "senderInfo": "Informasi Pengirim",
+      "phone": "Telepon",
+      "email": "Email",
+      "subject": "Subjek",
+      "message": "Pesan",
+      "noPhone": "Tidak ada nomor telepon",
+      "sentAt": "Dikirim Pada",
+      "close": "Tutup",
+      "statusUpdatedSuccess": "Status pesan berhasil diperbarui!",
+      "deletedSuccess": "Pesan berhasil dihapus!"
     }
   }
 }

@@ -276,7 +276,8 @@ function getModuleIcon(moduleName: string) {
     'Categories': 'i-lucide-folder',
     'Articles': 'i-lucide-file-text',
     'FAQs': 'i-lucide-help-circle',
-    'Settings': 'i-lucide-settings'
+    'Settings': 'i-lucide-settings',
+    'Messages': 'i-lucide-mail'
   }
   return map[moduleName] || 'i-lucide-box'
 }

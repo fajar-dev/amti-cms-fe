@@ -9,6 +9,7 @@ const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permissions: string[] }> = [
   { pattern: /^\/content\/article\/[^/]+$/, permissions: ['articles.update'] },
   { pattern: /^\/content\/article$/, permissions: ['articles.view'] },
   { pattern: /^\/faq(\/.*)?$/, permissions: ['faqs.view'] },
+  { pattern: /^\/messages(\/.*)?$/, permissions: ['messages.view'] },
   { pattern: /^\/settings\/meta$/, permissions: ['settings.meta.view', 'settings.view'] },
   { pattern: /^\/settings\/contact$/, permissions: ['settings.contact.view', 'settings.view'] },
   { pattern: /^\/settings\/social$/, permissions: ['settings.social.view', 'settings.view'] },
