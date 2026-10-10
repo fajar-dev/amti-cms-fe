@@ -34,6 +34,7 @@ export interface DashboardRecentArticle {
   slug: string
   status: string
   cover?: string | null
+  coverUrl?: string | null
   viewsCount: number
   category?: {
     id: number

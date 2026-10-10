@@ -1,69 +1,47 @@
 <template>
   <div class="space-y-6">
-    <!-- Top Welcome Banner & Actions -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs">
-      <div class="space-y-1">
-        <h1 class="text-xl sm:text-2xl font-bold text-highlighted tracking-tight">
-          {{ $t('pages.dashboard.welcomeBack') }}, {{ userName }}! 👋
-        </h1>
-        <p class="text-sm text-muted">
-          {{ $t('pages.dashboard.todayOverview') }}
-        </p>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-2.5">
-        <UButton
-          icon="i-lucide-refresh-cw"
-          color="neutral"
-          variant="outline"
-          size="md"
-          :loading="isRefreshing"
-          @click="fetchAll"
-        />
+    <!-- Header -->
+    <Header
+      :title="$t('pages.dashboard.title')"
+      :description="$t('pages.dashboard.description')"
+    >
+      <template #actions>
         <UButton
           v-if="can('articles.create')"
           icon="i-lucide-plus"
           color="primary"
-          size="md"
           to="/content/article/create"
         >
           {{ $t('pages.dashboard.quickActionCreate') }}
         </UButton>
-        <UButton
-          v-if="can('messages.view')"
-          icon="i-lucide-mail"
-          color="neutral"
-          variant="outline"
-          size="md"
-          to="/messages"
-        >
-          {{ $t('pages.dashboard.quickActionMessages') }}
-          <span
-            v-if="summary?.unreadMessages"
-            class="text-xs font-semibold text-amber-600 dark:text-amber-400 ml-1"
-          >
-            ({{ summary.unreadMessages }})
-          </span>
-        </UButton>
-      </div>
-    </div>
+      </template>
+    </Header>
 
     <!-- Stat Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
       <!-- Total Articles Card -->
       <NuxtLink
         to="/content/article"
-        class="group bg-default border border-default hover:border-primary/50 transition-all duration-200 p-5 rounded-2xl shadow-xs block"
+        class="group bg-default border border-default hover:border-primary/50 transition-colors p-5 rounded-lg block"
       >
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalArticles') }}</span>
-          <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-transform group-hover:scale-105">
-            <UIcon name="i-lucide-file-text" class="w-5 h-5" />
+          <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-transform group-hover:scale-105">
+            <UIcon
+              name="i-lucide-file-text"
+              class="w-5 h-5"
+            />
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoadingSummary" class="h-8 w-20" />
-          <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
+          <USkeleton
+            v-if="isLoadingSummary"
+            class="h-8 w-20"
+          />
+          <div
+            v-else
+            class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight"
+          >
             {{ summary?.totalArticles ?? 0 }}
           </div>
         </div>
@@ -80,39 +58,60 @@
       </NuxtLink>
 
       <!-- Total Views Card -->
-      <div class="bg-default border border-default p-5 rounded-2xl shadow-xs">
+      <div class="bg-default border border-default p-5 rounded-lg">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalViews') }}</span>
-          <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-            <UIcon name="i-lucide-eye" class="w-5 h-5" />
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+            <UIcon
+              name="i-lucide-eye"
+              class="w-5 h-5"
+            />
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoadingSummary" class="h-8 w-24" />
-          <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
+          <USkeleton
+            v-if="isLoadingSummary"
+            class="h-8 w-24"
+          />
+          <div
+            v-else
+            class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight"
+          >
             {{ (summary?.totalViews ?? 0).toLocaleString() }}
           </div>
         </div>
         <div class="mt-3 flex items-center text-xs text-muted">
-          <UIcon name="i-lucide-trending-up" class="w-3.5 h-3.5 mr-1 text-emerald-500" />
-          <span>Akumulasi tayangan seluruh artikel</span>
+          <UIcon
+            name="i-lucide-trending-up"
+            class="w-3.5 h-3.5 mr-1 text-emerald-500"
+          />
+          <span>Akumulasi tayangan artikel</span>
         </div>
       </div>
 
       <!-- Messages Card -->
       <NuxtLink
         to="/messages"
-        class="group bg-default border border-default hover:border-amber-500/50 transition-all duration-200 p-5 rounded-2xl shadow-xs block"
+        class="group bg-default border border-default hover:border-amber-500/50 transition-colors p-5 rounded-lg block"
       >
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalMessages') }}</span>
-          <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-105">
-            <UIcon name="i-lucide-mail" class="w-5 h-5" />
+          <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-105">
+            <UIcon
+              name="i-lucide-mail"
+              class="w-5 h-5"
+            />
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoadingSummary" class="h-8 w-20" />
-          <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
+          <USkeleton
+            v-if="isLoadingSummary"
+            class="h-8 w-20"
+          />
+          <div
+            v-else
+            class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight"
+          >
             {{ summary?.totalMessages ?? 0 }}
           </div>
         </div>
@@ -131,17 +130,26 @@
       <!-- Users & Management Card -->
       <NuxtLink
         to="/user"
-        class="group bg-default border border-default hover:border-violet-500/50 transition-all duration-200 p-5 rounded-2xl shadow-xs block"
+        class="group bg-default border border-default hover:border-violet-500/50 transition-colors p-5 rounded-lg block"
       >
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalUsers') }}</span>
-          <div class="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 flex items-center justify-center transition-transform group-hover:scale-105">
-            <UIcon name="i-lucide-users" class="w-5 h-5" />
+          <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 flex items-center justify-center transition-transform group-hover:scale-105">
+            <UIcon
+              name="i-lucide-users"
+              class="w-5 h-5"
+            />
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoadingSummary" class="h-8 w-20" />
-          <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
+          <USkeleton
+            v-if="isLoadingSummary"
+            class="h-8 w-20"
+          />
+          <div
+            v-else
+            class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight"
+          >
             {{ summary?.totalUsers ?? 0 }}
           </div>
         </div>
@@ -156,13 +164,13 @@
     <!-- Charts Row 1: Views Trend (AreaChart) & Category Distribution (DonutChart) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
       <!-- Views Trend Area Chart (8 cols) -->
-      <div class="lg:col-span-8 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+      <div class="lg:col-span-8 bg-default border border-default p-5 sm:p-6 rounded-lg">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-default pb-4 mb-4">
           <div>
-            <h2 class="text-base font-semibold text-highlighted">
+            <h3 class="text-sm font-semibold text-highlighted">
               {{ $t('pages.dashboard.viewsTrendTitle') }}
-            </h2>
-            <p class="text-xs text-muted">
+            </h3>
+            <p class="text-xs text-muted mt-0.5">
               {{ $t('pages.dashboard.viewsTrendDesc') }}
             </p>
           </div>
@@ -172,8 +180,14 @@
         </div>
 
         <div class="w-full h-80 min-h-[320px]">
-          <USkeleton v-if="isLoadingViews" class="w-full h-full rounded-xl" />
-          <div v-else-if="!viewsTrend.length" class="h-full flex items-center justify-center text-sm text-muted">
+          <USkeleton
+            v-if="isLoadingViews"
+            class="w-full h-full rounded-lg"
+          />
+          <div
+            v-else-if="!viewsTrend.length"
+            class="h-full flex items-center justify-center text-sm text-muted"
+          >
             Tidak ada data statistik
           </div>
           <ClientOnly v-else>
@@ -188,26 +202,32 @@
               dot-variant="border"
             />
             <template #fallback>
-              <USkeleton class="w-full h-full rounded-xl" />
+              <USkeleton class="w-full h-full rounded-lg" />
             </template>
           </ClientOnly>
         </div>
       </div>
 
       <!-- Categories Donut Chart (4 cols) -->
-      <div class="lg:col-span-4 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs">
-        <div class="mb-4">
-          <h2 class="text-base font-semibold text-highlighted">
+      <div class="lg:col-span-4 bg-default border border-default p-5 sm:p-6 rounded-lg">
+        <div class="border-b border-default pb-4 mb-4">
+          <h3 class="text-sm font-semibold text-highlighted">
             {{ $t('pages.dashboard.categoryDistTitle') }}
-          </h2>
-          <p class="text-xs text-muted">
+          </h3>
+          <p class="text-xs text-muted mt-0.5">
             {{ $t('pages.dashboard.categoryDistDesc') }}
           </p>
         </div>
 
         <div class="w-full h-80 min-h-[320px]">
-          <USkeleton v-if="isLoadingCategories" class="w-full h-full rounded-xl" />
-          <div v-else-if="!categoriesDistribution.length" class="h-full flex items-center justify-center text-sm text-muted">
+          <USkeleton
+            v-if="isLoadingCategories"
+            class="w-full h-full rounded-lg"
+          />
+          <div
+            v-else-if="!categoriesDistribution.length"
+            class="h-full flex items-center justify-center text-sm text-muted"
+          >
             Belum ada kategori artikel
           </div>
           <ClientOnly v-else>
@@ -221,7 +241,7 @@
               :legend-position="LegendPosition.BottomCenter"
             />
             <template #fallback>
-              <USkeleton class="w-full h-full rounded-xl" />
+              <USkeleton class="w-full h-full rounded-lg" />
             </template>
           </ClientOnly>
         </div>
@@ -231,13 +251,13 @@
     <!-- Charts Row 2: Messages Activity BarChart & Recent Messages -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
       <!-- Messages Bar Chart (6 cols) -->
-      <div class="lg:col-span-6 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs">
-        <div class="flex items-center justify-between mb-4">
+      <div class="lg:col-span-6 bg-default border border-default p-5 sm:p-6 rounded-lg">
+        <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
           <div>
-            <h2 class="text-base font-semibold text-highlighted">
+            <h3 class="text-sm font-semibold text-highlighted">
               {{ $t('pages.dashboard.messagesTrendTitle') }}
-            </h2>
-            <p class="text-xs text-muted">
+            </h3>
+            <p class="text-xs text-muted mt-0.5">
               {{ $t('pages.dashboard.messagesTrendDesc') }}
             </p>
           </div>
@@ -246,12 +266,18 @@
             class="text-xs text-primary font-medium hover:underline flex items-center gap-1"
           >
             {{ $t('pages.dashboard.viewAll') }}
-            <UIcon name="i-lucide-arrow-right" class="w-3.5 h-3.5" />
+            <UIcon
+              name="i-lucide-arrow-right"
+              class="w-3.5 h-3.5"
+            />
           </NuxtLink>
         </div>
 
         <div class="w-full h-72 min-h-[280px]">
-          <USkeleton v-if="isLoadingMessagesTrend" class="w-full h-full rounded-xl" />
+          <USkeleton
+            v-if="isLoadingMessagesTrend"
+            class="w-full h-full rounded-lg"
+          />
           <ClientOnly v-else>
             <BarChart
               :data="messagesTrend"
@@ -263,21 +289,21 @@
               stacked
             />
             <template #fallback>
-              <USkeleton class="w-full h-full rounded-xl" />
+              <USkeleton class="w-full h-full rounded-lg" />
             </template>
           </ClientOnly>
         </div>
       </div>
 
       <!-- Recent Messages List (6 cols) -->
-      <div class="lg:col-span-6 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col justify-between">
+      <div class="lg:col-span-6 bg-default border border-default p-5 sm:p-6 rounded-lg flex flex-col justify-between">
         <div>
-          <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
             <div>
-              <h2 class="text-base font-semibold text-highlighted">
+              <h3 class="text-sm font-semibold text-highlighted">
                 {{ $t('pages.dashboard.recentMessagesTitle') }}
-              </h2>
-              <p class="text-xs text-muted">
+              </h3>
+              <p class="text-xs text-muted mt-0.5">
                 {{ $t('pages.dashboard.recentMessagesDesc') }}
               </p>
             </div>
@@ -286,20 +312,39 @@
               class="text-xs text-primary font-medium hover:underline flex items-center gap-1"
             >
               {{ $t('pages.dashboard.viewAll') }}
-              <UIcon name="i-lucide-arrow-right" class="w-3.5 h-3.5" />
+              <UIcon
+                name="i-lucide-arrow-right"
+                class="w-3.5 h-3.5"
+              />
             </NuxtLink>
           </div>
 
-          <div v-if="isLoadingRecentMessages" class="space-y-3">
-            <USkeleton v-for="i in 4" :key="i" class="h-14 w-full rounded-xl" />
+          <div
+            v-if="isLoadingRecentMessages"
+            class="space-y-3"
+          >
+            <USkeleton
+              v-for="i in 4"
+              :key="i"
+              class="h-14 w-full rounded-lg"
+            />
           </div>
 
-          <div v-else-if="!recentMessages.length" class="py-12 text-center text-sm text-muted">
-            <UIcon name="i-lucide-inbox" class="w-8 h-8 mx-auto mb-2 opacity-50" />
+          <div
+            v-else-if="!recentMessages.length"
+            class="py-12 text-center text-sm text-muted"
+          >
+            <UIcon
+              name="i-lucide-inbox"
+              class="w-8 h-8 mx-auto mb-2 opacity-50"
+            />
             {{ $t('pages.dashboard.noRecentMessages') }}
           </div>
 
-          <div v-else class="divide-y divide-default">
+          <div
+            v-else
+            class="divide-y divide-default"
+          >
             <NuxtLink
               v-for="msg in recentMessages"
               :key="msg.id"
@@ -313,7 +358,10 @@
                 <div class="min-w-0 space-y-0.5">
                   <div class="flex items-center gap-2">
                     <span class="text-sm font-medium text-highlighted truncate">{{ msg.name }}</span>
-                    <span v-if="!msg.isRead" class="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                    <span
+                      v-if="!msg.isRead"
+                      class="w-2 h-2 rounded-full bg-amber-500 shrink-0"
+                    />
                   </div>
                   <p class="text-xs text-muted truncate">{{ msg.subject }}</p>
                 </div>
@@ -328,13 +376,13 @@
     </div>
 
     <!-- Row 3: Recent Articles -->
-    <div class="bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs">
-      <div class="flex items-center justify-between mb-4">
+    <div class="bg-default border border-default p-5 sm:p-6 rounded-lg">
+      <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
         <div>
-          <h2 class="text-base font-semibold text-highlighted">
+          <h3 class="text-sm font-semibold text-highlighted">
             {{ $t('pages.dashboard.recentArticlesTitle') }}
-          </h2>
-          <p class="text-xs text-muted">
+          </h3>
+          <p class="text-xs text-muted mt-0.5">
             {{ $t('pages.dashboard.recentArticlesDesc') }}
           </p>
         </div>
@@ -343,29 +391,61 @@
           class="text-xs text-primary font-medium hover:underline flex items-center gap-1"
         >
           {{ $t('pages.dashboard.viewAll') }}
-          <UIcon name="i-lucide-arrow-right" class="w-3.5 h-3.5" />
+          <UIcon
+            name="i-lucide-arrow-right"
+            class="w-3.5 h-3.5"
+          />
         </NuxtLink>
       </div>
 
-      <div v-if="isLoadingRecentArticles" class="space-y-3">
-        <USkeleton v-for="i in 3" :key="i" class="h-16 w-full rounded-xl" />
+      <div
+        v-if="isLoadingRecentArticles"
+        class="space-y-3"
+      >
+        <USkeleton
+          v-for="i in 3"
+          :key="i"
+          class="h-16 w-full rounded-lg"
+        />
       </div>
 
-      <div v-else-if="!recentArticles.length" class="py-12 text-center text-sm text-muted">
-        <UIcon name="i-lucide-file-text" class="w-8 h-8 mx-auto mb-2 opacity-50" />
+      <div
+        v-else-if="!recentArticles.length"
+        class="py-12 text-center text-sm text-muted"
+      >
+        <UIcon
+          name="i-lucide-file-text"
+          class="w-8 h-8 mx-auto mb-2 opacity-50"
+        />
         {{ $t('pages.dashboard.noRecentArticles') }}
       </div>
 
-      <div v-else class="divide-y divide-default">
+      <div
+        v-else
+        class="divide-y divide-default"
+      >
         <div
           v-for="art in recentArticles"
           :key="art.id"
           class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 -mx-2 px-2 rounded-lg transition-colors"
         >
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-muted flex items-center justify-center shrink-0">
-              <UIcon name="i-lucide-file-text" class="w-5 h-5" />
+            <img
+              v-if="art.coverUrl"
+              :src="art.coverUrl"
+              :alt="art.title"
+              class="size-11 rounded-lg object-cover border border-default shrink-0"
+            >
+            <div
+              v-else
+              class="size-11 rounded-lg bg-muted border border-default flex items-center justify-center text-muted shrink-0"
+            >
+              <UIcon
+                name="i-lucide-image"
+                class="w-5 h-5"
+              />
             </div>
+
             <div class="min-w-0 space-y-0.5">
               <NuxtLink
                 :to="`/content/article/${art.id}`"
@@ -374,7 +454,10 @@
                 {{ art.title }}
               </NuxtLink>
               <div class="flex flex-wrap items-center gap-2 text-xs text-muted">
-                <span v-if="art.category" class="font-medium text-neutral-600 dark:text-neutral-300">
+                <span
+                  v-if="art.category"
+                  class="font-medium text-neutral-600 dark:text-neutral-300"
+                >
                   {{ art.category.name }}
                 </span>
                 <span v-if="art.category">•</span>
@@ -385,7 +468,10 @@
 
           <div class="flex items-center gap-4 shrink-0 self-end sm:self-center">
             <div class="flex items-center gap-1 text-xs text-muted">
-              <UIcon name="i-lucide-eye" class="w-3.5 h-3.5" />
+              <UIcon
+                name="i-lucide-eye"
+                class="w-3.5 h-3.5"
+              />
               <span>{{ (art.viewsCount || 0).toLocaleString() }}</span>
             </div>
             <span
@@ -423,8 +509,6 @@ definePageMeta({
 })
 
 const { can } = usePermission()
-const auth = useAuth()
-const userName = computed(() => auth.state.user?.name || 'Admin')
 
 // States for separate endpoints
 const summary = ref<DashboardSummary | null>(null)
@@ -441,7 +525,6 @@ const isLoadingCategories = ref(true)
 const isLoadingMessagesTrend = ref(true)
 const isLoadingRecentArticles = ref(true)
 const isLoadingRecentMessages = ref(true)
-const isRefreshing = ref(false)
 
 // Fetch methods for each separate endpoint
 const fetchSummary = async () => {
@@ -518,7 +601,6 @@ const fetchRecentMessages = async () => {
 
 // Master refresh
 const fetchAll = async () => {
-  isRefreshing.value = true
   await Promise.allSettled([
     fetchSummary(),
     fetchViewsTrend(),
@@ -527,7 +609,6 @@ const fetchAll = async () => {
     fetchRecentArticles(),
     fetchRecentMessages()
   ])
-  isRefreshing.value = false
 }
 
 onMounted(() => {
@@ -543,7 +624,7 @@ const viewsChartCategories = {
 // Category Distribution Chart Config
 const categoryPalette = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4']
 const categoryChartCategories = computed(() => {
-  const result: Record<string, { name: string; color: string }> = {}
+  const result: Record<string, { name: string, color: string }> = {}
   categoriesDistribution.value.forEach((item, idx) => {
     result[item.name] = {
       name: item.name,
