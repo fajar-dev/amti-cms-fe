@@ -216,7 +216,32 @@
   "pages": {
     "dashboard": {
       "title": "Dasbor",
-      "description": "Selamat datang di admin dashboard"
+      "description": "Selamat datang di ringkasan performa konten dan pesan sistem CMS",
+      "welcomeBack": "Selamat Datang Kembali",
+      "todayOverview": "Berikut rangkuman aktivitas dan statistik terbaru hari ini.",
+      "totalArticles": "Total Artikel",
+      "totalViews": "Total Pembaca",
+      "totalMessages": "Pesan Masuk",
+      "totalUsers": "Total Pengguna",
+      "published": "Diterbitkan",
+      "draft": "Draf",
+      "unread": "Belum Dibaca",
+      "read": "Sudah Dibaca",
+      "viewsTrendTitle": "Tren Pembaca & Artikel (7 Hari Terakhir)",
+      "viewsTrendDesc": "Grafik akumulasi pembaca harian dan publikasi artikel",
+      "categoryDistTitle": "Distribusi Kategori",
+      "categoryDistDesc": "Sebaran proporsi artikel per topik kategori",
+      "messagesTrendTitle": "Aktivitas Pesan Masuk",
+      "messagesTrendDesc": "Perbandingan pesan masuk berdasarkan status baca",
+      "recentArticlesTitle": "Artikel Terbaru",
+      "recentArticlesDesc": "Daftar publikasi artikel yang baru ditambahkan",
+      "recentMessagesTitle": "Pesan Masuk Terbaru",
+      "recentMessagesDesc": "Pertanyaan dan kontak masuk dari pengunjung",
+      "viewAll": "Lihat Semua",
+      "noRecentArticles": "Belum ada artikel terbaru",
+      "noRecentMessages": "Belum ada pesan masuk",
+      "quickActionCreate": "Tulis Artikel",
+      "quickActionMessages": "Kotak Masuk"
     },
     "faq": {
       "title": "FAQ",

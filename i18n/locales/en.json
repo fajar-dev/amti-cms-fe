@@ -216,7 +216,32 @@
   "pages": {
     "dashboard": {
       "title": "Dashboard",
-      "description": "Welcome to the admin dashboard"
+      "description": "Welcome to your CMS overview and activity performance dashboard",
+      "welcomeBack": "Welcome Back",
+      "todayOverview": "Here is a summary of your recent content activity and performance.",
+      "totalArticles": "Total Articles",
+      "totalViews": "Total Readers",
+      "totalMessages": "Messages",
+      "totalUsers": "Total Users",
+      "published": "Published",
+      "draft": "Draft",
+      "unread": "Unread",
+      "read": "Read",
+      "viewsTrendTitle": "Views & Article Publications (Last 7 Days)",
+      "viewsTrendDesc": "Daily accumulated readers and newly published articles",
+      "categoryDistTitle": "Category Distribution",
+      "categoryDistDesc": "Distribution proportion of articles per category topic",
+      "messagesTrendTitle": "Inquiry Messages Activity",
+      "messagesTrendDesc": "Comparison of unread vs reviewed messages",
+      "recentArticlesTitle": "Recent Articles",
+      "recentArticlesDesc": "Latest published articles and editorial drafts",
+      "recentMessagesTitle": "Recent Inquiries",
+      "recentMessagesDesc": "Latest questions and contact messages received",
+      "viewAll": "View All",
+      "noRecentArticles": "No recent articles found",
+      "noRecentMessages": "No recent inquiries found",
+      "quickActionCreate": "New Article",
+      "quickActionMessages": "Inbox"
     },
     "faq": {
       "title": "FAQ",
