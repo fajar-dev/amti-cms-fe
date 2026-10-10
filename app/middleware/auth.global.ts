@@ -8,7 +8,8 @@ const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permission: string }> = [
   { pattern: /^\/content\/article\/create$/, permission: 'articles.create' },
   { pattern: /^\/content\/article\/[^/]+$/, permission: 'articles.update' },
   { pattern: /^\/content\/article$/, permission: 'articles.view' },
-  { pattern: /^\/faq(\/.*)?$/, permission: 'faqs.view' }
+  { pattern: /^\/faq(\/.*)?$/, permission: 'faqs.view' },
+  { pattern: /^\/settings(\/.*)?$/, permission: 'settings.view' }
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {

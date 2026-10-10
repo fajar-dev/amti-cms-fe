@@ -34,6 +34,8 @@
         "userManagement": "User Management",
         "users": "Users",
         "roles": "Roles & Permissions",
+        "settings": "Settings",
+        "settingsGroup": "System Settings",
         "feedback": "Feedback"
       }
     },
@@ -432,6 +434,69 @@
       "updatedSuccess": "Article updated successfully!",
       "totalViews": "Total Views",
       "recommendedCoverDimension": "Recommended dimension is 1600 × 840"
+    },
+    "settings": {
+      "title": "Website Settings",
+      "description": "Manage website identity, meta SEO, contact information, and social media links",
+      "tabMeta": "Website Meta",
+      "tabContact": "Contact",
+      "tabSocial": "Social Media",
+      "saveButton": "Save Settings",
+      "savingButton": "Saving...",
+      "savedSuccess": "Settings updated successfully!",
+      "metaSection": {
+        "title": "Information & Meta SEO",
+        "description": "Configure website name, description, meta keywords, and branding media.",
+        "siteName": "Site Name",
+        "siteNamePlaceholder": "e.g. AMTI CMS",
+        "siteDescription": "Site Description",
+        "siteDescriptionPlaceholder": "Short description of website for search engines...",
+        "metaKeywords": "Meta Keywords",
+        "metaKeywordsPlaceholder": "amti, cms, technology, news",
+        "metaKeywordsHelp": "Separate keywords with commas",
+        "author": "Author",
+        "authorPlaceholder": "AMTI Team",
+        "copyright": "Copyright Text",
+        "copyrightPlaceholder": "© 2026 AMTI. All rights reserved.",
+        "mediaTitle": "Branding & Media",
+        "logo": "Website Logo",
+        "logoHint": "PNG, JPG, SVG, or WebP. Max 2MB.",
+        "favicon": "Favicon",
+        "faviconHint": "ICO or PNG format. Ideal size 32x32 or 64x64.",
+        "ogImage": "OpenGraph Image (Social Share)",
+        "ogImageHint": "Ideal size 1200x630 for social media link preview."
+      },
+      "contactSection": {
+        "title": "Contact Information",
+        "description": "Official contact details displayed to website visitors.",
+        "phone": "Phone Number / WhatsApp",
+        "phonePlaceholder": "+62 812 3456 7890",
+        "email": "Email Address",
+        "emailPlaceholder": "info@amti.id",
+        "address": "Office Address",
+        "addressPlaceholder": "Enter full physical or office address..."
+      },
+      "socialSection": {
+        "title": "Social Media Links",
+        "description": "Links to your official social media profile pages.",
+        "facebook": "Facebook",
+        "facebookPlaceholder": "https://facebook.com/profilename",
+        "instagram": "Instagram",
+        "instagramPlaceholder": "https://instagram.com/profilename",
+        "tiktok": "TikTok",
+        "tiktokPlaceholder": "https://tiktok.com/@profilename",
+        "linkedin": "LinkedIn",
+        "linkedinPlaceholder": "https://linkedin.com/company/companyname",
+        "twitter": "X (Twitter)",
+        "twitterPlaceholder": "https://x.com/profilename",
+        "youtube": "YouTube",
+        "youtubePlaceholder": "https://youtube.com/@channelname"
+      },
+      "uploadSuccess": "File uploaded successfully!",
+      "uploadFailed": "Failed to upload file",
+      "removeMedia": "Remove",
+      "changeMedia": "Change",
+      "chooseFile": "Choose File"
     }
   }
 }

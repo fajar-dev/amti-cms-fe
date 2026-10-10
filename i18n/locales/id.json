@@ -34,6 +34,8 @@
         "userManagement": "Manajemen Pengguna",
         "users": "Pengguna",
         "roles": "Peran & Hak Akses",
+        "settings": "Pengaturan",
+        "settingsGroup": "Pengaturan Sistem",
         "feedback": "Feedback"
       }
     },
@@ -432,6 +434,69 @@
       "updatedSuccess": "Artikel berhasil diperbarui!",
       "totalViews": "Total Pembaca",
       "recommendedCoverDimension": "Recommended dimension is 1600 × 840"
+    },
+    "settings": {
+      "title": "Pengaturan Website",
+      "description": "Kelola identitas website, meta SEO, informasi kontak, dan tautan sosial media",
+      "tabMeta": "Meta Website",
+      "tabContact": "Kontak",
+      "tabSocial": "Sosial Media",
+      "saveButton": "Simpan Pengaturan",
+      "savingButton": "Menyimpan...",
+      "savedSuccess": "Pengaturan berhasil diperbarui!",
+      "metaSection": {
+        "title": "Informasi & Meta SEO",
+        "description": "Pengaturan nama website, deskripsi, kata kunci meta, dan media pendukung.",
+        "siteName": "Nama Website",
+        "siteNamePlaceholder": "Contoh: AMTI CMS",
+        "siteDescription": "Deskripsi Website",
+        "siteDescriptionPlaceholder": "Deskripsi singkat website untuk mesin pencari...",
+        "metaKeywords": "Kata Kunci Meta",
+        "metaKeywordsPlaceholder": "amti, cms, teknologi, berita",
+        "metaKeywordsHelp": "Pisahkan kata kunci dengan tanda koma",
+        "author": "Penulis / Author",
+        "authorPlaceholder": "AMTI Team",
+        "copyright": "Teks Hak Cipta",
+        "copyrightPlaceholder": "© 2026 AMTI. All rights reserved.",
+        "mediaTitle": "Media Website",
+        "logo": "Logo Website",
+        "logoHint": "Format PNG, JPG, SVG, atau WebP. Maks 2MB.",
+        "favicon": "Favicon",
+        "faviconHint": "Format ICO atau PNG. Ukuran ideal 32x32 atau 64x64.",
+        "ogImage": "OpenGraph Image (Social Share)",
+        "ogImageHint": "Ukuran ideal 1200x630 untuk pratinjau media sosial."
+      },
+      "contactSection": {
+        "title": "Informasi Kontak",
+        "description": "Informasi kontak resmi yang ditampilkan kepada pengunjung website.",
+        "phone": "Nomor Telepon / WhatsApp",
+        "phonePlaceholder": "+62 812 3456 7890",
+        "email": "Alamat Email",
+        "emailPlaceholder": "info@amti.id",
+        "address": "Alamat Kantor",
+        "addressPlaceholder": "Masukkan alamat lengkap kantor atau perusahaan..."
+      },
+      "socialSection": {
+        "title": "Tautan Sosial Media",
+        "description": "Tautan ke profil akun resmi sosial media website Anda.",
+        "facebook": "Facebook",
+        "facebookPlaceholder": "https://facebook.com/namaprofil",
+        "instagram": "Instagram",
+        "instagramPlaceholder": "https://instagram.com/namaprofil",
+        "tiktok": "TikTok",
+        "tiktokPlaceholder": "https://tiktok.com/@namaprofil",
+        "linkedin": "LinkedIn",
+        "linkedinPlaceholder": "https://linkedin.com/company/namaperusahaan",
+        "twitter": "X (Twitter)",
+        "twitterPlaceholder": "https://x.com/namaprofil",
+        "youtube": "YouTube",
+        "youtubePlaceholder": "https://youtube.com/@namachannel"
+      },
+      "uploadSuccess": "Berkas berhasil diunggah!",
+      "uploadFailed": "Gagal mengunggah berkas",
+      "removeMedia": "Hapus",
+      "changeMedia": "Ganti",
+      "chooseFile": "Pilih Berkas"
     }
   }
 }
