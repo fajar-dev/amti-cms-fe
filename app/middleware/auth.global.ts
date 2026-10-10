@@ -1,15 +1,18 @@
 import { useAuth } from '~/composables/useAuth'
 
 // Protected routes pattern to required permission
-const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permission: string }> = [
-  { pattern: /^\/roles(\/.*)?$/, permission: 'roles.view' },
-  { pattern: /^\/user(\/.*)?$/, permission: 'users.view' },
-  { pattern: /^\/content\/category(\/.*)?$/, permission: 'categories.view' },
-  { pattern: /^\/content\/article\/create$/, permission: 'articles.create' },
-  { pattern: /^\/content\/article\/[^/]+$/, permission: 'articles.update' },
-  { pattern: /^\/content\/article$/, permission: 'articles.view' },
-  { pattern: /^\/faq(\/.*)?$/, permission: 'faqs.view' },
-  { pattern: /^\/settings(\/.*)?$/, permission: 'settings.view' }
+const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permissions: string[] }> = [
+  { pattern: /^\/roles(\/.*)?$/, permissions: ['roles.view'] },
+  { pattern: /^\/user(\/.*)?$/, permissions: ['users.view'] },
+  { pattern: /^\/content\/category(\/.*)?$/, permissions: ['categories.view'] },
+  { pattern: /^\/content\/article\/create$/, permissions: ['articles.create'] },
+  { pattern: /^\/content\/article\/[^/]+$/, permissions: ['articles.update'] },
+  { pattern: /^\/content\/article$/, permissions: ['articles.view'] },
+  { pattern: /^\/faq(\/.*)?$/, permissions: ['faqs.view'] },
+  { pattern: /^\/settings\/meta$/, permissions: ['settings.meta.view', 'settings.view'] },
+  { pattern: /^\/settings\/contact$/, permissions: ['settings.contact.view', 'settings.view'] },
+  { pattern: /^\/settings\/social$/, permissions: ['settings.social.view', 'settings.view'] },
+  { pattern: /^\/settings(\/.*)?$/, permissions: ['settings.view', 'settings.meta.view', 'settings.contact.view', 'settings.social.view'] }
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {
@@ -34,7 +37,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const matchedRule = ROUTE_PERMISSIONS.find(rule => rule.pattern.test(to.path))
   if (matchedRule) {
     const userPermissions = state.user?.role?.permissions || []
-    if (!userPermissions.includes(matchedRule.permission)) {
+    const hasPermission = matchedRule.permissions.some(p => userPermissions.includes(p))
+    if (!hasPermission) {
       if (import.meta.client) {
         try {
           const toast = useToast()

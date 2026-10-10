@@ -39,6 +39,7 @@
               :placeholder="$t('pages.settings.contact.phonePlaceholder')"
               icon="i-lucide-phone"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -52,6 +53,7 @@
               :placeholder="$t('pages.settings.contact.emailPlaceholder')"
               icon="i-lucide-mail"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -65,6 +67,7 @@
               :placeholder="$t('pages.settings.contact.addressPlaceholder')"
               :rows="4"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
         </div>
@@ -72,7 +75,7 @@
 
       <!-- Action Button -->
       <div
-        v-if="can('settings.update')"
+        v-if="canUpdate"
         class="flex justify-end pt-3 border-t border-default"
       >
         <UButton
@@ -89,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { z } from 'zod'
 import { settingService } from '~/services/setting-service'
 import type { SettingContactPayload } from '~/types/setting'
@@ -97,6 +100,8 @@ import type { SettingContactPayload } from '~/types/setting'
 const { t } = useI18n()
 const toast = useToast()
 const { can } = usePermission()
+
+const canUpdate = computed(() => can('settings.contact.update') || can('settings.update'))
 
 const isLoading = ref(true)
 const isSaving = ref(false)

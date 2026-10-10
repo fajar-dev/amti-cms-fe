@@ -62,7 +62,7 @@ export const useNavigation = () => {
         icon: 'i-lucide-help-circle'
       })
     }
-    if (can('settings.view')) {
+    if (can('settings.view') || can('settings.meta.view') || can('settings.contact.view') || can('settings.social.view')) {
       cmsItems.push({
         id: 'settings',
         label: t('components.sidebar.nav.settings'),

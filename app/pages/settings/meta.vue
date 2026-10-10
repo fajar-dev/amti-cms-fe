@@ -42,6 +42,7 @@
               :placeholder="$t('pages.settings.meta.siteNamePlaceholder')"
               icon="i-lucide-globe"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -54,6 +55,7 @@
               :placeholder="$t('pages.settings.meta.authorPlaceholder')"
               icon="i-lucide-user"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -66,6 +68,7 @@
               :placeholder="$t('pages.settings.meta.copyrightPlaceholder')"
               icon="i-lucide-copyright"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -80,6 +83,7 @@
               :placeholder="$t('pages.settings.meta.metaKeywordsPlaceholder')"
               icon="i-lucide-tag"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -93,6 +97,7 @@
               :placeholder="$t('pages.settings.meta.siteDescriptionPlaceholder')"
               :rows="3"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
         </div>
@@ -125,7 +130,7 @@
                 class="max-h-full max-w-full object-contain"
               >
               <button
-                v-if="can('settings.update')"
+                v-if="canUpdate"
                 type="button"
                 class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
                 @click="removeMedia('logo')"
@@ -150,7 +155,7 @@
               label="Drop your image here"
               :description="$t('pages.settings.meta.logoHint')"
               class="w-full min-h-48"
-              :disabled="!can('settings.update')"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -169,7 +174,7 @@
                 class="w-16 h-16 object-contain"
               >
               <button
-                v-if="can('settings.update')"
+                v-if="canUpdate"
                 type="button"
                 class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
                 @click="removeMedia('favicon')"
@@ -194,7 +199,7 @@
               label="Drop your image here"
               :description="$t('pages.settings.meta.faviconHint')"
               class="w-full min-h-48"
-              :disabled="!can('settings.update')"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -213,7 +218,7 @@
                 class="w-full h-full object-cover"
               >
               <button
-                v-if="can('settings.update')"
+                v-if="canUpdate"
                 type="button"
                 class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
                 @click="removeMedia('ogImage')"
@@ -238,7 +243,7 @@
               label="Drop your image here"
               :description="$t('pages.settings.meta.ogImageHint')"
               class="w-full min-h-48"
-              :disabled="!can('settings.update')"
+              :disabled="!canUpdate"
             />
           </UFormField>
         </div>
@@ -246,7 +251,7 @@
 
       <!-- Action Button -->
       <div
-        v-if="can('settings.update')"
+        v-if="canUpdate"
         class="flex justify-end pt-3 border-t border-default"
       >
         <UButton
@@ -263,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted, watch, computed } from 'vue'
 import { z } from 'zod'
 import { settingService } from '~/services/setting-service'
 import type { SettingMetaPayload } from '~/types/setting'
@@ -271,6 +276,8 @@ import type { SettingMetaPayload } from '~/types/setting'
 const { t } = useI18n()
 const toast = useToast()
 const { can } = usePermission()
+
+const canUpdate = computed(() => can('settings.meta.update') || can('settings.update'))
 
 const isLoading = ref(true)
 const isSaving = ref(false)

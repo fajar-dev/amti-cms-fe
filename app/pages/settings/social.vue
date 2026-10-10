@@ -39,6 +39,7 @@
               :placeholder="$t('pages.settings.social.facebookPlaceholder')"
               icon="i-lucide-facebook"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -51,6 +52,7 @@
               :placeholder="$t('pages.settings.social.instagramPlaceholder')"
               icon="i-lucide-instagram"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -63,6 +65,7 @@
               :placeholder="$t('pages.settings.social.tiktokPlaceholder')"
               icon="i-lucide-music-2"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -75,6 +78,7 @@
               :placeholder="$t('pages.settings.social.linkedinPlaceholder')"
               icon="i-lucide-linkedin"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -87,6 +91,7 @@
               :placeholder="$t('pages.settings.social.twitterPlaceholder')"
               icon="i-lucide-twitter"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
 
@@ -99,6 +104,7 @@
               :placeholder="$t('pages.settings.social.youtubePlaceholder')"
               icon="i-lucide-youtube"
               class="w-full"
+              :disabled="!canUpdate"
             />
           </UFormField>
         </div>
@@ -106,7 +112,7 @@
 
       <!-- Action Button -->
       <div
-        v-if="can('settings.update')"
+        v-if="canUpdate"
         class="flex justify-end pt-3 border-t border-default"
       >
         <UButton
@@ -123,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { z } from 'zod'
 import { settingService } from '~/services/setting-service'
 import type { SettingSocialPayload } from '~/types/setting'
@@ -131,6 +137,8 @@ import type { SettingSocialPayload } from '~/types/setting'
 const { t } = useI18n()
 const toast = useToast()
 const { can } = usePermission()
+
+const canUpdate = computed(() => can('settings.social.update') || can('settings.update'))
 
 const isLoading = ref(true)
 const isSaving = ref(false)

@@ -275,7 +275,8 @@ function getModuleIcon(moduleName: string) {
     'Roles & Permissions': 'i-lucide-shield-check',
     'Categories': 'i-lucide-folder',
     'Articles': 'i-lucide-file-text',
-    'FAQs': 'i-lucide-help-circle'
+    'FAQs': 'i-lucide-help-circle',
+    'Settings': 'i-lucide-settings'
   }
   return map[moduleName] || 'i-lucide-box'
 }

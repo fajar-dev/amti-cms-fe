@@ -6,6 +6,7 @@
     >
       <template #tabs>
         <NuxtLink
+          v-if="can('settings.meta.view') || can('settings.view')"
           to="/settings/meta"
           class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
           :class="[
@@ -17,6 +18,7 @@
           {{ $t('pages.settings.index.tabMeta') }}
         </NuxtLink>
         <NuxtLink
+          v-if="can('settings.contact.view') || can('settings.view')"
           to="/settings/contact"
           class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
           :class="[
@@ -28,6 +30,7 @@
           {{ $t('pages.settings.index.tabContact') }}
         </NuxtLink>
         <NuxtLink
+          v-if="can('settings.social.view') || can('settings.view')"
           to="/settings/social"
           class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
           :class="[
@@ -48,12 +51,24 @@
 </template>
 
 <script setup lang="ts">
+const { can } = usePermission()
+
 definePageMeta({
   layout: 'dashboard',
   middleware: [
     (to) => {
+      const { can } = usePermission()
       if (to.path === '/settings') {
-        return navigateTo('/settings/meta')
+        if (can('settings.meta.view') || can('settings.view')) {
+          return navigateTo('/settings/meta')
+        }
+        if (can('settings.contact.view')) {
+          return navigateTo('/settings/contact')
+        }
+        if (can('settings.social.view')) {
+          return navigateTo('/settings/social')
+        }
+        return navigateTo('/')
       }
     }
   ]
