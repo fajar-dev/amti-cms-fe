@@ -472,7 +472,7 @@
         "phone": "Nomor Telepon / WhatsApp",
         "phonePlaceholder": "+62 812 3456 7890",
         "email": "Alamat Email",
-        "emailPlaceholder": "info@amti.id",
+        "emailPlaceholder": "info{'@'}amti.id",
         "address": "Alamat Kantor",
         "addressPlaceholder": "Masukkan alamat lengkap kantor atau perusahaan..."
       },
@@ -484,13 +484,13 @@
         "instagram": "Instagram",
         "instagramPlaceholder": "https://instagram.com/namaprofil",
         "tiktok": "TikTok",
-        "tiktokPlaceholder": "https://tiktok.com/@namaprofil",
+        "tiktokPlaceholder": "https://tiktok.com/{'@'}namaprofil",
         "linkedin": "LinkedIn",
         "linkedinPlaceholder": "https://linkedin.com/company/namaperusahaan",
         "twitter": "X (Twitter)",
         "twitterPlaceholder": "https://x.com/namaprofil",
         "youtube": "YouTube",
-        "youtubePlaceholder": "https://youtube.com/@namachannel"
+        "youtubePlaceholder": "https://youtube.com/{'@'}namachannel"
       },
       "uploadSuccess": "Berkas berhasil diunggah!",
       "uploadFailed": "Gagal mengunggah berkas",

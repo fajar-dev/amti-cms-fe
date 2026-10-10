@@ -472,7 +472,7 @@
         "phone": "Phone Number / WhatsApp",
         "phonePlaceholder": "+62 812 3456 7890",
         "email": "Email Address",
-        "emailPlaceholder": "info@amti.id",
+        "emailPlaceholder": "info{'@'}amti.id",
         "address": "Office Address",
         "addressPlaceholder": "Enter full physical or office address..."
       },
@@ -484,13 +484,13 @@
         "instagram": "Instagram",
         "instagramPlaceholder": "https://instagram.com/profilename",
         "tiktok": "TikTok",
-        "tiktokPlaceholder": "https://tiktok.com/@profilename",
+        "tiktokPlaceholder": "https://tiktok.com/{'@'}profilename",
         "linkedin": "LinkedIn",
         "linkedinPlaceholder": "https://linkedin.com/company/companyname",
         "twitter": "X (Twitter)",
         "twitterPlaceholder": "https://x.com/profilename",
         "youtube": "YouTube",
-        "youtubePlaceholder": "https://youtube.com/@channelname"
+        "youtubePlaceholder": "https://youtube.com/{'@'}channelname"
       },
       "uploadSuccess": "File uploaded successfully!",
       "uploadFailed": "Failed to upload file",
