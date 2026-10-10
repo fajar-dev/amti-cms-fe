@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, resolveComponent, ref, reactive, computed, watch } from 'vue'
+import { h, resolveComponent, ref, reactive, computed, watch, onMounted } from 'vue'
 import type { TableColumn, DropdownMenuItem } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
 import { messageService } from '~/services/message-service'
@@ -127,6 +127,10 @@ async function fetchMessages() {
 const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchMessages, {
   defaultSortBy: 'createdAt',
   defaultOrder: 'DESC'
+})
+
+onMounted(() => {
+  fetchMessages()
 })
 
 watch(selectedStatusFilter, () => {
