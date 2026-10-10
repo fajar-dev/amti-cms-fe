@@ -16,7 +16,7 @@
               <h3 class="text-base font-semibold text-highlighted">
                 {{ message.subject }}
               </h3>
-              <p class="text-xs text-muted mt-0.5">
+              <p class="text-sm text-muted mt-0.5">
                 {{ formatDate(message.createdAt) }}
               </p>
             </div>

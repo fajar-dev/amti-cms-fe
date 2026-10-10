@@ -41,10 +41,10 @@
         <div class="space-y-3 pt-2 border-t border-default">
           <div class="flex items-center justify-between">
             <div>
-              <h4 class="text-sm font-semibold text-highlighted">
+              <h4 class="text-base font-semibold text-highlighted">
                 {{ $t('components.rbac.addModal.permissionsLabel') }}
               </h4>
-              <p class="text-xs text-muted">
+              <p class="text-sm text-muted">
                 {{ $t('components.rbac.addModal.permissionsHelp', { count: form.permissionIds.length, total: totalPermissionsCount }) }}
               </p>
             </div>

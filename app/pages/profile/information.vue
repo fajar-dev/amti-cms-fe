@@ -38,10 +38,10 @@
       </div>
 
       <div class="space-y-1.5 text-center sm:text-left">
-        <h3 class="text-sm font-semibold text-highlighted">
+        <h3 class="text-base font-semibold text-highlighted">
           {{ $t('pages.profile.information.photoTitle') }}
         </h3>
-        <p class="text-xs text-muted pb-1">
+        <p class="text-sm text-muted pb-1">
           {{ $t('pages.profile.information.photoHint') }}
         </p>
         <div class="flex gap-2 justify-center sm:justify-start">

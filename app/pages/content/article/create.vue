@@ -109,7 +109,7 @@
             <h2 class="text-base font-semibold text-highlighted">
               {{ $t('pages.article.coverTitle') }}
             </h2>
-            <p class="text-xs text-muted mt-0.5">
+            <p class="text-sm text-muted mt-0.5">
               {{ $t('pages.article.recommendedCoverDimension') }}
             </p>
           </div>

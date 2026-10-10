@@ -21,10 +21,10 @@
     >
       <div class="space-y-4">
         <div class="border-b border-default pb-3">
-          <h3 class="text-sm font-semibold text-highlighted">
+          <h3 class="text-base font-semibold text-highlighted">
             {{ $t('pages.settings.social.title') }}
           </h3>
-          <p class="text-xs text-muted mt-0.5">
+          <p class="text-sm text-muted mt-0.5">
             {{ $t('pages.settings.social.description') }}
           </p>
         </div>

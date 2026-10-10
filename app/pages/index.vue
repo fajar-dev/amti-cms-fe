@@ -156,10 +156,10 @@
       <div class="lg:col-span-8 bg-default border border-default p-5 sm:p-6 rounded-lg">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-default pb-4 mb-4">
           <div>
-            <h3 class="text-sm font-semibold text-highlighted">
+            <h3 class="text-base font-semibold text-highlighted">
               {{ $t('pages.dashboard.viewsTrendTitle') }}
             </h3>
-            <p class="text-xs text-muted mt-0.5">
+            <p class="text-sm text-muted mt-0.5">
               {{ $t('pages.dashboard.viewsTrendDesc') }}
             </p>
           </div>
@@ -200,10 +200,10 @@
       <!-- Categories Donut Chart (4 cols) -->
       <div class="lg:col-span-4 bg-default border border-default p-5 sm:p-6 rounded-lg">
         <div class="border-b border-default pb-4 mb-4">
-          <h3 class="text-sm font-semibold text-highlighted">
+          <h3 class="text-base font-semibold text-highlighted">
             {{ $t('pages.dashboard.categoryDistTitle') }}
           </h3>
-          <p class="text-xs text-muted mt-0.5">
+          <p class="text-sm text-muted mt-0.5">
             {{ $t('pages.dashboard.categoryDistDesc') }}
           </p>
         </div>
@@ -245,10 +245,10 @@
       <div class="lg:col-span-6 bg-default border border-default p-5 sm:p-6 rounded-lg">
         <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
           <div>
-            <h3 class="text-sm font-semibold text-highlighted">
+            <h3 class="text-base font-semibold text-highlighted">
               {{ $t('pages.dashboard.messagesTrendTitle') }}
             </h3>
-            <p class="text-xs text-muted mt-0.5">
+            <p class="text-sm text-muted mt-0.5">
               {{ $t('pages.dashboard.messagesTrendDesc') }}
             </p>
           </div>
@@ -291,10 +291,10 @@
         <div>
           <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
             <div>
-              <h3 class="text-sm font-semibold text-highlighted">
+              <h3 class="text-base font-semibold text-highlighted">
                 {{ $t('pages.dashboard.recentMessagesTitle') }}
               </h3>
-              <p class="text-xs text-muted mt-0.5">
+              <p class="text-sm text-muted mt-0.5">
                 {{ $t('pages.dashboard.recentMessagesDesc') }}
               </p>
             </div>
@@ -370,10 +370,10 @@
     <div class="bg-default border border-default p-5 sm:p-6 rounded-lg">
       <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
         <div>
-          <h3 class="text-sm font-semibold text-highlighted">
+          <h3 class="text-base font-semibold text-highlighted">
             {{ $t('pages.dashboard.recentArticlesTitle') }}
           </h3>
-          <p class="text-xs text-muted mt-0.5">
+          <p class="text-sm text-muted mt-0.5">
             {{ $t('pages.dashboard.recentArticlesDesc') }}
           </p>
         </div>
