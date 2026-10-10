@@ -37,7 +37,6 @@
           name="password"
           required
           class="w-full"
-          :ui="{ label: 'text-sm font-medium text-highlighted' }"
         >
           <UInput
             id="new-password"
@@ -64,7 +63,6 @@
           name="confirmPassword"
           required
           class="w-full"
-          :ui="{ label: 'text-sm font-medium text-highlighted' }"
         >
           <UInput
             id="confirm-password"

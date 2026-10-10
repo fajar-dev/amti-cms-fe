@@ -60,8 +60,7 @@
         :label="$t('pages.auth.forgotPassword.emailLabel')"
         name="email"
         required
-        class="w-full font-medium text-highlighted"
-        :ui="{ label: 'text-sm font-medium text-highlighted' }"
+        class="w-full"
       >
         <UInput
           id="forgot-email"

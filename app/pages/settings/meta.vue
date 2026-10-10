@@ -22,10 +22,10 @@
       <!-- Meta SEO Info -->
       <div class="space-y-4">
         <div class="border-b border-default pb-3">
-          <h3 class="text-md font-semibold text-highlighted">
+          <h3 class="text-sm font-semibold text-highlighted">
             {{ $t('pages.settings.meta.title') }}
           </h3>
-          <p class="text-sm text-muted mt-0.5">
+          <p class="text-xs text-muted mt-0.5">
             {{ $t('pages.settings.meta.description') }}
           </p>
         </div>
@@ -111,19 +111,13 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <!-- Logo -->
-          <div class="space-y-2">
-            <div>
-              <label class="text-xs font-medium text-highlighted block">
-                {{ $t('pages.settings.meta.logo') }}
-              </label>
-              <p class="text-xs text-muted mt-0.5">
-                {{ $t('pages.settings.meta.logoHint') }}
-              </p>
-            </div>
-
+          <UFormField
+            :label="$t('pages.settings.meta.logo')"
+            class="w-full"
+          >
             <div
               v-if="logoPreview"
-              class="relative rounded-lg overflow-hidden border border-default aspect-video group flex items-center justify-center bg-muted/10 p-4"
+              class="relative rounded-lg overflow-hidden border border-default aspect-video group flex items-center justify-center bg-muted/10 p-4 w-full"
             >
               <img
                 :src="logoPreview"
@@ -158,22 +152,16 @@
               class="w-full min-h-48"
               :disabled="!can('settings.update')"
             />
-          </div>
+          </UFormField>
 
           <!-- Favicon -->
-          <div class="space-y-2">
-            <div>
-              <label class="text-xs font-medium text-highlighted block">
-                {{ $t('pages.settings.meta.favicon') }}
-              </label>
-              <p class="text-xs text-muted mt-0.5">
-                {{ $t('pages.settings.meta.faviconHint') }}
-              </p>
-            </div>
-
+          <UFormField
+            :label="$t('pages.settings.meta.favicon')"
+            class="w-full"
+          >
             <div
               v-if="faviconPreview"
-              class="relative rounded-lg overflow-hidden border border-default aspect-video group flex items-center justify-center bg-muted/10 p-4"
+              class="relative rounded-lg overflow-hidden border border-default aspect-video group flex items-center justify-center bg-muted/10 p-4 w-full"
             >
               <img
                 :src="faviconPreview"
@@ -208,22 +196,16 @@
               class="w-full min-h-48"
               :disabled="!can('settings.update')"
             />
-          </div>
+          </UFormField>
 
           <!-- OpenGraph Image -->
-          <div class="space-y-2">
-            <div>
-              <label class="text-xs font-medium text-highlighted block">
-                {{ $t('pages.settings.meta.ogImage') }}
-              </label>
-              <p class="text-xs text-muted mt-0.5">
-                {{ $t('pages.settings.meta.ogImageHint') }}
-              </p>
-            </div>
-
+          <UFormField
+            :label="$t('pages.settings.meta.ogImage')"
+            class="w-full"
+          >
             <div
               v-if="ogImagePreview"
-              class="relative rounded-lg overflow-hidden border border-default aspect-video group"
+              class="relative rounded-lg overflow-hidden border border-default aspect-video group w-full"
             >
               <img
                 :src="ogImagePreview"
@@ -258,7 +240,7 @@
               class="w-full min-h-48"
               :disabled="!can('settings.update')"
             />
-          </div>
+          </UFormField>
         </div>
       </div>
 

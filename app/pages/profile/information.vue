@@ -1,7 +1,7 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Photo -->
-    <div class="flex flex-col sm:flex-row items-center gap-6 pb-4 border-b border-muted">
+    <div class="flex flex-col sm:flex-row items-center gap-6 pb-4 border-b border-default">
       <div
         class="relative group cursor-pointer"
         @click="triggerFileInput"
@@ -107,7 +107,7 @@
         />
       </UFormField>
 
-      <div class="flex justify-end pt-2">
+      <div class="flex justify-end pt-3 border-t border-default">
         <UButton
           type="submit"
           color="primary"

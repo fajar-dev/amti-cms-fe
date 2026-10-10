@@ -138,7 +138,10 @@
     <template #footer>
       <div class="flex justify-end items-center gap-2 w-full">
         <UButton
-          :label="$t('components.user.updateModal.cancel')"
+          :label="$t('common.cancel')"
+          color="neutral"
+          variant="soft"
+          @click="() => { open = false }"
         />
         <UButton
           type="submit"
@@ -147,7 +150,7 @@
           :loading="isSubmitting"
           :disabled="isUploading"
         >
-          {{ $t('components.user.updateModal.save') }}
+          {{ $t('common.save') }}
         </UButton>
       </div>
     </template>

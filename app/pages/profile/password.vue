@@ -48,7 +48,7 @@
         />
       </UFormField>
 
-      <div class="flex justify-end pt-2">
+      <div class="flex justify-end pt-3 border-t border-default">
         <UButton
           type="submit"
           color="primary"

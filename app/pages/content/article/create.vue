@@ -39,14 +39,17 @@
         </div>
 
         <!-- Tiptap Editor Card -->
-        <div class="bg-default border border-default rounded-lg p-6 space-y-3">
-          <label class="block text-sm font-medium text-highlighted">
-            {{ $t('pages.article.fieldContent') }} <span class="text-error">*</span>
-          </label>
-          <CommonTiptapEditor
-            v-model="form.content"
-            :placeholder="$t('pages.article.placeholderContent')"
-          />
+        <div class="bg-default border border-default rounded-lg p-6">
+          <UFormField
+            :label="$t('pages.article.fieldContent')"
+            required
+            class="w-full"
+          >
+            <CommonTiptapEditor
+              v-model="form.content"
+              :placeholder="$t('pages.article.placeholderContent')"
+            />
+          </UFormField>
         </div>
       </div>
 
@@ -79,15 +82,15 @@
             />
           </UFormField>
 
-          <UFormField :label="$t('pages.article.fieldTags')">
+          <UFormField
+            :label="$t('pages.article.fieldTags')"
+            :help="$t('pages.article.tagsHelp')"
+          >
             <UInputTags
               v-model="form.tags"
               :placeholder="$t('pages.article.placeholderTags')"
               class="w-full"
             />
-            <p class="text-xs text-muted mt-1">
-              {{ $t('pages.article.tagsHelp') }}
-            </p>
           </UFormField>
 
           <UFormField :label="$t('pages.article.fieldDescription')">
@@ -134,8 +137,8 @@
             v-model="coverFile"
             icon="i-lucide-image"
             label="Drop your image here"
-            description="Recommended dimension is 1600 × 840"
-            class="w-96 min-h-48"
+            :description="$t('pages.article.recommendedCoverDimension')"
+            class="w-full min-h-48"
           />
         </div>
       </div>

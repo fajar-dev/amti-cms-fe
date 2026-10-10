@@ -21,13 +21,12 @@
       class="space-y-4"
       @submit="handleLogin"
     >
-      <!-- ID Karyawan Input Container -->
+      <!-- Email Input -->
       <UFormField
         :label="$t('pages.auth.signIn.emailLabel')"
         name="email"
         required
-        class="w-full font-medium text-highlighted"
-        :ui="{ label: 'text-sm font-medium text-highlighted' }"
+        class="w-full"
       >
         <UInput
           id="email"
@@ -38,13 +37,12 @@
         />
       </UFormField>
 
-      <!-- Password Input Container -->
+      <!-- Password Input -->
       <UFormField
         :label="$t('pages.auth.signIn.passwordLabel')"
         name="password"
         required
         class="w-full"
-        :ui="{ label: 'text-sm font-medium text-highlighted' }"
       >
         <template #hint>
           <NuxtLink
