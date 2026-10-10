@@ -4,18 +4,7 @@
     <Header
       :title="$t('pages.dashboard.title')"
       :description="$t('pages.dashboard.description')"
-    >
-      <template #actions>
-        <UButton
-          v-if="can('articles.create')"
-          icon="i-lucide-plus"
-          color="primary"
-          to="/content/article/create"
-        >
-          {{ $t('pages.dashboard.quickActionCreate') }}
-        </UButton>
-      </template>
-    </Header>
+    />
 
     <!-- Stat Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
@@ -237,6 +226,8 @@
               name-key="name"
               value-key="count"
               :height="300"
+              :radius="90"
+              :arc-width="32"
               variant="gradient"
               :legend-position="LegendPosition.BottomCenter"
             />
@@ -507,8 +498,6 @@ import type {
 definePageMeta({
   layout: 'dashboard'
 })
-
-const { can } = usePermission()
 
 // States for separate endpoints
 const summary = ref<DashboardSummary | null>(null)
