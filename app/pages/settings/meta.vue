@@ -110,12 +110,12 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Logo Card -->
-          <div class="bg-default border border-default rounded-lg p-6 space-y-4 overflow-hidden">
+          <!-- Logo -->
+          <div class="space-y-2">
             <div>
-              <h2 class="text-base font-semibold text-highlighted">
+              <label class="text-xs font-medium text-highlighted block">
                 {{ $t('pages.settings.meta.logo') }}
-              </h2>
+              </label>
               <p class="text-xs text-muted mt-0.5">
                 {{ $t('pages.settings.meta.logoHint') }}
               </p>
@@ -160,12 +160,12 @@
             />
           </div>
 
-          <!-- Favicon Card -->
-          <div class="bg-default border border-default rounded-lg p-6 space-y-4 overflow-hidden">
+          <!-- Favicon -->
+          <div class="space-y-2">
             <div>
-              <h2 class="text-base font-semibold text-highlighted">
+              <label class="text-xs font-medium text-highlighted block">
                 {{ $t('pages.settings.meta.favicon') }}
-              </h2>
+              </label>
               <p class="text-xs text-muted mt-0.5">
                 {{ $t('pages.settings.meta.faviconHint') }}
               </p>
@@ -210,12 +210,12 @@
             />
           </div>
 
-          <!-- OpenGraph Image Card -->
-          <div class="bg-default border border-default rounded-lg p-6 space-y-4 overflow-hidden">
+          <!-- OpenGraph Image -->
+          <div class="space-y-2">
             <div>
-              <h2 class="text-base font-semibold text-highlighted">
+              <label class="text-xs font-medium text-highlighted block">
                 {{ $t('pages.settings.meta.ogImage') }}
-              </h2>
+              </label>
               <p class="text-xs text-muted mt-0.5">
                 {{ $t('pages.settings.meta.ogImageHint') }}
               </p>
