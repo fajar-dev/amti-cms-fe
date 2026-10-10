@@ -17,8 +17,8 @@
           color="neutral"
           variant="outline"
           size="md"
-          :loading="isLoading"
-          @click="fetchStats"
+          :loading="isRefreshing"
+          @click="fetchAll"
         />
         <UButton
           v-if="can('articles.create')"
@@ -38,15 +38,12 @@
           to="/messages"
         >
           {{ $t('pages.dashboard.quickActionMessages') }}
-          <UBadge
-            v-if="stats?.summary.unreadMessages"
-            color="warning"
-            variant="solid"
-            size="sm"
-            class="ml-1"
+          <span
+            v-if="summary?.unreadMessages"
+            class="text-xs font-semibold text-amber-600 dark:text-amber-400 ml-1"
           >
-            {{ stats.summary.unreadMessages }}
-          </UBadge>
+            ({{ summary.unreadMessages }})
+          </span>
         </UButton>
       </div>
     </div>
@@ -65,18 +62,20 @@
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoading" class="h-8 w-20" />
+          <USkeleton v-if="isLoadingSummary" class="h-8 w-20" />
           <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
-            {{ stats?.summary.totalArticles ?? 0 }}
+            {{ summary?.totalArticles ?? 0 }}
           </div>
         </div>
-        <div class="mt-3 flex items-center gap-2">
-          <UBadge color="success" variant="subtle" size="sm">
-            {{ stats?.summary.publishedArticles ?? 0 }} {{ $t('pages.dashboard.published') }}
-          </UBadge>
-          <UBadge color="neutral" variant="subtle" size="sm">
-            {{ stats?.summary.draftArticles ?? 0 }} {{ $t('pages.dashboard.draft') }}
-          </UBadge>
+        <div class="mt-3 flex items-center gap-3 text-xs text-muted">
+          <span class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            {{ summary?.publishedArticles ?? 0 }} {{ $t('pages.dashboard.published') }}
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+            {{ summary?.draftArticles ?? 0 }} {{ $t('pages.dashboard.draft') }}
+          </span>
         </div>
       </NuxtLink>
 
@@ -89,9 +88,9 @@
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoading" class="h-8 w-24" />
+          <USkeleton v-if="isLoadingSummary" class="h-8 w-24" />
           <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
-            {{ (stats?.summary.totalViews ?? 0).toLocaleString() }}
+            {{ (summary?.totalViews ?? 0).toLocaleString() }}
           </div>
         </div>
         <div class="mt-3 flex items-center text-xs text-muted">
@@ -112,22 +111,20 @@
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoading" class="h-8 w-20" />
+          <USkeleton v-if="isLoadingSummary" class="h-8 w-20" />
           <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
-            {{ stats?.summary.totalMessages ?? 0 }}
+            {{ summary?.totalMessages ?? 0 }}
           </div>
         </div>
-        <div class="mt-3 flex items-center gap-2">
-          <UBadge
-            :color="(stats?.summary.unreadMessages ?? 0) > 0 ? 'warning' : 'neutral'"
-            variant="subtle"
-            size="sm"
-          >
-            {{ stats?.summary.unreadMessages ?? 0 }} {{ $t('pages.dashboard.unread') }}
-          </UBadge>
-          <UBadge color="success" variant="subtle" size="sm">
-            {{ ((stats?.summary.totalMessages ?? 0) - (stats?.summary.unreadMessages ?? 0)) }} {{ $t('pages.dashboard.read') }}
-          </UBadge>
+        <div class="mt-3 flex items-center gap-3 text-xs text-muted">
+          <span class="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500" />
+            {{ summary?.unreadMessages ?? 0 }} {{ $t('pages.dashboard.unread') }}
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            {{ ((summary?.totalMessages ?? 0) - (summary?.unreadMessages ?? 0)) }} {{ $t('pages.dashboard.read') }}
+          </span>
         </div>
       </NuxtLink>
 
@@ -143,18 +140,15 @@
           </div>
         </div>
         <div class="mt-3">
-          <USkeleton v-if="isLoading" class="h-8 w-20" />
+          <USkeleton v-if="isLoadingSummary" class="h-8 w-20" />
           <div v-else class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight">
-            {{ stats?.summary.totalUsers ?? 0 }}
+            {{ summary?.totalUsers ?? 0 }}
           </div>
         </div>
-        <div class="mt-3 flex items-center gap-2">
-          <UBadge color="primary" variant="subtle" size="sm">
-            {{ stats?.summary.totalCategories ?? 0 }} Kategori
-          </UBadge>
-          <UBadge color="neutral" variant="subtle" size="sm">
-            {{ stats?.summary.totalFaqs ?? 0 }} FAQ
-          </UBadge>
+        <div class="mt-3 flex items-center gap-3 text-xs text-muted">
+          <span>{{ summary?.totalCategories ?? 0 }} Kategori</span>
+          <span>•</span>
+          <span>{{ summary?.totalFaqs ?? 0 }} FAQ</span>
         </div>
       </NuxtLink>
     </div>
@@ -162,7 +156,7 @@
     <!-- Charts Row 1: Views Trend (AreaChart) & Category Distribution (DonutChart) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
       <!-- Views Trend Area Chart (8 cols) -->
-      <div class="lg:col-span-8 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col justify-between">
+      <div class="lg:col-span-8 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
           <div>
             <h2 class="text-base font-semibold text-highlighted">
@@ -172,32 +166,36 @@
               {{ $t('pages.dashboard.viewsTrendDesc') }}
             </p>
           </div>
-          <UBadge color="primary" variant="subtle" size="sm">
+          <span class="text-xs font-medium text-muted">
             7 Hari Terakhir
-          </UBadge>
+          </span>
         </div>
 
-        <div class="h-80 w-full flex items-center justify-center">
-          <USkeleton v-if="isLoading" class="w-full h-full rounded-xl" />
-          <div v-else-if="!viewsChartData.length" class="text-sm text-muted">
+        <div class="w-full h-80 min-h-[320px]">
+          <USkeleton v-if="isLoadingViews" class="w-full h-full rounded-xl" />
+          <div v-else-if="!viewsTrend.length" class="h-full flex items-center justify-center text-sm text-muted">
             Tidak ada data statistik
           </div>
-          <AreaChart
-            v-else
-            :data="viewsChartData"
-            :categories="viewsChartCategories"
-            x-axis="label"
-            :height="300"
-            :curve-type="CurveType.MonotoneX"
-            variant="gradient"
-            tooltip-variant="frosted-glass"
-            dot-variant="border"
-          />
+          <ClientOnly v-else>
+            <AreaChart
+              :data="viewsTrend"
+              :categories="viewsChartCategories"
+              x-axis="label"
+              :height="320"
+              :curve-type="CurveType.MonotoneX"
+              variant="gradient"
+              tooltip-variant="frosted-glass"
+              dot-variant="border"
+            />
+            <template #fallback>
+              <USkeleton class="w-full h-full rounded-xl" />
+            </template>
+          </ClientOnly>
         </div>
       </div>
 
       <!-- Categories Donut Chart (4 cols) -->
-      <div class="lg:col-span-4 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col justify-between">
+      <div class="lg:col-span-4 bg-default border border-default p-5 sm:p-6 rounded-2xl shadow-xs">
         <div class="mb-4">
           <h2 class="text-base font-semibold text-highlighted">
             {{ $t('pages.dashboard.categoryDistTitle') }}
@@ -207,21 +205,25 @@
           </p>
         </div>
 
-        <div class="h-80 w-full flex items-center justify-center">
-          <USkeleton v-if="isLoading" class="w-full h-full rounded-xl" />
-          <div v-else-if="!categoryChartData.length" class="text-sm text-muted">
+        <div class="w-full h-80 min-h-[320px]">
+          <USkeleton v-if="isLoadingCategories" class="w-full h-full rounded-xl" />
+          <div v-else-if="!categoriesDistribution.length" class="h-full flex items-center justify-center text-sm text-muted">
             Belum ada kategori artikel
           </div>
-          <DonutChart
-            v-else
-            :data="categoryChartData"
-            :categories="categoryChartCategories"
-            name-key="name"
-            value-key="count"
-            :height="290"
-            variant="gradient"
-            :legend-position="LegendPosition.BottomCenter"
-          />
+          <ClientOnly v-else>
+            <DonutChart
+              :data="categoriesDistribution"
+              :categories="categoryChartCategories"
+              name-key="name"
+              value-key="count"
+              :height="300"
+              variant="gradient"
+              :legend-position="LegendPosition.BottomCenter"
+            />
+            <template #fallback>
+              <USkeleton class="w-full h-full rounded-xl" />
+            </template>
+          </ClientOnly>
         </div>
       </div>
     </div>
@@ -248,18 +250,22 @@
           </NuxtLink>
         </div>
 
-        <div class="h-72 w-full flex items-center justify-center">
-          <USkeleton v-if="isLoading" class="w-full h-full rounded-xl" />
-          <BarChart
-            v-else
-            :data="messagesChartData"
-            :categories="messagesChartCategories"
-            :y-axis="['unread', 'read']"
-            x-axis="month"
-            :height="270"
-            variant="duotone"
-            stacked
-          />
+        <div class="w-full h-72 min-h-[280px]">
+          <USkeleton v-if="isLoadingMessagesTrend" class="w-full h-full rounded-xl" />
+          <ClientOnly v-else>
+            <BarChart
+              :data="messagesTrend"
+              :categories="messagesChartCategories"
+              :y-axis="['unread', 'read']"
+              x-axis="month"
+              :height="280"
+              variant="duotone"
+              stacked
+            />
+            <template #fallback>
+              <USkeleton class="w-full h-full rounded-xl" />
+            </template>
+          </ClientOnly>
         </div>
       </div>
 
@@ -284,18 +290,18 @@
             </NuxtLink>
           </div>
 
-          <div v-if="isLoading" class="space-y-3">
+          <div v-if="isLoadingRecentMessages" class="space-y-3">
             <USkeleton v-for="i in 4" :key="i" class="h-14 w-full rounded-xl" />
           </div>
 
-          <div v-else-if="!stats?.recentMessages?.length" class="py-12 text-center text-sm text-muted">
+          <div v-else-if="!recentMessages.length" class="py-12 text-center text-sm text-muted">
             <UIcon name="i-lucide-inbox" class="w-8 h-8 mx-auto mb-2 opacity-50" />
             {{ $t('pages.dashboard.noRecentMessages') }}
           </div>
 
           <div v-else class="divide-y divide-default">
             <NuxtLink
-              v-for="msg in stats.recentMessages"
+              v-for="msg in recentMessages"
               :key="msg.id"
               to="/messages"
               class="py-3 flex items-start justify-between gap-3 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 -mx-2 px-2 rounded-lg transition-colors"
@@ -341,18 +347,18 @@
         </NuxtLink>
       </div>
 
-      <div v-if="isLoading" class="space-y-3">
+      <div v-if="isLoadingRecentArticles" class="space-y-3">
         <USkeleton v-for="i in 3" :key="i" class="h-16 w-full rounded-xl" />
       </div>
 
-      <div v-else-if="!stats?.recentArticles?.length" class="py-12 text-center text-sm text-muted">
+      <div v-else-if="!recentArticles.length" class="py-12 text-center text-sm text-muted">
         <UIcon name="i-lucide-file-text" class="w-8 h-8 mx-auto mb-2 opacity-50" />
         {{ $t('pages.dashboard.noRecentArticles') }}
       </div>
 
       <div v-else class="divide-y divide-default">
         <div
-          v-for="art in stats.recentArticles"
+          v-for="art in recentArticles"
           :key="art.id"
           class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 -mx-2 px-2 rounded-lg transition-colors"
         >
@@ -377,18 +383,21 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-3 shrink-0 self-end sm:self-center">
+          <div class="flex items-center gap-4 shrink-0 self-end sm:self-center">
             <div class="flex items-center gap-1 text-xs text-muted">
               <UIcon name="i-lucide-eye" class="w-3.5 h-3.5" />
               <span>{{ (art.viewsCount || 0).toLocaleString() }}</span>
             </div>
-            <UBadge
-              :color="art.status === 'publish' ? 'success' : 'neutral'"
-              variant="subtle"
-              size="sm"
+            <span
+              class="inline-flex items-center gap-1.5 text-xs font-medium"
+              :class="art.status === 'publish' ? 'text-emerald-600 dark:text-emerald-400' : 'text-neutral-500'"
             >
+              <span
+                class="w-1.5 h-1.5 rounded-full"
+                :class="art.status === 'publish' ? 'bg-emerald-500' : 'bg-neutral-400'"
+              />
               {{ art.status === 'publish' ? $t('pages.dashboard.published') : $t('pages.dashboard.draft') }}
-            </UBadge>
+            </span>
           </div>
         </div>
       </div>
@@ -400,7 +409,14 @@
 import { ref, computed, onMounted } from 'vue'
 import { CurveType, LegendPosition } from 'nuxt-charts/enums'
 import { dashboardService } from '~/services/dashboard-service'
-import type { DashboardStats } from '~/types/dashboard'
+import type {
+  DashboardSummary,
+  ViewsTrendItem,
+  ArticlesByCategoryItem,
+  MessagesTrendItem,
+  DashboardRecentArticle,
+  DashboardRecentMessage
+} from '~/types/dashboard'
 
 definePageMeta({
   layout: 'dashboard'
@@ -410,47 +426,125 @@ const { can } = usePermission()
 const auth = useAuth()
 const userName = computed(() => auth.state.user?.name || 'Admin')
 
-const stats = ref<DashboardStats | null>(null)
-const isLoading = ref(true)
+// States for separate endpoints
+const summary = ref<DashboardSummary | null>(null)
+const viewsTrend = ref<ViewsTrendItem[]>([])
+const categoriesDistribution = ref<ArticlesByCategoryItem[]>([])
+const messagesTrend = ref<MessagesTrendItem[]>([])
+const recentArticles = ref<DashboardRecentArticle[]>([])
+const recentMessages = ref<DashboardRecentMessage[]>([])
 
-// Fetch Stats
-const fetchStats = async () => {
-  isLoading.value = true
+// Loading states
+const isLoadingSummary = ref(true)
+const isLoadingViews = ref(true)
+const isLoadingCategories = ref(true)
+const isLoadingMessagesTrend = ref(true)
+const isLoadingRecentArticles = ref(true)
+const isLoadingRecentMessages = ref(true)
+const isRefreshing = ref(false)
+
+// Fetch methods for each separate endpoint
+const fetchSummary = async () => {
+  isLoadingSummary.value = true
   try {
-    const res = await dashboardService.getStats()
-    if (res.data) {
-      stats.value = res.data
-    }
+    const res = await dashboardService.getSummary()
+    if (res.data) summary.value = res.data
   } catch (err) {
-    console.error('Failed to load dashboard stats:', err)
+    console.error('Failed to load dashboard summary:', err)
   } finally {
-    isLoading.value = false
+    isLoadingSummary.value = false
   }
 }
 
+const fetchViewsTrend = async () => {
+  isLoadingViews.value = true
+  try {
+    const res = await dashboardService.getViewsTrend(7)
+    if (res.data) viewsTrend.value = res.data
+  } catch (err) {
+    console.error('Failed to load views trend:', err)
+  } finally {
+    isLoadingViews.value = false
+  }
+}
+
+const fetchCategoriesDistribution = async () => {
+  isLoadingCategories.value = true
+  try {
+    const res = await dashboardService.getCategoriesDistribution()
+    if (res.data) categoriesDistribution.value = res.data
+  } catch (err) {
+    console.error('Failed to load categories distribution:', err)
+  } finally {
+    isLoadingCategories.value = false
+  }
+}
+
+const fetchMessagesTrend = async () => {
+  isLoadingMessagesTrend.value = true
+  try {
+    const res = await dashboardService.getMessagesTrend(6)
+    if (res.data) messagesTrend.value = res.data
+  } catch (err) {
+    console.error('Failed to load messages trend:', err)
+  } finally {
+    isLoadingMessagesTrend.value = false
+  }
+}
+
+const fetchRecentArticles = async () => {
+  isLoadingRecentArticles.value = true
+  try {
+    const res = await dashboardService.getRecentArticles(5)
+    if (res.data) recentArticles.value = res.data
+  } catch (err) {
+    console.error('Failed to load recent articles:', err)
+  } finally {
+    isLoadingRecentArticles.value = false
+  }
+}
+
+const fetchRecentMessages = async () => {
+  isLoadingRecentMessages.value = true
+  try {
+    const res = await dashboardService.getRecentMessages(5)
+    if (res.data) recentMessages.value = res.data
+  } catch (err) {
+    console.error('Failed to load recent messages:', err)
+  } finally {
+    isLoadingRecentMessages.value = false
+  }
+}
+
+// Master refresh
+const fetchAll = async () => {
+  isRefreshing.value = true
+  await Promise.allSettled([
+    fetchSummary(),
+    fetchViewsTrend(),
+    fetchCategoriesDistribution(),
+    fetchMessagesTrend(),
+    fetchRecentArticles(),
+    fetchRecentMessages()
+  ])
+  isRefreshing.value = false
+}
+
 onMounted(() => {
-  fetchStats()
+  fetchAll()
 })
 
 // Views Trend Chart Config
-const viewsChartData = computed(() => {
-  return stats.value?.viewsTrend || []
-})
-
 const viewsChartCategories = {
   views: { name: 'Pembaca (Views)', color: '#3b82f6' },
   articles: { name: 'Artikel Terbit', color: '#10b981' }
 }
 
 // Category Distribution Chart Config
-const categoryChartData = computed(() => {
-  return stats.value?.articlesByCategory || []
-})
-
 const categoryPalette = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4']
 const categoryChartCategories = computed(() => {
   const result: Record<string, { name: string; color: string }> = {}
-  categoryChartData.value.forEach((item, idx) => {
+  categoriesDistribution.value.forEach((item, idx) => {
     result[item.name] = {
       name: item.name,
       color: categoryPalette[idx % categoryPalette.length] || '#3b82f6'
@@ -460,10 +554,6 @@ const categoryChartCategories = computed(() => {
 })
 
 // Messages Trend Chart Config
-const messagesChartData = computed(() => {
-  return stats.value?.messagesTrend || []
-})
-
 const messagesChartCategories = {
   unread: { name: 'Belum Dibaca', color: '#f59e0b' },
   read: { name: 'Sudah Dibaca', color: '#10b981' }
@@ -492,3 +582,14 @@ const formatTimeAgo = (dateStr: string) => {
   return `${Math.floor(diffSec / 86400)} hari lalu`
 }
 </script>
+
+<style scoped>
+:deep(.vue-chrts) {
+  width: 100% !important;
+  display: block;
+}
+
+:deep(.vcharts-responsive-container) {
+  width: 100% !important;
+}
+</style>
