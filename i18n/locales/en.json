@@ -436,15 +436,14 @@
       "recommendedCoverDimension": "Recommended dimension is 1600 × 840"
     },
     "settings": {
-      "title": "Website Settings",
-      "description": "Manage website identity, meta SEO, contact information, and social media links",
-      "tabMeta": "Website Meta",
-      "tabContact": "Contact",
-      "tabSocial": "Social Media",
-      "saveButton": "Save Settings",
-      "savingButton": "Saving...",
-      "savedSuccess": "Settings updated successfully!",
-      "metaSection": {
+      "index": {
+        "title": "Website Settings",
+        "description": "Manage website identity, meta SEO, contact information, and social media links",
+        "tabMeta": "Website Meta",
+        "tabContact": "Contact",
+        "tabSocial": "Social Media"
+      },
+      "meta": {
         "title": "Information & Meta SEO",
         "description": "Configure website name, description, meta keywords, and branding media.",
         "siteName": "Site Name",
@@ -464,9 +463,11 @@
         "favicon": "Favicon",
         "faviconHint": "ICO or PNG format. Ideal size 32x32 or 64x64.",
         "ogImage": "OpenGraph Image (Social Share)",
-        "ogImageHint": "Ideal size 1200x630 for social media link preview."
+        "ogImageHint": "Ideal size 1200x630 for social media link preview.",
+        "save": "Save Meta",
+        "updatedSuccess": "Website meta settings updated successfully!"
       },
-      "contactSection": {
+      "contact": {
         "title": "Contact Information",
         "description": "Official contact details displayed to website visitors.",
         "phone": "Phone Number / WhatsApp",
@@ -474,9 +475,11 @@
         "email": "Email Address",
         "emailPlaceholder": "info{'@'}amti.id",
         "address": "Office Address",
-        "addressPlaceholder": "Enter full physical or office address..."
+        "addressPlaceholder": "Enter full physical or office address...",
+        "save": "Save Contact",
+        "updatedSuccess": "Contact information updated successfully!"
       },
-      "socialSection": {
+      "social": {
         "title": "Social Media Links",
         "description": "Links to your official social media profile pages.",
         "facebook": "Facebook",
@@ -490,7 +493,9 @@
         "twitter": "X (Twitter)",
         "twitterPlaceholder": "https://x.com/profilename",
         "youtube": "YouTube",
-        "youtubePlaceholder": "https://youtube.com/{'@'}channelname"
+        "youtubePlaceholder": "https://youtube.com/{'@'}channelname",
+        "save": "Save Social Media",
+        "updatedSuccess": "Social media links updated successfully!"
       },
       "uploadSuccess": "File uploaded successfully!",
       "uploadFailed": "Failed to upload file",

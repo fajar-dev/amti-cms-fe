@@ -436,15 +436,14 @@
       "recommendedCoverDimension": "Recommended dimension is 1600 × 840"
     },
     "settings": {
-      "title": "Pengaturan Website",
-      "description": "Kelola identitas website, meta SEO, informasi kontak, dan tautan sosial media",
-      "tabMeta": "Meta Website",
-      "tabContact": "Kontak",
-      "tabSocial": "Sosial Media",
-      "saveButton": "Simpan Pengaturan",
-      "savingButton": "Menyimpan...",
-      "savedSuccess": "Pengaturan berhasil diperbarui!",
-      "metaSection": {
+      "index": {
+        "title": "Pengaturan Website",
+        "description": "Kelola identitas website, meta SEO, informasi kontak, dan tautan sosial media",
+        "tabMeta": "Meta Website",
+        "tabContact": "Kontak",
+        "tabSocial": "Sosial Media"
+      },
+      "meta": {
         "title": "Informasi & Meta SEO",
         "description": "Pengaturan nama website, deskripsi, kata kunci meta, dan media pendukung.",
         "siteName": "Nama Website",
@@ -464,9 +463,11 @@
         "favicon": "Favicon",
         "faviconHint": "Format ICO atau PNG. Ukuran ideal 32x32 atau 64x64.",
         "ogImage": "OpenGraph Image (Social Share)",
-        "ogImageHint": "Ukuran ideal 1200x630 untuk pratinjau media sosial."
+        "ogImageHint": "Ukuran ideal 1200x630 untuk pratinjau media sosial.",
+        "save": "Simpan Meta",
+        "updatedSuccess": "Pengaturan meta website berhasil diperbarui!"
       },
-      "contactSection": {
+      "contact": {
         "title": "Informasi Kontak",
         "description": "Informasi kontak resmi yang ditampilkan kepada pengunjung website.",
         "phone": "Nomor Telepon / WhatsApp",
@@ -474,9 +475,11 @@
         "email": "Alamat Email",
         "emailPlaceholder": "info{'@'}amti.id",
         "address": "Alamat Kantor",
-        "addressPlaceholder": "Masukkan alamat lengkap kantor atau perusahaan..."
+        "addressPlaceholder": "Masukkan alamat lengkap kantor atau perusahaan...",
+        "save": "Simpan Kontak",
+        "updatedSuccess": "Informasi kontak berhasil diperbarui!"
       },
-      "socialSection": {
+      "social": {
         "title": "Tautan Sosial Media",
         "description": "Tautan ke profil akun resmi sosial media website Anda.",
         "facebook": "Facebook",
@@ -490,7 +493,9 @@
         "twitter": "X (Twitter)",
         "twitterPlaceholder": "https://x.com/namaprofil",
         "youtube": "YouTube",
-        "youtubePlaceholder": "https://youtube.com/{'@'}namachannel"
+        "youtubePlaceholder": "https://youtube.com/{'@'}namachannel",
+        "save": "Simpan Sosial Media",
+        "updatedSuccess": "Tautan sosial media berhasil diperbarui!"
       },
       "uploadSuccess": "Berkas berhasil diunggah!",
       "uploadFailed": "Gagal mengunggah berkas",

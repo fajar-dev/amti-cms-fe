@@ -26,7 +26,7 @@ export interface Setting {
   updatedAt: string
 }
 
-export interface SettingPayload {
+export interface SettingMetaPayload {
   siteName: string
   siteDescription?: string | null
   metaKeywords?: string | null
@@ -35,9 +35,15 @@ export interface SettingPayload {
   logo?: string | null
   favicon?: string | null
   ogImage?: string | null
+}
+
+export interface SettingContactPayload {
   phone?: string | null
   email?: string | null
   address?: string | null
+}
+
+export interface SettingSocialPayload {
   facebook?: string | null
   instagram?: string | null
   tiktok?: string | null
@@ -45,5 +51,7 @@ export interface SettingPayload {
   twitter?: string | null
   youtube?: string | null
 }
+
+export interface SettingPayload extends SettingMetaPayload, SettingContactPayload, SettingSocialPayload {}
 
 export type { ApiResponse }

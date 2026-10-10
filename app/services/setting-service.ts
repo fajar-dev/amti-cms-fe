@@ -1,6 +1,13 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { Setting, SettingPayload, ApiResponse } from '../types/setting'
+import type {
+  Setting,
+  SettingPayload,
+  SettingMetaPayload,
+  SettingContactPayload,
+  SettingSocialPayload,
+  ApiResponse
+} from '../types/setting'
 
 export class SettingService {
   private get authHeaders() {
@@ -23,6 +30,45 @@ export class SettingService {
     try {
       const response = await apiService.client.put<ApiResponse<Setting>>(
         '/settings',
+        payload,
+        this.authHeaders
+      )
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
+  async updateMeta(payload: SettingMetaPayload): Promise<ApiResponse<Setting>> {
+    try {
+      const response = await apiService.client.put<ApiResponse<Setting>>(
+        '/settings/meta',
+        payload,
+        this.authHeaders
+      )
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
+  async updateContact(payload: SettingContactPayload): Promise<ApiResponse<Setting>> {
+    try {
+      const response = await apiService.client.put<ApiResponse<Setting>>(
+        '/settings/contact',
+        payload,
+        this.authHeaders
+      )
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
+  async updateSocial(payload: SettingSocialPayload): Promise<ApiResponse<Setting>> {
+    try {
+      const response = await apiService.client.put<ApiResponse<Setting>>(
+        '/settings/social',
         payload,
         this.authHeaders
       )
