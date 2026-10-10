@@ -22,10 +22,10 @@
       <!-- Meta SEO Info -->
       <div class="space-y-4">
         <div class="border-b border-default pb-3">
-          <h3 class="text-sm font-semibold text-highlighted">
+          <h3 class="text-md font-semibold text-highlighted">
             {{ $t('pages.settings.meta.title') }}
           </h3>
-          <p class="text-xs text-muted mt-0.5">
+          <p class="text-sm text-muted mt-0.5">
             {{ $t('pages.settings.meta.description') }}
           </p>
         </div>
@@ -105,79 +105,42 @@
             {{ $t('pages.settings.meta.mediaTitle') }}
           </h3>
           <p class="text-xs text-muted mt-0.5">
-            {{ $t('pages.settings.meta.logoHint') }}
+            {{ $t('pages.settings.meta.mediaDescription') }}
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Logo -->
-          <div class="space-y-2">
-            <label class="text-xs font-medium text-highlighted block">
-              {{ $t('pages.settings.meta.logo') }}
-            </label>
-            <p class="text-xs text-muted">
-              {{ $t('pages.settings.meta.logoHint') }}
-            </p>
+          <!-- Logo Card -->
+          <div class="bg-default border border-default rounded-lg p-6 space-y-4 overflow-hidden">
+            <div>
+              <h2 class="text-base font-semibold text-highlighted">
+                {{ $t('pages.settings.meta.logo') }}
+              </h2>
+              <p class="text-xs text-muted mt-0.5">
+                {{ $t('pages.settings.meta.logoHint') }}
+              </p>
+            </div>
 
-            <div class="border border-default rounded-lg p-3 flex flex-col items-center justify-center gap-2 min-h-40 bg-muted/20 relative">
-              <div
-                v-if="logoPreview"
-                class="relative group w-full h-24 flex items-center justify-center overflow-hidden rounded"
+            <div
+              v-if="logoPreview"
+              class="relative rounded-lg overflow-hidden border border-default aspect-video group flex items-center justify-center bg-muted/10 p-4"
+            >
+              <img
+                :src="logoPreview"
+                alt="Logo Preview"
+                class="max-h-full max-w-full object-contain"
               >
-                <img
-                  :src="logoPreview"
-                  alt="Logo Preview"
-                  class="max-h-full max-w-full object-contain"
-                >
-                <div
-                  v-if="can('settings.update')"
-                  class="absolute inset-0 bg-black/40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <UButton
-                    size="xs"
-                    color="neutral"
-                    variant="solid"
-                    icon="i-lucide-upload"
-                    @click="triggerUpload('logo')"
-                  >
-                    {{ $t('pages.settings.changeMedia') }}
-                  </UButton>
-                  <UButton
-                    size="xs"
-                    color="error"
-                    variant="solid"
-                    icon="i-lucide-trash"
-                    @click="removeMedia('logo')"
-                  >
-                    {{ $t('pages.settings.removeMedia') }}
-                  </UButton>
-                </div>
-              </div>
-
-              <div
-                v-else
-                class="flex flex-col items-center justify-center text-center py-2"
+              <button
+                v-if="can('settings.update')"
+                type="button"
+                class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                @click="removeMedia('logo')"
               >
-                <UIcon
-                  name="i-lucide-image"
-                  class="w-8 h-8 text-dimmed mb-2"
-                />
-                <UButton
-                  v-if="can('settings.update')"
-                  size="xs"
-                  color="neutral"
-                  variant="outline"
-                  icon="i-lucide-upload"
-                  :loading="uploadingKey === 'logo'"
-                  @click="triggerUpload('logo')"
-                >
-                  {{ $t('pages.settings.chooseFile') }}
-                </UButton>
-              </div>
-
+                <span class="i-lucide-x text-sm" />
+              </button>
               <div
                 v-if="uploadingKey === 'logo'"
-                class="absolute inset-0 bg-black/40 flex items-center justify-center rounded-lg"
+                class="absolute inset-0 bg-black/40 flex items-center justify-center"
               >
                 <UIcon
                   name="i-lucide-loader-2"
@@ -185,92 +148,49 @@
                 />
               </div>
             </div>
+
+            <UFileUpload
+              v-else
+              v-model="logoFile"
+              icon="i-lucide-image"
+              label="Drop your image here"
+              :description="$t('pages.settings.meta.logoHint')"
+              class="w-full min-h-48"
+              :disabled="!can('settings.update')"
+            />
           </div>
 
-          <!-- Favicon -->
-          <div class="space-y-2">
-            <label class="text-xs font-medium text-highlighted block">
-              {{ $t('pages.settings.meta.favicon') }}
-            </label>
-            <p class="text-xs text-muted">
-              {{ $t('pages.settings.meta.faviconHint') }}
-            </p>
+          <!-- Favicon Card -->
+          <div class="bg-default border border-default rounded-lg p-6 space-y-4 overflow-hidden">
+            <div>
+              <h2 class="text-base font-semibold text-highlighted">
+                {{ $t('pages.settings.meta.favicon') }}
+              </h2>
+              <p class="text-xs text-muted mt-0.5">
+                {{ $t('pages.settings.meta.faviconHint') }}
+              </p>
+            </div>
 
-            <div class="border border-default rounded-lg p-3 flex flex-col items-center justify-center gap-2 min-h-40 bg-muted/20 relative">
-              <div
-                v-if="faviconPreview"
-                class="relative group w-14 h-14 flex items-center justify-center overflow-hidden rounded border border-default p-2 bg-default"
+            <div
+              v-if="faviconPreview"
+              class="relative rounded-lg overflow-hidden border border-default aspect-video group flex items-center justify-center bg-muted/10 p-4"
+            >
+              <img
+                :src="faviconPreview"
+                alt="Favicon Preview"
+                class="w-16 h-16 object-contain"
               >
-                <img
-                  :src="faviconPreview"
-                  alt="Favicon Preview"
-                  class="max-h-full max-w-full object-contain"
-                >
-                <div
-                  v-if="can('settings.update')"
-                  class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <button
-                    type="button"
-                    class="text-white hover:text-red-400 p-1"
-                    @click="removeMedia('favicon')"
-                  >
-                    <UIcon
-                      name="i-lucide-trash"
-                      class="w-4 h-4"
-                    />
-                  </button>
-                </div>
-              </div>
-
-              <div
-                v-else
-                class="flex flex-col items-center justify-center text-center py-2"
+              <button
+                v-if="can('settings.update')"
+                type="button"
+                class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                @click="removeMedia('favicon')"
               >
-                <UIcon
-                  name="i-lucide-bookmark"
-                  class="w-8 h-8 text-dimmed mb-2"
-                />
-                <UButton
-                  v-if="can('settings.update')"
-                  size="xs"
-                  color="neutral"
-                  variant="outline"
-                  icon="i-lucide-upload"
-                  :loading="uploadingKey === 'favicon'"
-                  @click="triggerUpload('favicon')"
-                >
-                  {{ $t('pages.settings.chooseFile') }}
-                </UButton>
-              </div>
-
-              <div
-                v-if="faviconPreview && can('settings.update')"
-                class="flex gap-2"
-              >
-                <UButton
-                  size="xs"
-                  color="neutral"
-                  variant="outline"
-                  icon="i-lucide-upload"
-                  @click="triggerUpload('favicon')"
-                >
-                  {{ $t('pages.settings.changeMedia') }}
-                </UButton>
-                <UButton
-                  size="xs"
-                  color="error"
-                  variant="outline"
-                  icon="i-lucide-trash"
-                  @click="removeMedia('favicon')"
-                >
-                  {{ $t('pages.settings.removeMedia') }}
-                </UButton>
-              </div>
-
+                <span class="i-lucide-x text-sm" />
+              </button>
               <div
                 v-if="uploadingKey === 'favicon'"
-                class="absolute inset-0 bg-black/40 flex items-center justify-center rounded-lg"
+                class="absolute inset-0 bg-black/40 flex items-center justify-center"
               >
                 <UIcon
                   name="i-lucide-loader-2"
@@ -278,76 +198,49 @@
                 />
               </div>
             </div>
+
+            <UFileUpload
+              v-else
+              v-model="faviconFile"
+              icon="i-lucide-bookmark"
+              label="Drop your image here"
+              :description="$t('pages.settings.meta.faviconHint')"
+              class="w-full min-h-48"
+              :disabled="!can('settings.update')"
+            />
           </div>
 
-          <!-- OpenGraph Image -->
-          <div class="space-y-2">
-            <label class="text-xs font-medium text-highlighted block">
-              {{ $t('pages.settings.meta.ogImage') }}
-            </label>
-            <p class="text-xs text-muted">
-              {{ $t('pages.settings.meta.ogImageHint') }}
-            </p>
+          <!-- OpenGraph Image Card -->
+          <div class="bg-default border border-default rounded-lg p-6 space-y-4 overflow-hidden">
+            <div>
+              <h2 class="text-base font-semibold text-highlighted">
+                {{ $t('pages.settings.meta.ogImage') }}
+              </h2>
+              <p class="text-xs text-muted mt-0.5">
+                {{ $t('pages.settings.meta.ogImageHint') }}
+              </p>
+            </div>
 
-            <div class="border border-default rounded-lg p-3 flex flex-col items-center justify-center gap-2 min-h-40 bg-muted/20 relative">
-              <div
-                v-if="ogImagePreview"
-                class="relative group w-full aspect-video flex items-center justify-center overflow-hidden rounded border border-default"
+            <div
+              v-if="ogImagePreview"
+              class="relative rounded-lg overflow-hidden border border-default aspect-video group"
+            >
+              <img
+                :src="ogImagePreview"
+                alt="OG Image Preview"
+                class="w-full h-full object-cover"
               >
-                <img
-                  :src="ogImagePreview"
-                  alt="OG Image Preview"
-                  class="w-full h-full object-cover"
-                >
-                <div
-                  v-if="can('settings.update')"
-                  class="absolute inset-0 bg-black/40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <UButton
-                    size="xs"
-                    color="neutral"
-                    variant="solid"
-                    icon="i-lucide-upload"
-                    @click="triggerUpload('ogImage')"
-                  >
-                    {{ $t('pages.settings.changeMedia') }}
-                  </UButton>
-                  <UButton
-                    size="xs"
-                    color="error"
-                    variant="solid"
-                    icon="i-lucide-trash"
-                    @click="removeMedia('ogImage')"
-                  >
-                    {{ $t('pages.settings.removeMedia') }}
-                  </UButton>
-                </div>
-              </div>
-
-              <div
-                v-else
-                class="flex flex-col items-center justify-center text-center py-2"
+              <button
+                v-if="can('settings.update')"
+                type="button"
+                class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                @click="removeMedia('ogImage')"
               >
-                <UIcon
-                  name="i-lucide-share"
-                  class="w-8 h-8 text-dimmed mb-2"
-                />
-                <UButton
-                  v-if="can('settings.update')"
-                  size="xs"
-                  color="neutral"
-                  variant="outline"
-                  icon="i-lucide-upload"
-                  :loading="uploadingKey === 'ogImage'"
-                  @click="triggerUpload('ogImage')"
-                >
-                  {{ $t('pages.settings.chooseFile') }}
-                </UButton>
-              </div>
-
+                <span class="i-lucide-x text-sm" />
+              </button>
               <div
                 v-if="uploadingKey === 'ogImage'"
-                class="absolute inset-0 bg-black/40 flex items-center justify-center rounded-lg"
+                class="absolute inset-0 bg-black/40 flex items-center justify-center"
               >
                 <UIcon
                   name="i-lucide-loader-2"
@@ -355,6 +248,16 @@
                 />
               </div>
             </div>
+
+            <UFileUpload
+              v-else
+              v-model="ogImageFile"
+              icon="i-lucide-image"
+              label="Drop your image here"
+              :description="$t('pages.settings.meta.ogImageHint')"
+              class="w-full min-h-48"
+              :disabled="!can('settings.update')"
+            />
           </div>
         </div>
       </div>
@@ -374,20 +277,11 @@
         </UButton>
       </div>
     </UForm>
-
-    <!-- Hidden File Input for Image Uploads -->
-    <input
-      ref="fileInputRef"
-      type="file"
-      class="hidden"
-      accept="image/*"
-      @change="onFileSelected"
-    >
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { z } from 'zod'
 import { settingService } from '~/services/setting-service'
 import type { SettingMetaPayload } from '~/types/setting'
@@ -399,8 +293,10 @@ const { can } = usePermission()
 const isLoading = ref(true)
 const isSaving = ref(false)
 const uploadingKey = ref<'logo' | 'favicon' | 'ogImage' | null>(null)
-const fileInputRef = ref<HTMLInputElement | null>(null)
-const currentUploadTarget = ref<'logo' | 'favicon' | 'ogImage' | null>(null)
+
+const logoFile = ref<File | null>(null)
+const faviconFile = ref<File | null>(null)
+const ogImageFile = ref<File | null>(null)
 
 const logoPreview = ref<string | null>(null)
 const faviconPreview = ref<string | null>(null)
@@ -458,57 +354,93 @@ const fetchSettings = async () => {
   }
 }
 
-const triggerUpload = (target: 'logo' | 'favicon' | 'ogImage') => {
-  currentUploadTarget.value = target
-  if (fileInputRef.value) {
-    fileInputRef.value.value = ''
-    fileInputRef.value.click()
+watch(logoFile, async (file) => {
+  const targetFile = Array.isArray(file) ? file[0] : file
+  if (targetFile instanceof File) {
+    await handleFileUpload('logo', targetFile)
   }
-}
+})
 
-const onFileSelected = async (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  const target = currentUploadTarget.value
-  if (!file || !target) return
+watch(faviconFile, async (file) => {
+  const targetFile = Array.isArray(file) ? file[0] : file
+  if (targetFile instanceof File) {
+    await handleFileUpload('favicon', targetFile)
+  }
+})
 
+watch(ogImageFile, async (file) => {
+  const targetFile = Array.isArray(file) ? file[0] : file
+  if (targetFile instanceof File) {
+    await handleFileUpload('ogImage', targetFile)
+  }
+})
+
+async function handleFileUpload(target: 'logo' | 'favicon' | 'ogImage', file: File) {
   const localUrl = URL.createObjectURL(file)
   if (target === 'logo') logoPreview.value = localUrl
   if (target === 'favicon') faviconPreview.value = localUrl
   if (target === 'ogImage') ogImagePreview.value = localUrl
 
   uploadingKey.value = target
+
   try {
     const response = await settingService.uploadFile(file)
     if (response.success && response.data?.path) {
       form[target] = response.data.path
       toast.add({
         title: t('pages.settings.uploadSuccess'),
-        icon: 'i-lucide-check-circle',
+        icon: 'i-lucide-circle-check',
         color: 'success'
       })
     } else {
-      throw new Error(response.message || 'Upload failed')
+      resetFilePreview(target)
+      toast.add({
+        title: t('pages.settings.uploadFailed'),
+        icon: 'i-lucide-circle-x',
+        color: 'error'
+      })
     }
   } catch {
+    resetFilePreview(target)
     toast.add({
       title: t('pages.settings.uploadFailed'),
       icon: 'i-lucide-circle-x',
       color: 'error'
     })
-    if (target === 'logo') logoPreview.value = form.logo ? logoPreview.value : null
-    if (target === 'favicon') faviconPreview.value = form.favicon ? faviconPreview.value : null
-    if (target === 'ogImage') ogImagePreview.value = form.ogImage ? ogImagePreview.value : null
   } finally {
     uploadingKey.value = null
-    currentUploadTarget.value = null
   }
 }
 
-const removeMedia = (target: 'logo' | 'favicon' | 'ogImage') => {
+function resetFilePreview(target: 'logo' | 'favicon' | 'ogImage') {
+  if (target === 'logo') {
+    logoPreview.value = form.logo ? logoPreview.value : null
+    logoFile.value = null
+  }
+  if (target === 'favicon') {
+    faviconPreview.value = form.favicon ? faviconPreview.value : null
+    faviconFile.value = null
+  }
+  if (target === 'ogImage') {
+    ogImagePreview.value = form.ogImage ? ogImagePreview.value : null
+    ogImageFile.value = null
+  }
+}
+
+function removeMedia(target: 'logo' | 'favicon' | 'ogImage') {
   form[target] = null
-  if (target === 'logo') logoPreview.value = null
-  if (target === 'favicon') faviconPreview.value = null
-  if (target === 'ogImage') ogImagePreview.value = null
+  if (target === 'logo') {
+    logoPreview.value = null
+    logoFile.value = null
+  }
+  if (target === 'favicon') {
+    faviconPreview.value = null
+    faviconFile.value = null
+  }
+  if (target === 'ogImage') {
+    ogImagePreview.value = null
+    ogImageFile.value = null
+  }
 }
 
 const handleSave = async () => {

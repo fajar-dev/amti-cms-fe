@@ -458,6 +458,7 @@
         "copyright": "Teks Hak Cipta",
         "copyrightPlaceholder": "© 2026 AMTI. All rights reserved.",
         "mediaTitle": "Media Website",
+        "mediaDescription": "Kelola logo, favicon, dan gambar pratinjau sosial media website.",
         "logo": "Logo Website",
         "logoHint": "Format PNG, JPG, SVG, atau WebP. Maks 2MB.",
         "favicon": "Favicon",

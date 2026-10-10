@@ -458,6 +458,7 @@
         "copyright": "Copyright Text",
         "copyrightPlaceholder": "© 2026 AMTI. All rights reserved.",
         "mediaTitle": "Branding & Media",
+        "mediaDescription": "Manage website logo, favicon, and social media preview images.",
         "logo": "Website Logo",
         "logoHint": "PNG, JPG, SVG, or WebP. Max 2MB.",
         "favicon": "Favicon",
