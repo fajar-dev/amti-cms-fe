@@ -666,8 +666,13 @@ const formatTimeAgo = (dateStr: string) => {
 
 <style scoped>
 :deep(.vue-chrts) {
+  position: relative !important;
   width: 100% !important;
   display: block;
+}
+
+:deep(.v-charts-wrapper) {
+  position: relative !important;
 }
 
 :deep(.vcharts-responsive-container) {

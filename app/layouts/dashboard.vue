@@ -66,6 +66,15 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 
+useHead({
+  htmlAttrs: {
+    class: 'h-full overflow-hidden'
+  },
+  bodyAttrs: {
+    class: 'h-full overflow-hidden'
+  }
+})
+
 const route = useRoute()
 const isMobileMenuOpen = useState('isMobileMenuOpen', () => false)
 

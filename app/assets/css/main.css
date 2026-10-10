@@ -3,6 +3,12 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+html,
+body,
+#__nuxt {
+  height: 100%;
+}
+
 @theme static {
   --font-sans: 'Geist', sans-serif;
 
