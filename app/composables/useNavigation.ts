@@ -19,7 +19,7 @@ export const useNavigation = () => {
   const { t } = useI18n()
   const { can } = usePermission()
   const isCollapsed = useState('sidebar-collapsed', () => false)
-  const expandedItems = useState<string[]>('sidebar-expanded', () => ['group:cms', 'group:userManagement', 'group:settings'])
+  const expandedItems = useState<string[]>('sidebar-expanded', () => ['group:cms', 'group:userManagement'])
 
   const navGroups = computed<NavGroup[]>(() => {
     const groups: NavGroup[] = [
@@ -62,6 +62,14 @@ export const useNavigation = () => {
         icon: 'i-lucide-help-circle'
       })
     }
+    if (can('settings.view')) {
+      cmsItems.push({
+        id: 'settings',
+        label: t('components.sidebar.nav.settings'),
+        to: '/settings',
+        icon: 'i-lucide-settings'
+      })
+    }
 
     if (cmsItems.length > 0) {
       groups.push({
@@ -95,25 +103,6 @@ export const useNavigation = () => {
         id: 'userManagement',
         title: t('components.sidebar.nav.userManagement'),
         items: userMgmtItems
-      })
-    }
-
-    // Settings Group
-    const settingsItems: NavItem[] = []
-    if (can('settings.view')) {
-      settingsItems.push({
-        id: 'settings',
-        label: t('components.sidebar.nav.settings'),
-        to: '/settings',
-        icon: 'i-lucide-settings'
-      })
-    }
-
-    if (settingsItems.length > 0) {
-      groups.push({
-        id: 'settings',
-        title: t('components.sidebar.nav.settingsGroup'),
-        items: settingsItems
       })
     }
 
