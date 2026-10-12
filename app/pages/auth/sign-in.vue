@@ -167,6 +167,7 @@ const toast = useToast()
 const showToast = (type: 'success' | 'error', title: string) => {
   toast.add({
     title,
+    color: type === 'success' ? 'success' : 'error',
     icon: type === 'success' ? 'i-lucide-circle-check' : 'i-lucide-circle-x'
   })
 }

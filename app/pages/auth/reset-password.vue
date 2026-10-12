@@ -182,6 +182,7 @@ const handleReset = async () => {
     await authService.resetPassword(token.value, state.password)
     toast.add({
       title: t('pages.auth.resetPassword.resetSuccess'),
+      color: 'success',
       icon: 'i-lucide-circle-check'
     })
     navigateTo('/auth/sign-in')

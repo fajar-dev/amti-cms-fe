@@ -150,6 +150,7 @@ const handleSubmit = async () => {
     isSubmitted.value = true
     toast.add({
       title: t('pages.auth.forgotPassword.resetLinkSent'),
+      color: 'success',
       icon: 'i-lucide-circle-check'
     })
     startResendCooldown()
@@ -164,6 +165,7 @@ const handleResend = async () => {
     await authService.forgotPassword(state.email)
     toast.add({
       title: t('pages.auth.forgotPassword.resetLinkSent'),
+      color: 'success',
       icon: 'i-lucide-circle-check'
     })
     startResendCooldown()

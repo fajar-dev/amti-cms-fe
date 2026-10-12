@@ -165,6 +165,7 @@ const handleLogout = async () => {
   await authService.logout()
   toast.add({
     title: t('components.userPopover.logoutSuccess'),
+    color: 'success',
     icon: 'i-lucide-circle-check'
   })
 }

@@ -171,6 +171,7 @@ const handleInfoSubmit = async () => {
     if (response.success) {
       toast.add({
         title: t('pages.profile.information.updatedSuccess'),
+        color: 'success',
         icon: 'i-lucide-circle-check'
       })
     }
