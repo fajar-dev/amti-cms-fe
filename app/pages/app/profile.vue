@@ -6,10 +6,10 @@
     >
       <template #tabs>
         <NuxtLink
-          to="/profile/information"
+          to="/app/profile/information"
           class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
           :class="[
-            $route.path === '/profile/information' || $route.path === '/profile'
+            $route.path === '/app/profile/information' || $route.path === '/app/profile'
               ? 'border-primary text-primary font-semibold'
               : 'border-transparent text-muted hover:text-highlighted'
           ]"
@@ -17,10 +17,10 @@
           {{ $t('pages.profile.index.tabInformation') }}
         </NuxtLink>
         <NuxtLink
-          to="/profile/password"
+          to="/app/profile/password"
           class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
           :class="[
-            $route.path === '/profile/password'
+            $route.path === '/app/profile/password'
               ? 'border-primary text-primary font-semibold'
               : 'border-transparent text-muted hover:text-highlighted'
           ]"
@@ -41,8 +41,8 @@ definePageMeta({
   layout: 'dashboard',
   middleware: [
     (to) => {
-      if (to.path === '/profile') {
-        return navigateTo('/profile/information')
+      if (to.path === '/app/profile') {
+        return navigateTo('/app/profile/information')
       }
     }
   ]

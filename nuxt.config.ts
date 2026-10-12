@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: true }
+    '/': { redirect: '/app' }
   },
 
   compatibilityDate: '2025-01-15',

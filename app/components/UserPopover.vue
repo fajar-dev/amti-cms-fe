@@ -39,7 +39,7 @@
             variant="ghost"
             icon="i-lucide-user"
             class="w-full justify-start shadow-none"
-            to="/profile/information"
+            to="/app/profile/information"
           >
             {{ $t('components.userPopover.profile') }}
           </UButton>

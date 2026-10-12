@@ -46,7 +46,7 @@
           variant="solid"
           icon="i-lucide-plus-circle"
           class="w-full sm:w-auto justify-center"
-          to="/content/article/create"
+          to="/app/content/article/create"
         >
           {{ $t('pages.article.addArticle') }}
         </UButton>
@@ -306,7 +306,7 @@ function getRowItems(row: Row<Article>): DropdownMenuItem[] {
       label: t('common.edit'),
       icon: 'i-lucide-edit',
       onSelect: () => {
-        navigateTo(`/content/article/${row.original.id}`)
+        navigateTo(`/app/content/article/${row.original.id}`)
       }
     })
   }

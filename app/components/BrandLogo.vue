@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center gap-3">
     <NuxtLink
-      to="/"
+      to="/app"
       class="flex items-center gap-2.5"
     >
       <!-- Light Mode Logo -->

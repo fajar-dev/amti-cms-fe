@@ -184,7 +184,7 @@ const { isReady, login: triggerGoogleLogin } = useCodeClient({
     try {
       await authService.google(response.code)
       showToast('success', t('pages.auth.signIn.loginSuccess'))
-      navigateTo('/')
+      navigateTo('/app')
     } finally {
       googleLoading.value = false
     }
@@ -207,7 +207,7 @@ const handleLogin = async () => {
   try {
     await authService.login(state.email, state.password)
     showToast('success', t('pages.auth.signIn.loginSuccess'))
-    navigateTo('/')
+    navigateTo('/app')
   } finally {
     loading.value = false
   }

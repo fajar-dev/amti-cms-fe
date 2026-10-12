@@ -494,7 +494,7 @@ link/gambar di editor, `TiptapEditor.vue` membuka `app/components/common/EditorU
 ## Pattern: `ArticleForm` (Form Halaman Penuh, Bukan Modal)
 
 `app/components/content/ArticleForm.vue` adalah form artikel bersama untuk halaman **create** dan **edit**.
-Halaman `app/pages/content/article/create.vue` dan `[id].vue` hanyalah pembungkus tipis:
+Halaman `app/pages/app/content/article/create.vue` dan `[id].vue` hanyalah pembungkus tipis:
 
 ```vue
 <!-- create.vue -->

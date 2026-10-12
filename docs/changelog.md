@@ -21,6 +21,7 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 - `DataTable.vue` kini punya **empty state bawaan** (`UEmpty`), sehingga keenam halaman CRUD mendapatkannya tanpa konfigurasi.
 
 ### Changed
+- Seluruh halaman CMS / dashboard (kecuali `pages/auth/`) dipindahkan ke folder `app/pages/app/` dengan prefix URL `/app` (dashboard, content, faq, messages, user, roles, settings, profile). Halaman root `/` di-redirect ke `/app` untuk persiapan landing page.
 - Halaman `content/article/create.vue` dan `[id].vue` disatukan: keduanya kini pembungkus tipis (`<Header>` + `<ContentArticleForm>`) — dari ~740 baris duplikat menjadi ~40 baris.
 - Semua format tanggal/tanggal-waktu memakai `app/utils/format.ts`. Sebelumnya separuh halaman memakai locale `en-US` dan separuh `id-ID`, sehingga tabel berbeda menampilkan format berbeda pada bahasa yang sama.
 - Upload gambar di modal user, halaman profil, settings, dan cover artikel memakai `useImageUpload` + `UFileUpload`, seragam dengan pola yang sudah dipakai `settings/meta.vue`.

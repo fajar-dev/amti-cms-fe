@@ -12,13 +12,13 @@
 
 | Layout      | Halaman                                                          | Middleware               |
 | ----------- | ---------------------------------------------------------------- | ------------------------ |
-| `dashboard` | `/` (dashboard), `/faq`, `/user`, `/roles`, `/messages`, `/content/category`, `/content/article`, `/settings/*`, `/profile/*` | `auth.global` (otomatis) |
+| `dashboard` | `/app` (dashboard), `/app/faq`, `/app/user`, `/app/roles`, `/app/messages`, `/app/content/category`, `/app/content/article`, `/app/settings/*`, `/app/profile/*` | `auth.global` (otomatis) |
 | `auth`      | `/auth/sign-in`, `/auth/forgot-password`, `/auth/reset-password` | `guest`                  |
 
 ## Pattern 1: Dashboard Page (CRUD Listing)
 
-Referensi: `app/pages/faq/index.vue` (modul CRUD paling bersih), `app/pages/messages/index.vue` (ada filter +
-kolom tanggal), `app/pages/content/article/index.vue` (filter + kolom relasi).
+Referensi: `app/pages/app/faq/index.vue` (modul CRUD paling bersih), `app/pages/app/messages/index.vue` (ada filter +
+kolom tanggal), `app/pages/app/content/article/index.vue` (filter + kolom relasi).
 
 > ⚠️ Semua teks (`title`, `description`, `placeholder`, label button, header kolom tabel, toast)
 > WAJIB lewat `$t()` / `t()`. Lihat [i18n-guide.md](./i18n-guide.md). Namespace di bawah:
@@ -413,7 +413,7 @@ definePageMeta({
 
 ## Pattern 4: Halaman Form Create / Edit (Halaman Tipis + Form Bersama)
 
-Referensi: `app/pages/content/article/create.vue` + `app/pages/content/article/[id].vue` +
+Referensi: `app/pages/app/content/article/create.vue` + `app/pages/app/content/article/[id].vue` +
 `app/components/content/ArticleForm.vue`.
 
 Untuk fitur yang punya halaman **create** dan **edit** dengan form yang sama, JANGAN menulis dua halaman
@@ -421,7 +421,7 @@ kembar. Buat satu komponen form bersama, lalu halaman create/edit hanya jadi pem
 `Header` + id (kalau mode edit):
 
 ```vue
-<!-- app/pages/content/article/create.vue — hanya pembungkus -->
+<!-- app/pages/app/content/article/create.vue — hanya pembungkus -->
 <template>
   <div class="space-y-6">
     <Header :title="$t('pages.article.createTitle')" :description="$t('pages.article.createDescription')" />
@@ -435,7 +435,7 @@ definePageMeta({ layout: 'dashboard' })
 ```
 
 ```vue
-<!-- app/pages/content/article/[id].vue — pembungkus + id dari route -->
+<!-- app/pages/app/content/article/[id].vue — pembungkus + id dari route -->
 <template>
   <div class="space-y-6">
     <Header :title="$t('pages.article.editTitle')" :description="$t('pages.article.editDescription')" />

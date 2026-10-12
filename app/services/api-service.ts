@@ -41,8 +41,8 @@ export class ApiService {
             } catch {
               // Toast fallback
             }
-            if (window.location.pathname !== '/') {
-              navigateTo('/')
+            if (window.location.pathname !== '/app') {
+              navigateTo('/app')
             }
           }
         }

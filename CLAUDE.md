@@ -187,10 +187,12 @@ app/
 │   ├── auth.global.ts   # Protected route guard
 │   └── guest.ts         # Guest-only route guard
 ├── pages/
-│   ├── index.vue        # Dashboard (layout: dashboard)
+│   ├── index.vue        # Redirect to /app
 │   ├── auth/            # Auth pages (layout: auth, middleware: guest)
-│   └── <feature>/
-│       └── index.vue    # CRUD listing page
+│   └── app/             # Application / dashboard pages (layout: dashboard)
+│       ├── index.vue    # Dashboard (/app)
+│       └── <feature>/
+│           └── index.vue# CRUD listing page (/app/<feature>)
 ├── services/
 │   ├── api-service.ts   # Axios base client + interceptors
 │   ├── auth-service.ts  # Auth methods
@@ -263,7 +265,7 @@ contoh adalah **`faq`**:
 2. `app/services/product-service.ts` — Copy pattern dari `faq-service.ts`
 3. `app/components/product/AddModal.vue` — Copy pattern dari `faq/AddModal.vue`
 4. `app/components/product/UpdateModal.vue` — Copy pattern dari `faq/UpdateModal.vue`
-5. `app/pages/product/index.vue` — Copy pattern dari `faq/index.vue`
+5. `app/pages/app/product/index.vue` — Copy pattern dari `app/pages/app/faq/index.vue`
 6. `app/composables/useNavigation.ts` — Tambah nav item baru (pakai pola stable-id, lihat `docs/i18n-guide.md` §5)
 7. `i18n/locales/en.json` **dan** `i18n/locales/id.json` — Tambah key untuk semua teks baru (lihat `docs/i18n-guide.md`)
 8. `docs/changelog.md` — Catat perubahan

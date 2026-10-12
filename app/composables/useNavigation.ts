@@ -28,7 +28,7 @@ export const useNavigation = () => {
           {
             id: 'dashboard',
             label: t('components.sidebar.nav.dashboard'),
-            to: '/',
+            to: '/app',
             icon: 'i-lucide-layout-dashboard'
           }
         ]
@@ -38,10 +38,10 @@ export const useNavigation = () => {
     // CMS Group
     const contentChildren: NavItem[] = []
     if (can('categories.view')) {
-      contentChildren.push({ id: 'category', label: t('components.sidebar.nav.category'), to: '/content/category' })
+      contentChildren.push({ id: 'category', label: t('components.sidebar.nav.category'), to: '/app/content/category' })
     }
     if (can('articles.view')) {
-      contentChildren.push({ id: 'article', label: t('components.sidebar.nav.article'), to: '/content/article' })
+      contentChildren.push({ id: 'article', label: t('components.sidebar.nav.article'), to: '/app/content/article' })
     }
 
     const cmsItems: NavItem[] = []
@@ -49,7 +49,7 @@ export const useNavigation = () => {
       cmsItems.push({
         id: 'content',
         label: t('components.sidebar.nav.content'),
-        to: contentChildren[0]?.to || '/content',
+        to: contentChildren[0]?.to || '/app/content',
         icon: 'i-lucide-file-text',
         children: contentChildren
       })
@@ -58,7 +58,7 @@ export const useNavigation = () => {
       cmsItems.push({
         id: 'faq',
         label: t('components.sidebar.nav.faq'),
-        to: '/faq',
+        to: '/app/faq',
         icon: 'i-lucide-help-circle'
       })
     }
@@ -66,7 +66,7 @@ export const useNavigation = () => {
       cmsItems.push({
         id: 'messages',
         label: t('components.sidebar.nav.messages'),
-        to: '/messages',
+        to: '/app/messages',
         icon: 'i-lucide-mail'
       })
     }
@@ -74,7 +74,7 @@ export const useNavigation = () => {
       cmsItems.push({
         id: 'settings',
         label: t('components.sidebar.nav.settings'),
-        to: '/settings',
+        to: '/app/settings',
         icon: 'i-lucide-settings'
       })
     }
@@ -93,7 +93,7 @@ export const useNavigation = () => {
       userMgmtItems.push({
         id: 'users',
         label: t('components.sidebar.nav.users'),
-        to: '/user',
+        to: '/app/user',
         icon: 'i-lucide-user'
       })
     }
@@ -101,7 +101,7 @@ export const useNavigation = () => {
       userMgmtItems.push({
         id: 'roles',
         label: t('components.sidebar.nav.roles'),
-        to: '/roles',
+        to: '/app/roles',
         icon: 'i-lucide-shield-check'
       })
     }
@@ -119,8 +119,8 @@ export const useNavigation = () => {
 
   const isItemActive = (item: NavItem) => {
     if (!item.to || item.to === '#') return false
-    if (item.to === '/') {
-      return route.path === '/'
+    if (item.to === '/app') {
+      return route.path === '/app' || route.path === '/app/'
     }
     return route.path.startsWith(item.to)
   }

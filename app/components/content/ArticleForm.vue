@@ -187,7 +187,7 @@
       <UButton
         variant="soft"
         color="neutral"
-        to="/content/article"
+        to="/app/content/article"
       >
         {{ $t('common.cancel') }}
       </UButton>
@@ -368,7 +368,7 @@ async function submitForm(targetStatus: ArticleStatus) {
         icon: 'i-lucide-circle-check'
       })
       emit('submitted')
-      await navigateTo('/content/article')
+      await navigateTo('/app/content/article')
     }
   } finally {
     isSubmitting.value = false

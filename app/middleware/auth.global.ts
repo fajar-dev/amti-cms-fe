@@ -2,18 +2,18 @@ import { useAuth } from '~/composables/useAuth'
 
 // Protected routes pattern to required permission
 const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permissions: string[] }> = [
-  { pattern: /^\/roles(\/.*)?$/, permissions: ['roles.view'] },
-  { pattern: /^\/user(\/.*)?$/, permissions: ['users.view'] },
-  { pattern: /^\/content\/category(\/.*)?$/, permissions: ['categories.view'] },
-  { pattern: /^\/content\/article\/create$/, permissions: ['articles.create'] },
-  { pattern: /^\/content\/article\/[^/]+$/, permissions: ['articles.update'] },
-  { pattern: /^\/content\/article$/, permissions: ['articles.view'] },
-  { pattern: /^\/faq(\/.*)?$/, permissions: ['faqs.view'] },
-  { pattern: /^\/messages(\/.*)?$/, permissions: ['messages.view'] },
-  { pattern: /^\/settings\/meta$/, permissions: ['settings.meta.view', 'settings.view'] },
-  { pattern: /^\/settings\/contact$/, permissions: ['settings.contact.view', 'settings.view'] },
-  { pattern: /^\/settings\/social$/, permissions: ['settings.social.view', 'settings.view'] },
-  { pattern: /^\/settings(\/.*)?$/, permissions: ['settings.view', 'settings.meta.view', 'settings.contact.view', 'settings.social.view'] }
+  { pattern: /^\/app\/roles(\/.*)?$/, permissions: ['roles.view'] },
+  { pattern: /^\/app\/user(\/.*)?$/, permissions: ['users.view'] },
+  { pattern: /^\/app\/content\/category(\/.*)?$/, permissions: ['categories.view'] },
+  { pattern: /^\/app\/content\/article\/create$/, permissions: ['articles.create'] },
+  { pattern: /^\/app\/content\/article\/[^/]+$/, permissions: ['articles.update'] },
+  { pattern: /^\/app\/content\/article$/, permissions: ['articles.view'] },
+  { pattern: /^\/app\/faq(\/.*)?$/, permissions: ['faqs.view'] },
+  { pattern: /^\/app\/messages(\/.*)?$/, permissions: ['messages.view'] },
+  { pattern: /^\/app\/settings\/meta$/, permissions: ['settings.meta.view', 'settings.view'] },
+  { pattern: /^\/app\/settings\/contact$/, permissions: ['settings.contact.view', 'settings.view'] },
+  { pattern: /^\/app\/settings\/social$/, permissions: ['settings.social.view', 'settings.view'] },
+  { pattern: /^\/app\/settings(\/.*)?$/, permissions: ['settings.view', 'settings.meta.view', 'settings.contact.view', 'settings.social.view'] }
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {
@@ -23,6 +23,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   // Allow public pages
   if (publicPaths.includes(to.path)) return
+
+  // Redirect root path to /app or auth
+  if (to.path === '/') {
+    return navigateTo(state.token ? '/app' : '/auth/sign-in')
+  }
 
   // Require authentication
   if (!state.token) {
@@ -53,7 +58,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
           // Toast fallback
         }
       }
-      return navigateTo('/')
+      return navigateTo('/app')
     }
   }
 })
