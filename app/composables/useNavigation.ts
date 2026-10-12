@@ -117,15 +117,6 @@ export const useNavigation = () => {
     return groups
   })
 
-  const bottomNavItems = computed<NavItem[]>(() => [
-    {
-      id: 'feedback',
-      label: t('components.sidebar.nav.feedback'),
-      to: '/feedback',
-      icon: 'i-lucide-message-square-warning'
-    }
-  ])
-
   const isItemActive = (item: NavItem) => {
     if (!item.to || item.to === '#') return false
     if (item.to === '/') {
@@ -155,7 +146,6 @@ export const useNavigation = () => {
   return {
     isCollapsed,
     navGroups,
-    bottomNavItems,
     isItemActive,
     isParentActive,
     toggleExpanded,

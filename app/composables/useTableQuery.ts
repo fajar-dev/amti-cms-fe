@@ -1,4 +1,5 @@
 import { h } from 'vue'
+import SortableHeader from '../components/common/SortableHeader.vue'
 
 export type SortOrder = 'ASC' | 'DESC'
 
@@ -7,10 +8,6 @@ interface TableQueryOptions {
   defaultOrder?: SortOrder
 }
 
-/**
- * Shared state for DataTable: search (debounced), pagination, and clickable/sortable
- * column headers. Call `onQueryChange` whenever any of these change to refetch data.
- */
 export function useTableQuery(onQueryChange: () => void, options: TableQueryOptions = {}) {
   const { defaultSortBy = '', defaultOrder = 'DESC' } = options
 
@@ -42,46 +39,21 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
   })
 
   /**
-   * Inline SVG chevrons (not `UIcon`) — `resolveComponent` only resolves Nuxt UI
-   * components when called inside a `.vue` `<script setup>` (build-time transform);
-   * called from this plain composable it silently falls back to a literal `<uicon>` tag.
-   */
-  const chevron = (direction: 'up' | 'down', colorClass: string) =>
-    h('svg', {
-      'viewBox': '0 0 24 24',
-      'class': `w-3 h-3 ${colorClass}`,
-      'fill': 'none',
-      'stroke': 'currentColor',
-      'stroke-width': 2,
-      'stroke-linecap': 'round',
-      'stroke-linejoin': 'round'
-    }, [
-      h('path', { d: direction === 'up' ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6' })
-    ])
-
-  /**
-   * Render function for a clickable UTable column header — pass as a column's `header`.
-   * `label` is a function (e.g. `() => t('...')`) so it re-evaluates on every render
-   * instead of being frozen to the locale active when `columns` was built.
-   * Toggles sort on click and highlights the active up/down chevron.
+   * Render function untuk header kolom yang bisa diklik — dipakai sebagai `header`
+   * pada definisi kolom UTable. `label` berupa fungsi (mis. `() => t('...')`) supaya
+   * teksnya ikut berubah saat bahasa diganti.
+   *
+   * Chevron dirender `SortableHeader.vue` (memakai `UIcon`) karena `UIcon` tidak bisa
+   * dipakai dari render function di file `.ts` ini.
    */
   const sortHeader = (label: () => string, column: string, align: 'start' | 'center' | 'end' = 'start') => {
-    return () => {
-      const isActive = sortBy.value === column
-      const upColor = isActive && order.value === 'ASC' ? 'text-primary' : 'text-neutral-300'
-      const downColor = isActive && order.value === 'DESC' ? 'text-primary' : 'text-neutral-300'
-      const justifyClass = align === 'center' ? 'justify-center' : align === 'end' ? 'justify-end' : ''
-      return h('div', {
-        class: `flex items-center gap-1 cursor-pointer select-none hover:text-primary transition-colors ${justifyClass}`.trim(),
-        onClick: () => toggleSort(column)
-      }, [
-        h('span', label()),
-        h('div', { class: 'flex flex-col -space-y-1.5' }, [
-          chevron('up', upColor),
-          chevron('down', downColor)
-        ])
-      ])
-    }
+    return () => h(SortableHeader, {
+      label,
+      align,
+      active: sortBy.value === column,
+      order: order.value,
+      onToggle: () => toggleSort(column)
+    })
   }
 
   return {

@@ -1,5 +1,3 @@
-import type { ApiResponse, PaginationMeta } from './api'
-
 export interface Faq {
   id: number
   question: string
@@ -16,5 +14,3 @@ export interface FaqPayload {
   order?: number
   isActive: boolean
 }
-
-export type { PaginationMeta, ApiResponse }

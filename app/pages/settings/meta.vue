@@ -126,17 +126,19 @@
             >
               <img
                 :src="logoPreview"
-                alt="Logo Preview"
+                :alt="$t('common.imagePreview')"
                 class="max-h-full max-w-full object-contain"
               >
-              <button
+              <UButton
                 v-if="canUpdate"
-                type="button"
-                class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                icon="i-lucide-x"
+                size="xs"
+                color="neutral"
+                variant="solid"
+                class="absolute top-2 right-2 rounded-full"
+                :aria-label="$t('pages.settings.removeMedia')"
                 @click="removeMedia('logo')"
-              >
-                <span class="i-lucide-x text-sm" />
-              </button>
+              />
               <div
                 v-if="uploadingKey === 'logo'"
                 class="absolute inset-0 bg-black/40 flex items-center justify-center"
@@ -152,7 +154,7 @@
               v-else
               v-model="logoFile"
               icon="i-lucide-image"
-              label="Drop your image here"
+              :label="$t('common.dropImageHere')"
               :description="$t('pages.settings.meta.logoHint')"
               class="w-full min-h-48"
               :disabled="!canUpdate"
@@ -170,17 +172,19 @@
             >
               <img
                 :src="faviconPreview"
-                alt="Favicon Preview"
+                :alt="$t('common.imagePreview')"
                 class="w-16 h-16 object-contain"
               >
-              <button
+              <UButton
                 v-if="canUpdate"
-                type="button"
-                class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                icon="i-lucide-x"
+                size="xs"
+                color="neutral"
+                variant="solid"
+                class="absolute top-2 right-2 rounded-full"
+                :aria-label="$t('pages.settings.removeMedia')"
                 @click="removeMedia('favicon')"
-              >
-                <span class="i-lucide-x text-sm" />
-              </button>
+              />
               <div
                 v-if="uploadingKey === 'favicon'"
                 class="absolute inset-0 bg-black/40 flex items-center justify-center"
@@ -196,7 +200,7 @@
               v-else
               v-model="faviconFile"
               icon="i-lucide-bookmark"
-              label="Drop your image here"
+              :label="$t('common.dropImageHere')"
               :description="$t('pages.settings.meta.faviconHint')"
               class="w-full min-h-48"
               :disabled="!canUpdate"
@@ -214,17 +218,19 @@
             >
               <img
                 :src="ogImagePreview"
-                alt="OG Image Preview"
+                :alt="$t('common.imagePreview')"
                 class="w-full h-full object-cover"
               >
-              <button
+              <UButton
                 v-if="canUpdate"
-                type="button"
-                class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                icon="i-lucide-x"
+                size="xs"
+                color="neutral"
+                variant="solid"
+                class="absolute top-2 right-2 rounded-full"
+                :aria-label="$t('pages.settings.removeMedia')"
                 @click="removeMedia('ogImage')"
-              >
-                <span class="i-lucide-x text-sm" />
-              </button>
+              />
               <div
                 v-if="uploadingKey === 'ogImage'"
                 class="absolute inset-0 bg-black/40 flex items-center justify-center"
@@ -240,7 +246,7 @@
               v-else
               v-model="ogImageFile"
               icon="i-lucide-image"
-              label="Drop your image here"
+              :label="$t('common.dropImageHere')"
               :description="$t('pages.settings.meta.ogImageHint')"
               class="w-full min-h-48"
               :disabled="!canUpdate"
@@ -281,15 +287,9 @@ const canUpdate = computed(() => can('settings.meta.update') || can('settings.up
 
 const isLoading = ref(true)
 const isSaving = ref(false)
-const uploadingKey = ref<'logo' | 'favicon' | 'ogImage' | null>(null)
-
 const logoFile = ref<File | null>(null)
 const faviconFile = ref<File | null>(null)
 const ogImageFile = ref<File | null>(null)
-
-const logoPreview = ref<string | null>(null)
-const faviconPreview = ref<string | null>(null)
-const ogImagePreview = ref<string | null>(null)
 
 interface FormState {
   siteName: string
@@ -314,7 +314,54 @@ const form = reactive<FormState>({
 })
 
 const metaSchema = z.object({
-  siteName: z.string().trim().min(1, 'Site name is required')
+  siteName: z.string().trim().min(1, t('pages.settings.meta.siteNameRequired'))
+})
+
+// Satu instance upload per media — preview, status upload, dan rollback ditangani bersama.
+const {
+  previewUrl: logoPreview,
+  isUploading: isUploadingLogo,
+  uploadFile: uploadLogo,
+  clearPreview: clearLogoPreview,
+  setPreviewFromUrl: setLogoPreview
+} = useImageUpload({
+  upload: file => settingService.uploadFile(file),
+  onUploaded: (path) => { form.logo = path },
+  successMessage: t('pages.settings.uploadSuccess'),
+  errorMessage: t('pages.settings.uploadFailed')
+})
+
+const {
+  previewUrl: faviconPreview,
+  isUploading: isUploadingFavicon,
+  uploadFile: uploadFavicon,
+  clearPreview: clearFaviconPreview,
+  setPreviewFromUrl: setFaviconPreview
+} = useImageUpload({
+  upload: file => settingService.uploadFile(file),
+  onUploaded: (path) => { form.favicon = path },
+  successMessage: t('pages.settings.uploadSuccess'),
+  errorMessage: t('pages.settings.uploadFailed')
+})
+
+const {
+  previewUrl: ogImagePreview,
+  isUploading: isUploadingOgImage,
+  uploadFile: uploadOgImage,
+  clearPreview: clearOgImagePreview,
+  setPreviewFromUrl: setOgImagePreview
+} = useImageUpload({
+  upload: file => settingService.uploadFile(file),
+  onUploaded: (path) => { form.ogImage = path },
+  successMessage: t('pages.settings.uploadSuccess'),
+  errorMessage: t('pages.settings.uploadFailed')
+})
+
+const uploadingKey = computed<'logo' | 'favicon' | 'ogImage' | null>(() => {
+  if (isUploadingLogo.value) return 'logo'
+  if (isUploadingFavicon.value) return 'favicon'
+  if (isUploadingOgImage.value) return 'ogImage'
+  return null
 })
 
 const fetchSettings = async () => {
@@ -332,9 +379,9 @@ const fetchSettings = async () => {
       form.favicon = data.favicon || null
       form.ogImage = data.ogImage || null
 
-      logoPreview.value = data.logoUrl || null
-      faviconPreview.value = data.faviconUrl || null
-      ogImagePreview.value = data.ogImageUrl || null
+      setLogoPreview(data.logoUrl)
+      setFaviconPreview(data.faviconUrl)
+      setOgImagePreview(data.ogImageUrl)
     }
   } catch (error) {
     console.error('Failed to load settings:', error)
@@ -343,91 +390,33 @@ const fetchSettings = async () => {
   }
 }
 
-watch(logoFile, async (file) => {
+watch(logoFile, (file) => {
   const targetFile = Array.isArray(file) ? file[0] : file
-  if (targetFile instanceof File) {
-    await handleFileUpload('logo', targetFile)
-  }
+  if (targetFile instanceof File) uploadLogo(targetFile)
 })
 
-watch(faviconFile, async (file) => {
+watch(faviconFile, (file) => {
   const targetFile = Array.isArray(file) ? file[0] : file
-  if (targetFile instanceof File) {
-    await handleFileUpload('favicon', targetFile)
-  }
+  if (targetFile instanceof File) uploadFavicon(targetFile)
 })
 
-watch(ogImageFile, async (file) => {
+watch(ogImageFile, (file) => {
   const targetFile = Array.isArray(file) ? file[0] : file
-  if (targetFile instanceof File) {
-    await handleFileUpload('ogImage', targetFile)
-  }
+  if (targetFile instanceof File) uploadOgImage(targetFile)
 })
-
-async function handleFileUpload(target: 'logo' | 'favicon' | 'ogImage', file: File) {
-  const localUrl = URL.createObjectURL(file)
-  if (target === 'logo') logoPreview.value = localUrl
-  if (target === 'favicon') faviconPreview.value = localUrl
-  if (target === 'ogImage') ogImagePreview.value = localUrl
-
-  uploadingKey.value = target
-
-  try {
-    const response = await settingService.uploadFile(file)
-    if (response.success && response.data?.path) {
-      form[target] = response.data.path
-      toast.add({
-        title: t('pages.settings.uploadSuccess'),
-        icon: 'i-lucide-circle-check',
-        color: 'success'
-      })
-    } else {
-      resetFilePreview(target)
-      toast.add({
-        title: t('pages.settings.uploadFailed'),
-        icon: 'i-lucide-circle-x',
-        color: 'error'
-      })
-    }
-  } catch {
-    resetFilePreview(target)
-    toast.add({
-      title: t('pages.settings.uploadFailed'),
-      icon: 'i-lucide-circle-x',
-      color: 'error'
-    })
-  } finally {
-    uploadingKey.value = null
-  }
-}
-
-function resetFilePreview(target: 'logo' | 'favicon' | 'ogImage') {
-  if (target === 'logo') {
-    logoPreview.value = form.logo ? logoPreview.value : null
-    logoFile.value = null
-  }
-  if (target === 'favicon') {
-    faviconPreview.value = form.favicon ? faviconPreview.value : null
-    faviconFile.value = null
-  }
-  if (target === 'ogImage') {
-    ogImagePreview.value = form.ogImage ? ogImagePreview.value : null
-    ogImageFile.value = null
-  }
-}
 
 function removeMedia(target: 'logo' | 'favicon' | 'ogImage') {
   form[target] = null
   if (target === 'logo') {
-    logoPreview.value = null
+    clearLogoPreview()
     logoFile.value = null
   }
   if (target === 'favicon') {
-    faviconPreview.value = null
+    clearFaviconPreview()
     faviconFile.value = null
   }
   if (target === 'ogImage') {
-    ogImagePreview.value = null
+    clearOgImagePreview()
     ogImageFile.value = null
   }
 }
@@ -449,9 +438,9 @@ const handleSave = async () => {
     const response = await settingService.updateMeta(payload)
     if (response.success && response.data) {
       const data = response.data
-      logoPreview.value = data.logoUrl || null
-      faviconPreview.value = data.faviconUrl || null
-      ogImagePreview.value = data.ogImageUrl || null
+      setLogoPreview(data.logoUrl)
+      setFaviconPreview(data.faviconUrl)
+      setOgImagePreview(data.ogImageUrl)
 
       toast.add({
         title: t('pages.settings.meta.updatedSuccess'),

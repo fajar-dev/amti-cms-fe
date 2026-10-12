@@ -68,7 +68,7 @@ const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UAvatar = resolveComponent('UAvatar')
 const UBadge = resolveComponent('UBadge')
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // State
 const data = ref<User[]>([])
@@ -172,11 +172,7 @@ const columns = computed<TableColumn<User>[]>(() => {
       cell: ({ row }) => {
         const val = row.getValue('createdAt') as string
         if (!val) return '-'
-        return new Date(val).toLocaleString('en-US', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric'
-        })
+        return h('span', { class: 'text-muted whitespace-nowrap' }, formatDateTime(val, locale.value))
       }
     }
   ]
@@ -204,6 +200,7 @@ const columns = computed<TableColumn<User>[]>(() => {
           () =>
             h(UButton, {
               'icon': 'i-lucide-ellipsis-vertical',
+              'size': 'xs',
               'color': 'neutral',
               'variant': 'ghost',
               'aria-label': t('pages.user.actionsDropdown')
@@ -255,9 +252,15 @@ const handleDelete = async () => {
         color: 'success',
         icon: 'i-lucide-circle-check'
       })
+      showDeleteModal.value = false
+      fetchUsers()
+    } else {
+      toast.add({
+        title: response.message || t('common.error'),
+        color: 'error',
+        icon: 'i-lucide-circle-alert'
+      })
     }
-    showDeleteModal.value = false
-    fetchUsers()
   } finally {
     isDeleting.value = false
   }

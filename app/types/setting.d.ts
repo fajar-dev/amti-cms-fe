@@ -1,5 +1,3 @@
-import type { ApiResponse } from './api'
-
 export interface Setting {
   id: number
   siteName: string
@@ -51,7 +49,3 @@ export interface SettingSocialPayload {
   twitter?: string | null
   youtube?: string | null
 }
-
-export interface SettingPayload extends SettingMetaPayload, SettingContactPayload, SettingSocialPayload {}
-
-export type { ApiResponse }

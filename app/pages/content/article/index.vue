@@ -80,7 +80,7 @@ const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UBadge = resolveComponent('UBadge')
 const UAvatar = resolveComponent('UAvatar')
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToast()
 
 // State
@@ -189,7 +189,7 @@ const columns = computed<TableColumn<Article>[]>(() => {
           h('span', { class: 'text-xs text-muted' }, `${slug}`)
         ])
 
-        return h('div', { class: 'flex items-center gap-3 py-0.5 min-w-[220px]' }, [
+        return h('div', { class: 'flex items-center gap-3 py-0.5 min-w-56' }, [
           thumbnail,
           content
         ])
@@ -203,7 +203,7 @@ const columns = computed<TableColumn<Article>[]>(() => {
         return h(
           UBadge,
           {
-            color: isPublish ? 'success' : 'neutral',
+            color: isPublish ? 'primary' : 'neutral',
             variant: 'subtle',
             class: 'capitalize'
           },
@@ -227,7 +227,7 @@ const columns = computed<TableColumn<Article>[]>(() => {
         if (!author) {
           return h('span', { class: 'text-muted text-sm' }, '-')
         }
-        return h('div', { class: 'flex items-center gap-2.5 min-w-[160px]' }, [
+        return h('div', { class: 'flex items-center gap-2.5 min-w-40' }, [
           h(UAvatar, {
             src: author.photo || undefined,
             alt: author.name,
@@ -257,11 +257,7 @@ const columns = computed<TableColumn<Article>[]>(() => {
       cell: ({ row }) => {
         const val = row.getValue('createdAt') as string
         if (!val) return '-'
-        return h('span', { class: 'text-muted text-sm whitespace-nowrap' }, new Date(val).toLocaleDateString('id-ID', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
-        }))
+        return h('span', { class: 'text-muted whitespace-nowrap' }, formatDateTime(val, locale.value))
       }
     }
   ]
@@ -292,7 +288,7 @@ const columns = computed<TableColumn<Article>[]>(() => {
                 'color': 'neutral',
                 'variant': 'ghost',
                 'size': 'xs',
-                'aria-label': 'Actions'
+                'aria-label': t('pages.article.actionsDropdown')
               })
           )
         )
@@ -308,7 +304,7 @@ function getRowItems(row: Row<Article>): DropdownMenuItem[] {
   if (can('articles.update')) {
     items.push({
       label: t('common.edit'),
-      icon: 'i-lucide-pencil',
+      icon: 'i-lucide-edit',
       onSelect: () => {
         navigateTo(`/content/article/${row.original.id}`)
       }
@@ -341,6 +337,12 @@ async function handleDelete() {
       })
       showDeleteModal.value = false
       await fetchArticles()
+    } else {
+      toast.add({
+        title: res.message || t('common.error'),
+        color: 'error',
+        icon: 'i-lucide-circle-alert'
+      })
     }
   } finally {
     isDeleting.value = false

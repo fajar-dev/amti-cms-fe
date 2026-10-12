@@ -1,5 +1,3 @@
-import type { ApiResponse, PaginationMeta } from './api'
-
 export interface Category {
   id: number
   name: string
@@ -63,5 +61,3 @@ export interface ArticleView {
   userId: number | null
   viewedAt: string
 }
-
-export type { PaginationMeta, ApiResponse }

@@ -130,7 +130,7 @@
                     <span class="font-medium text-highlighted text-xs">{{ perm.name }}</span>
                     <span
                       v-if="perm.description"
-                      class="text-muted text-[10px] mt-0.5"
+                      class="text-muted text-xs mt-0.5"
                     >{{ perm.description }}</span>
                   </div>
                 </label>

@@ -66,7 +66,7 @@ definePageMeta({
 
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToast()
 
 // State
@@ -113,7 +113,8 @@ const columns = computed<TableColumn<Category>[]>(() => {
   const cols: TableColumn<Category>[] = [
     {
       accessorKey: 'name',
-      header: sortHeader(() => t('pages.category.columnName'), 'name')
+      header: sortHeader(() => t('pages.category.columnName'), 'name'),
+      cell: ({ row }) => h('div', { class: 'font-medium max-w-xs md:max-w-sm truncate' }, row.original.name)
     },
     {
       accessorKey: 'slug',
@@ -130,11 +131,7 @@ const columns = computed<TableColumn<Category>[]>(() => {
       cell: ({ row }) => {
         const val = row.getValue('createdAt') as string
         if (!val) return '-'
-        return new Date(val).toLocaleDateString('id-ID', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
-        })
+        return h('span', { class: 'text-muted whitespace-nowrap' }, formatDateTime(val, locale.value))
       }
     }
   ]
@@ -165,7 +162,7 @@ const columns = computed<TableColumn<Category>[]>(() => {
                 'color': 'neutral',
                 'variant': 'ghost',
                 'size': 'xs',
-                'aria-label': 'Actions'
+                'aria-label': t('pages.category.actionsDropdown')
               })
           )
         )
@@ -181,7 +178,7 @@ function getRowItems(row: Row<Category>): DropdownMenuItem[] {
   if (can('categories.update')) {
     items.push({
       label: t('common.edit'),
-      icon: 'i-lucide-pencil',
+      icon: 'i-lucide-edit',
       onSelect: () => {
         selectedCategory.value = row.original
         showUpdateModal.value = true
@@ -215,6 +212,12 @@ async function handleDelete() {
       })
       showDeleteModal.value = false
       await fetchCategories()
+    } else {
+      toast.add({
+        title: response.message || t('common.error'),
+        color: 'error',
+        icon: 'i-lucide-circle-alert'
+      })
     }
   } finally {
     isDeleting.value = false

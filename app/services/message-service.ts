@@ -1,6 +1,7 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { Message, CreateMessagePayload, UpdateMessageStatusPayload, ApiResponse } from '../types/message'
+import type { ApiResponse } from '../types/api'
+import type { Message, CreateMessagePayload, UpdateMessageStatusPayload } from '../types/message'
 import type { SortOrder } from '../composables/useTableQuery'
 
 export class MessageService {

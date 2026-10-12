@@ -55,12 +55,3 @@ export interface DashboardRecentMessage {
   isRead: boolean
   createdAt: string
 }
-
-export interface DashboardStats {
-  summary: DashboardSummary
-  viewsTrend: ViewsTrendItem[]
-  articlesByCategory: ArticlesByCategoryItem[]
-  messagesTrend: MessagesTrendItem[]
-  recentArticles: DashboardRecentArticle[]
-  recentMessages: DashboardRecentMessage[]
-}

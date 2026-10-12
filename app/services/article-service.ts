@@ -1,6 +1,7 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { Article, ArticlePayload, ArticleStatus, ArticleView, ApiResponse } from '../types/content'
+import type { ApiResponse } from '../types/api'
+import type { Article, ArticlePayload, ArticleStatus, ArticleView } from '../types/content'
 import type { SortOrder } from '../composables/useTableQuery'
 
 export interface ArticleQueryFilters {

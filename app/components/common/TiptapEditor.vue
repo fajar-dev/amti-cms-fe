@@ -114,7 +114,7 @@
           :variant="editor.isActive('link') ? 'solid' : 'ghost'"
           :color="editor.isActive('link') ? 'primary' : 'neutral'"
           icon="i-lucide-link"
-          @click="setLink"
+          @click="openLinkModal"
         />
         <UButton
           v-if="editor.isActive('link')"
@@ -129,7 +129,7 @@
           variant="ghost"
           color="neutral"
           icon="i-lucide-image"
-          @click="addImage"
+          @click="() => { showImageModal = true }"
         />
         <UButton
           size="xs"
@@ -153,7 +153,20 @@
     <!-- Editor Content Area -->
     <EditorContent
       :editor="editor"
-      class="tiptap-content p-4 min-h-[420px] max-h-[800px] overflow-y-auto outline-none focus:outline-none"
+      class="tiptap-content p-4 min-h-96 max-h-screen overflow-y-auto outline-none focus:outline-none"
+    />
+
+    <!-- Modal input URL (menggantikan window.prompt) -->
+    <CommonEditorUrlModal
+      v-model="showLinkModal"
+      mode="link"
+      :initial-url="linkInitialUrl"
+      @submit="applyLink"
+    />
+    <CommonEditorUrlModal
+      v-model="showImageModal"
+      mode="image"
+      @submit="applyImage"
     />
   </div>
 </template>
@@ -172,7 +185,7 @@ const props = withDefaults(
   }>(),
   {
     modelValue: '',
-    placeholder: 'Start writing your article content...'
+    placeholder: ''
   }
 )
 
@@ -228,30 +241,27 @@ onBeforeUnmount(() => {
   editor.value?.destroy()
 })
 
-const setLink = () => {
-  const previousUrl = editor.value?.getAttributes('link').href
-  const url = window.prompt('Enter URL:', previousUrl)
+const showLinkModal = ref(false)
+const showImageModal = ref(false)
+const linkInitialUrl = ref('')
 
-  // cancelled
-  if (url === null) {
-    return
-  }
+const openLinkModal = () => {
+  linkInitialUrl.value = editor.value?.getAttributes('link').href ?? ''
+  showLinkModal.value = true
+}
 
-  // empty
+const applyLink = (url: string) => {
   if (url === '') {
     editor.value?.chain().focus().extendMarkRange('link').unsetLink().run()
     return
   }
 
-  // update link
   editor.value?.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
 }
 
-const addImage = () => {
-  const url = window.prompt('Enter image URL:')
-  if (url) {
-    editor.value?.chain().focus().insertContent({ type: 'image', attrs: { src: url } }).run()
-  }
+const applyImage = (url: string) => {
+  if (!url) return
+  editor.value?.chain().focus().insertContent({ type: 'image', attrs: { src: url } }).run()
 }
 </script>
 

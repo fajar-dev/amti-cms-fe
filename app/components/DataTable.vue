@@ -53,6 +53,16 @@
             :row="row"
           />
         </template>
+
+        <!-- Empty state bawaan — semua halaman CRUD dapat sekaligus tanpa konfigurasi -->
+        <template #empty>
+          <UEmpty
+            icon="i-lucide-inbox"
+            variant="naked"
+            :title="$t('components.dataTable.emptyTitle')"
+            :description="$t('components.dataTable.emptyDescription')"
+          />
+        </template>
       </UTable>
     </div>
 

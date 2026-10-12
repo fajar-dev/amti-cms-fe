@@ -1,8 +1,3 @@
-export interface SelectOption<V = number> {
-  label: string
-  value: V
-}
-
 export interface PaginationMeta {
   total: number
   perPage: number
@@ -11,8 +6,6 @@ export interface PaginationMeta {
   from: number
   to: number
 }
-
-export type PaginationSummary = Pick<PaginationMeta, 'total' | 'from' | 'to'>
 
 export interface ApiResponse<T = unknown> {
   success: boolean

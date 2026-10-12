@@ -8,7 +8,7 @@ import type {
   DashboardRecentArticle,
   DashboardRecentMessage
 } from '../types/dashboard'
-import type { ApiResponse } from '../types/content'
+import type { ApiResponse } from '../types/api'
 
 export class DashboardService {
   private get authHeaders() {

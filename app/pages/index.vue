@@ -15,7 +15,7 @@
       >
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalArticles') }}</span>
-          <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-transform group-hover:scale-105">
+          <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center transition-transform group-hover:scale-105">
             <UIcon
               name="i-lucide-file-text"
               class="w-5 h-5"
@@ -36,7 +36,7 @@
         </div>
         <div class="mt-3 flex items-center gap-3 text-xs text-muted">
           <span class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500" />
             {{ summary?.publishedArticles ?? 0 }} {{ $t('pages.dashboard.published') }}
           </span>
           <span class="flex items-center gap-1.5">
@@ -50,7 +50,7 @@
       <div class="bg-default border border-default p-5 rounded-lg">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalViews') }}</span>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <div class="w-10 h-10 rounded-lg bg-green-500/10 text-green-600 flex items-center justify-center">
             <UIcon
               name="i-lucide-eye"
               class="w-5 h-5"
@@ -66,7 +66,7 @@
             v-else
             class="text-2xl sm:text-3xl font-bold text-highlighted tracking-tight"
           >
-            {{ (summary?.totalViews ?? 0).toLocaleString() }}
+            {{ formatNumber(summary?.totalViews ?? 0, locale) }}
           </div>
         </div>
         <div class="mt-3 flex items-center text-xs text-muted">
@@ -74,18 +74,18 @@
             name="i-lucide-trending-up"
             class="w-3.5 h-3.5 mr-1 text-emerald-500"
           />
-          <span>Akumulasi tayangan artikel</span>
+          <span>{{ $t('pages.dashboard.viewsAccumulation') }}</span>
         </div>
       </div>
 
       <!-- Messages Card -->
       <NuxtLink
         to="/messages"
-        class="group bg-default border border-default hover:border-amber-500/50 transition-colors p-5 rounded-lg block"
+        class="group bg-default border border-default hover:border-primary/50 transition-colors p-5 rounded-lg block"
       >
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalMessages') }}</span>
-          <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-105">
+          <div class="w-10 h-10 rounded-lg bg-yellow-500/10 text-yellow-600 flex items-center justify-center transition-transform group-hover:scale-105">
             <UIcon
               name="i-lucide-mail"
               class="w-5 h-5"
@@ -105,12 +105,12 @@
           </div>
         </div>
         <div class="mt-3 flex items-center gap-3 text-xs text-muted">
-          <span class="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-medium">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-500" />
+          <span class="flex items-center gap-1.5 text-yellow-600 font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500" />
             {{ summary?.unreadMessages ?? 0 }} {{ $t('pages.dashboard.unread') }}
           </span>
           <span class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500" />
             {{ ((summary?.totalMessages ?? 0) - (summary?.unreadMessages ?? 0)) }} {{ $t('pages.dashboard.read') }}
           </span>
         </div>
@@ -119,11 +119,11 @@
       <!-- Users & Management Card -->
       <NuxtLink
         to="/user"
-        class="group bg-default border border-default hover:border-violet-500/50 transition-colors p-5 rounded-lg block"
+        class="group bg-default border border-default hover:border-primary/50 transition-colors p-5 rounded-lg block"
       >
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalUsers') }}</span>
-          <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 flex items-center justify-center transition-transform group-hover:scale-105">
+          <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center transition-transform group-hover:scale-105">
             <UIcon
               name="i-lucide-users"
               class="w-5 h-5"
@@ -143,9 +143,9 @@
           </div>
         </div>
         <div class="mt-3 flex items-center gap-3 text-xs text-muted">
-          <span>{{ summary?.totalCategories ?? 0 }} Kategori</span>
+          <span>{{ $t('pages.dashboard.categoriesCount', { count: summary?.totalCategories ?? 0 }) }}</span>
           <span>•</span>
-          <span>{{ summary?.totalFaqs ?? 0 }} FAQ</span>
+          <span>{{ $t('pages.dashboard.faqsCount', { count: summary?.totalFaqs ?? 0 }) }}</span>
         </div>
       </NuxtLink>
     </div>
@@ -164,11 +164,11 @@
             </p>
           </div>
           <span class="text-xs font-medium text-muted">
-            7 Hari Terakhir
+            {{ $t('pages.dashboard.last7Days') }}
           </span>
         </div>
 
-        <div class="w-full h-80 min-h-[320px]">
+        <div class="w-full h-80">
           <USkeleton
             v-if="isLoadingViews"
             class="w-full h-full rounded-lg"
@@ -177,7 +177,7 @@
             v-else-if="!viewsTrend.length"
             class="h-full flex items-center justify-center text-sm text-muted"
           >
-            Tidak ada data statistik
+            {{ $t('pages.dashboard.noStatistics') }}
           </div>
           <ClientOnly v-else>
             <AreaChart
@@ -208,7 +208,7 @@
           </p>
         </div>
 
-        <div class="w-full h-80 min-h-[320px]">
+        <div class="w-full h-80">
           <USkeleton
             v-if="isLoadingCategories"
             class="w-full h-full rounded-lg"
@@ -217,7 +217,7 @@
             v-else-if="!categoriesDistribution.length"
             class="h-full flex items-center justify-center text-sm text-muted"
           >
-            Belum ada kategori artikel
+            {{ $t('pages.dashboard.noCategories') }}
           </div>
           <ClientOnly v-else>
             <DonutChart
@@ -264,7 +264,7 @@
           </NuxtLink>
         </div>
 
-        <div class="w-full h-72 min-h-[280px]">
+        <div class="w-full h-72">
           <USkeleton
             v-if="isLoadingMessagesTrend"
             class="w-full h-full rounded-lg"
@@ -340,7 +340,7 @@
               v-for="msg in recentMessages"
               :key="msg.id"
               to="/messages"
-              class="py-3 flex items-start justify-between gap-3 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 -mx-2 px-2 rounded-lg transition-colors"
+              class="py-3 flex items-start justify-between gap-3 hover:bg-muted -mx-2 px-2 rounded-lg transition-colors"
             >
               <div class="flex items-start gap-3 min-w-0">
                 <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 text-xs font-semibold">
@@ -358,7 +358,7 @@
                 </div>
               </div>
               <span class="text-xs text-muted whitespace-nowrap shrink-0">
-                {{ formatTimeAgo(msg.createdAt) }}
+                {{ formatTimeAgo(msg.createdAt, t) }}
               </span>
             </NuxtLink>
           </div>
@@ -418,7 +418,7 @@
         <div
           v-for="art in recentArticles"
           :key="art.id"
-          class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 -mx-2 px-2 rounded-lg transition-colors"
+          class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-muted -mx-2 px-2 rounded-lg transition-colors"
         >
           <div class="flex items-center gap-3 min-w-0">
             <img
@@ -447,12 +447,12 @@
               <div class="flex flex-wrap items-center gap-2 text-xs text-muted">
                 <span
                   v-if="art.category"
-                  class="font-medium text-neutral-600 dark:text-neutral-300"
+                  class="font-medium text-toned"
                 >
                   {{ art.category.name }}
                 </span>
                 <span v-if="art.category">•</span>
-                <span>{{ formatDate(art.createdAt) }}</span>
+                <span>{{ formatDateTime(art.createdAt, locale) }}</span>
               </div>
             </div>
           </div>
@@ -463,11 +463,11 @@
                 name="i-lucide-eye"
                 class="w-3.5 h-3.5"
               />
-              <span>{{ (art.viewsCount || 0).toLocaleString() }}</span>
+              <span>{{ formatNumber(art.viewsCount || 0, locale) }}</span>
             </div>
             <span
               class="inline-flex items-center gap-1.5 text-xs font-medium"
-              :class="art.status === 'publish' ? 'text-emerald-600 dark:text-emerald-400' : 'text-neutral-500'"
+              :class="art.status === 'publish' ? 'text-green-600' : 'text-neutral-500'"
             >
               <span
                 class="w-1.5 h-1.5 rounded-full"
@@ -500,6 +500,8 @@ definePageMeta({
 })
 
 // States for separate endpoints
+const { t, locale } = useI18n()
+
 const summary = ref<DashboardSummary | null>(null)
 const viewsTrend = ref<ViewsTrendItem[]>([])
 const categoriesDistribution = ref<ArticlesByCategoryItem[]>([])
@@ -606,18 +608,17 @@ onMounted(() => {
 
 // Views Trend Chart Config
 const viewsChartCategories = {
-  views: { name: 'Pembaca (Views)', color: '#3b82f6' },
-  articles: { name: 'Artikel Terbit', color: '#10b981' }
+  views: { name: t('pages.dashboard.seriesViews'), color: CHART_COLORS.primary },
+  articles: { name: t('pages.dashboard.seriesArticles'), color: CHART_COLORS.success }
 }
 
 // Category Distribution Chart Config
-const categoryPalette = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4']
 const categoryChartCategories = computed(() => {
   const result: Record<string, { name: string, color: string }> = {}
   categoriesDistribution.value.forEach((item, idx) => {
     result[item.name] = {
       name: item.name,
-      color: categoryPalette[idx % categoryPalette.length] || '#3b82f6'
+      color: CHART_CATEGORY_PALETTE[idx % CHART_CATEGORY_PALETTE.length] ?? CHART_FALLBACK_COLOR
     }
   })
   return result
@@ -625,32 +626,11 @@ const categoryChartCategories = computed(() => {
 
 // Messages Trend Chart Config
 const messagesChartCategories = {
-  unread: { name: 'Belum Dibaca', color: '#f59e0b' },
-  read: { name: 'Sudah Dibaca', color: '#10b981' }
+  unread: { name: t('pages.dashboard.unread'), color: CHART_COLORS.warning },
+  read: { name: t('pages.dashboard.read'), color: CHART_COLORS.success }
 }
 
 // Helpers
-const formatDate = (dateStr: string) => {
-  if (!dateStr) return '-'
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  })
-}
-
-const formatTimeAgo = (dateStr: string) => {
-  if (!dateStr) return '-'
-  const d = new Date(dateStr)
-  const now = new Date()
-  const diffSec = Math.floor((now.getTime() - d.getTime()) / 1000)
-
-  if (diffSec < 60) return 'Baru saja'
-  if (diffSec < 3600) return `${Math.floor(diffSec / 60)} mnt lalu`
-  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} jam lalu`
-  return `${Math.floor(diffSec / 86400)} hari lalu`
-}
 </script>
 
 <style scoped>

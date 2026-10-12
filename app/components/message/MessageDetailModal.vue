@@ -17,7 +17,7 @@
                 {{ message.subject }}
               </h3>
               <p class="text-sm text-muted mt-0.5">
-                {{ formatDate(message.createdAt) }}
+                {{ formatDateTime(message.createdAt, locale) }}
               </p>
             </div>
             <UBadge
@@ -143,7 +143,7 @@ const emit = defineEmits<{
 }>()
 
 const toast = useToast()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { can } = usePermission()
 const isToggling = ref(false)
 
@@ -152,18 +152,6 @@ const mailtoLink = computed(() => {
   const subject = encodeURIComponent(`Re: ${props.message.subject}`)
   return `mailto:${props.message.email}?subject=${subject}`
 })
-
-function formatDate(val: string) {
-  if (!val) return '-'
-  return new Date(val).toLocaleString('en-US', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  })
-}
 
 // Auto mark as read on view if unread
 watch(open, async (isOpen) => {

@@ -1,12 +1,11 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
+import type { ApiResponse } from '../types/api'
 import type {
   Setting,
-  SettingPayload,
   SettingMetaPayload,
   SettingContactPayload,
-  SettingSocialPayload,
-  ApiResponse
+  SettingSocialPayload
 } from '../types/setting'
 
 export class SettingService {
@@ -18,19 +17,6 @@ export class SettingService {
     try {
       const response = await apiService.client.get<ApiResponse<Setting>>(
         '/settings',
-        this.authHeaders
-      )
-      return response.data
-    } catch (error) {
-      return handleServiceError(error)
-    }
-  }
-
-  async update(payload: SettingPayload): Promise<ApiResponse<Setting>> {
-    try {
-      const response = await apiService.client.put<ApiResponse<Setting>>(
-        '/settings',
-        payload,
         this.authHeaders
       )
       return response.data

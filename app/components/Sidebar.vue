@@ -27,20 +27,24 @@
           :key="group.id || group.title"
           class="space-y-2"
         >
-          <button
+          <UButton
             v-if="!isCollapsed && group.title"
-            class="flex w-full items-center justify-between px-1 cursor-pointer group"
+            color="neutral"
+            variant="ghost"
+            block
+            class="group px-1 justify-between"
+            :ui="{ base: 'px-1' }"
             @click="() => { toggleExpanded('group:' + (group.id || group.title)) }"
           >
-            <h3 class="text-sm font-medium text-toned">
+            <span class="text-sm font-medium text-toned">
               {{ group.title }}
-            </h3>
+            </span>
             <UIcon
               name="i-lucide-chevron-down"
-              class="w-3.5 h-3.5 text-dimmed transition-transform duration-200"
+              class="size-3.5 text-dimmed transition-transform duration-200"
               :class="[isExpanded('group:' + (group.id || group.title)) || !group.title ? '' : '-rotate-90']"
             />
-          </button>
+          </UButton>
 
           <div
             v-if="!group.title || isCollapsed || isExpanded('group:' + (group.id || group.title))"
@@ -57,24 +61,13 @@
                   :ui="{ content: 'p-0' }"
                   mode="hover"
                 >
-                  <button
-                    class="flex items-center transition-colors group w-10 h-10 mx-auto justify-center rounded-md cursor-pointer"
-                    :class="[
-                      isParentActive(item)
-                        ? 'bg-primary text-white shadow-md shadow-primary/30'
-                        : 'text-toned hover:bg-muted hover:text-highlighted'
-                    ]"
-                  >
-                    <UIcon
-                      :name="item.icon"
-                      class="w-5 h-5 shrink-0 transition-colors"
-                      :class="[
-                        isParentActive(item)
-                          ? 'text-white'
-                          : 'text-toned group-hover:text-highlighted'
-                      ]"
-                    />
-                  </button>
+                  <UButton
+                    :color="isParentActive(item) ? 'primary' : 'neutral'"
+                    :variant="isParentActive(item) ? 'solid' : 'ghost'"
+                    :icon="item.icon"
+                    square
+                    class="mx-auto"
+                  />
 
                   <template #content>
                     <div class="min-w-44 py-1">
@@ -107,31 +100,25 @@
                 </UPopover>
 
                 <template v-else>
-                  <button
-                    class="flex w-full items-center gap-3 px-3 py-2 text-sm rounded-md font-medium transition-colors cursor-pointer group"
-                    :class="[
-                      isParentActive(item)
-                        ? 'text-primary'
-                        : 'text-toned hover:bg-muted hover:text-highlighted'
-                    ]"
+                  <UButton
+                    color="neutral"
+                    variant="ghost"
+                    block
+                    class="group gap-3 justify-start"
+                    :class="isParentActive(item) ? 'text-primary' : 'text-toned'"
                     @click="() => { toggleExpanded(item.id) }"
                   >
                     <UIcon
                       :name="item.icon"
-                      class="w-5 h-5 shrink-0 transition-colors"
-                      :class="[
-                        isParentActive(item)
-                          ? 'text-primary'
-                          : 'text-toned group-hover:text-highlighted'
-                      ]"
+                      class="size-5 shrink-0 transition-colors"
                     />
-                    <span class="truncate flex-1 text-left">{{ item.label }}</span>
+                    <span class="truncate flex-1 text-left text-sm font-medium">{{ item.label }}</span>
                     <UIcon
                       name="i-lucide-chevron-down"
-                      class="w-4 h-4 shrink-0 text-dimmed transition-transform duration-200"
+                      class="size-4 shrink-0 text-dimmed transition-transform duration-200"
                       :class="[isExpanded(item.id) || isParentActive(item) ? 'rotate-180' : '']"
                     />
-                  </button>
+                  </UButton>
 
                   <div
                     v-if="isExpanded(item.id) || isParentActive(item)"
@@ -203,9 +190,11 @@
       <div class="shrink-0 pt-2 space-y-2">
         <div class="hidden lg:block pt-2 border-t border-muted">
           <UserPopover :popover-props="{ content: { side: 'right', sideOffset: 12, align: 'end' } }">
-            <button
-              class="flex w-full items-center cursor-pointer rounded-md transition-colors hover:bg-muted"
-              :class="[isCollapsed ? 'justify-center p-2' : 'gap-3 px-2 py-2']"
+            <UButton
+              color="neutral"
+              variant="ghost"
+              block
+              :class="isCollapsed ? 'justify-center' : 'gap-3'"
             >
               <UAvatar
                 :src="authState.user?.photo"
@@ -228,25 +217,24 @@
               <UIcon
                 v-if="!isCollapsed"
                 name="i-lucide-chevrons-up-down"
-                class="w-4 h-4 text-dimmed shrink-0"
+                class="size-4 text-dimmed shrink-0"
               />
-            </button>
+            </UButton>
           </UserPopover>
         </div>
       </div>
     </aside>
 
-    <button
+    <UButton
       v-if="isCollapsed"
-      class="hidden lg:flex absolute top-4.5 -right-3 z-30 w-7 h-7 rounded-full bg-default shadow-md items-center justify-center text-muted hover:text-highlighted hover:shadow-lg transition-all cursor-pointer focus:outline-none"
+      color="neutral"
+      variant="solid"
+      size="xs"
+      icon="i-lucide-panel-left-open"
+      class="hidden lg:inline-flex absolute top-4.5 -right-3 z-30 rounded-full shadow-md hover:shadow-lg transition-all"
       :aria-label="$t('components.sidebar.expandSidebar')"
       @click="() => { isCollapsed = false }"
-    >
-      <UIcon
-        name="i-lucide-panel-left-open"
-        class="w-4 h-4"
-      />
-    </button>
+    />
   </div>
 </template>
 

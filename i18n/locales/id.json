@@ -8,9 +8,29 @@
     "cancel": "Batal",
     "createdAt": "Dibuat Pada",
     "loading": "Memuat",
-    "error": "Terjadi kesalahan"
+    "error": "Terjadi kesalahan",
+    "imagePreview": "Pratinjau Gambar",
+    "dropImageHere": "Letakkan gambar di sini",
+    "timeAgo": {
+      "justNow": "Baru saja",
+      "minutes": "{count} mnt lalu",
+      "hours": "{count} jam lalu",
+      "days": "{count} hari lalu"
+    }
   },
   "components": {
+    "editorUrlModal": {
+      "linkTitle": "Sisipkan Tautan",
+      "linkDescription": "Tambah atau ubah tautan pada teks yang dipilih.",
+      "linkLabel": "URL",
+      "applyLink": "Terapkan Tautan",
+      "imageTitle": "Sisipkan Gambar",
+      "imageDescription": "Sisipkan gambar menggunakan URL-nya.",
+      "imageLabel": "URL Gambar",
+      "insertImage": "Sisipkan Gambar",
+      "placeholder": "https://contoh.com",
+      "invalidUrl": "Masukkan URL yang valid"
+    },
     "languageSwitcher": {
       "ariaLabel": "Ubah bahasa"
     },
@@ -27,15 +47,11 @@
         "content": "Konten",
         "category": "Kategori",
         "article": "Artikel",
-        "menu": "Menu",
-        "subMenu1": "Sub Menu 1",
-        "subMenu2": "Sub Menu 2",
         "faq": "FAQ",
         "userManagement": "Manajemen Pengguna",
         "users": "Pengguna",
         "roles": "Peran & Hak Akses",
         "settings": "Pengaturan",
-        "settingsGroup": "Pengaturan Sistem",
         "messages": "Pesan",
         "feedback": "Feedback"
       }
@@ -62,7 +78,9 @@
     },
     "dataTable": {
       "searchPlaceholder": "Cari...",
-      "showing": "Menampilkan {from} sampai {to} dari {total} hasil"
+      "showing": "Menampilkan {from} sampai {to} dari {total} hasil",
+      "emptyTitle": "Belum ada data",
+      "emptyDescription": "Belum ada yang bisa ditampilkan di sini."
     },
     "category": {
       "addModal": {
@@ -140,8 +158,6 @@
         "statusLabel": "Status",
         "active": "Aktif",
         "inactive": "Nonaktif",
-        "cancel": "Batal",
-        "save": "Simpan",
         "nameRequired": "Nama wajib diisi",
         "emailRequired": "Email wajib diisi",
         "emailInvalid": "Masukkan alamat email yang valid",
@@ -167,8 +183,6 @@
         "statusLabel": "Status",
         "active": "Aktif",
         "inactive": "Nonaktif",
-        "cancel": "Batal",
-        "save": "Simpan",
         "nameRequired": "Nama wajib diisi",
         "emailRequired": "Email wajib diisi",
         "emailInvalid": "Masukkan alamat email yang valid",
@@ -217,8 +231,6 @@
     "dashboard": {
       "title": "Dasbor",
       "description": "Selamat datang di ringkasan performa konten dan pesan sistem CMS",
-      "welcomeBack": "Selamat Datang Kembali",
-      "todayOverview": "Berikut rangkuman aktivitas dan statistik terbaru hari ini.",
       "totalArticles": "Total Artikel",
       "totalViews": "Total Pembaca",
       "totalMessages": "Pesan Masuk",
@@ -229,6 +241,14 @@
       "read": "Sudah Dibaca",
       "viewsTrendTitle": "Tren Pembaca & Artikel (7 Hari Terakhir)",
       "viewsTrendDesc": "Grafik akumulasi pembaca harian dan publikasi artikel",
+      "viewsAccumulation": "Akumulasi tayangan artikel",
+      "categoriesCount": "{count} Kategori",
+      "faqsCount": "{count} FAQ",
+      "last7Days": "7 Hari Terakhir",
+      "noStatistics": "Belum ada data statistik",
+      "noCategories": "Belum ada kategori artikel",
+      "seriesViews": "Pembaca (Views)",
+      "seriesArticles": "Artikel Terbit",
       "categoryDistTitle": "Distribusi Kategori",
       "categoryDistDesc": "Sebaran proporsi artikel per topik kategori",
       "messagesTrendTitle": "Aktivitas Pesan Masuk",
@@ -239,9 +259,7 @@
       "recentMessagesDesc": "Pertanyaan dan kontak masuk dari pengunjung",
       "viewAll": "Lihat Semua",
       "noRecentArticles": "Belum ada artikel terbaru",
-      "noRecentMessages": "Belum ada pesan masuk",
-      "quickActionCreate": "Tulis Artikel",
-      "quickActionMessages": "Kotak Masuk"
+      "noRecentMessages": "Belum ada pesan masuk"
     },
     "faq": {
       "title": "FAQ",
@@ -256,7 +274,6 @@
       "columnAnswer": "Jawaban",
       "columnOrder": "Urutan",
       "columnStatus": "Status",
-      "columnCreatedAt": "Tanggal Dibuat",
       "columnAction": "Aksi",
       "actionsDropdown": "Menu aksi",
       "editFaq": "Edit FAQ",
@@ -291,17 +308,11 @@
       "columnDescription": "Deskripsi",
       "columnPermissions": "Hak Akses",
       "columnUsers": "Pengguna",
-      "columnType": "Tipe",
       "columnAction": "Aksi",
       "permissionsBadge": "{count} hak akses",
-      "usersBadge": "{count} pengguna",
-      "systemRole": "Sistem",
-      "customRole": "Kustom",
       "actionsDropdown": "Menu aksi",
       "editRole": "Ubah Peran",
       "deleteRole": "Hapus Peran",
-      "cannotDeleteSystem": "Peran bawaan sistem tidak dapat dihapus",
-      "cannotDeleteWithUsers": "Pindahkan pengguna aktif terlebih dahulu sebelum menghapus peran ini",
       "deleteTitle": "Hapus Peran",
       "deletedSuccess": "Peran berhasil dihapus!"
     },
@@ -317,7 +328,6 @@
         "login": "Masuk",
         "or": "ATAU",
         "continueWithGoogle": "Lanjutkan dengan Google",
-        "continueWithMicrosoft": "Lanjutkan dengan Microsoft",
         "emailRequired": "Email wajib diisi",
         "passwordRequired": "Kata sandi wajib diisi",
         "loginSuccess": "Berhasil masuk! Selamat datang.",
@@ -400,6 +410,7 @@
       "title": "Kategori",
       "description": "Kelola kategori untuk mengorganisir artikel dan konten Anda",
       "searchPlaceholder": "Cari kategori...",
+      "actionsDropdown": "Aksi",
       "addCategory": "Tambah Kategori",
       "columnName": "Nama",
       "columnSlug": "Slug",
@@ -411,6 +422,7 @@
       "title": "Artikel",
       "description": "Kelola artikel blog, berita, dan konten publikasi",
       "searchPlaceholder": "Cari artikel...",
+      "actionsDropdown": "Aksi",
       "addArticle": "Tambah Artikel",
       "filterCategory": "Kategori",
       "allCategories": "Semua Kategori",
@@ -418,7 +430,6 @@
       "allStatuses": "Semua Status",
       "statusDraft": "Draft",
       "statusPublish": "Publish",
-      "columnCover": "Sampul",
       "columnTitle": "Artikel",
       "columnCategory": "Kategori",
       "columnStatus": "Status",
@@ -450,8 +461,6 @@
       "fieldDescription": "Deskripsi",
       "placeholderDescription": "Tulis deskripsi singkat artikel...",
       "coverTitle": "Gambar Utama (Sampul)",
-      "uploadCover": "Unggah gambar sampul",
-      "chooseFile": "Pilih Berkas",
       "coverUploaded": "Gambar sampul berhasil diunggah!",
       "coverUploadFailed": "Gagal mengunggah gambar sampul",
       "titleRequired": "Judul artikel wajib diisi",
@@ -474,6 +483,7 @@
         "description": "Pengaturan nama website, deskripsi, kata kunci meta, dan media pendukung.",
         "siteName": "Nama Website",
         "siteNamePlaceholder": "Contoh: AMTI CMS",
+        "siteNameRequired": "Nama website wajib diisi",
         "siteDescription": "Deskripsi Website",
         "siteDescriptionPlaceholder": "Deskripsi singkat website untuk mesin pencari...",
         "metaKeywords": "Kata Kunci Meta",
@@ -526,9 +536,7 @@
       },
       "uploadSuccess": "Berkas berhasil diunggah!",
       "uploadFailed": "Gagal mengunggah berkas",
-      "removeMedia": "Hapus",
-      "changeMedia": "Ganti",
-      "chooseFile": "Pilih Berkas"
+      "removeMedia": "Hapus"
     },
     "messages": {
       "title": "Pesan Masuk",
@@ -551,14 +559,11 @@
       "deleteMessage": "Hapus Pesan",
       "deleteTitle": "Hapus Pesan",
       "detailTitle": "Detail Pesan",
-      "senderInfo": "Informasi Pengirim",
       "phone": "Telepon",
       "email": "Email",
       "subject": "Subjek",
       "message": "Pesan",
       "noPhone": "Tidak ada nomor telepon",
-      "sentAt": "Dikirim Pada",
-      "close": "Tutup",
       "statusUpdatedSuccess": "Status pesan berhasil diperbarui!",
       "deletedSuccess": "Pesan berhasil dihapus!"
     }

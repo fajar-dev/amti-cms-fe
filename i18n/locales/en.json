@@ -8,9 +8,29 @@
     "cancel": "Cancel",
     "createdAt": "Created At",
     "loading": "Loading",
-    "error": "An error occurred"
+    "error": "An error occurred",
+    "imagePreview": "Image Preview",
+    "dropImageHere": "Drop your image here",
+    "timeAgo": {
+      "justNow": "Just now",
+      "minutes": "{count} min ago",
+      "hours": "{count} h ago",
+      "days": "{count} d ago"
+    }
   },
   "components": {
+    "editorUrlModal": {
+      "linkTitle": "Insert Link",
+      "linkDescription": "Add or update a link on the selected text.",
+      "linkLabel": "URL",
+      "applyLink": "Apply Link",
+      "imageTitle": "Insert Image",
+      "imageDescription": "Insert an image using its URL.",
+      "imageLabel": "Image URL",
+      "insertImage": "Insert Image",
+      "placeholder": "https://example.com",
+      "invalidUrl": "Please enter a valid URL"
+    },
     "languageSwitcher": {
       "ariaLabel": "Change language"
     },
@@ -27,15 +47,11 @@
         "content": "Content",
         "category": "Category",
         "article": "Article",
-        "menu": "Menu",
-        "subMenu1": "Sub Menu 1",
-        "subMenu2": "Sub Menu 2",
         "faq": "FAQ",
         "userManagement": "User Management",
         "users": "Users",
         "roles": "Roles & Permissions",
         "settings": "Settings",
-        "settingsGroup": "System Settings",
         "messages": "Messages",
         "feedback": "Feedback"
       }
@@ -62,7 +78,9 @@
     },
     "dataTable": {
       "searchPlaceholder": "Search...",
-      "showing": "Showing {from} to {to} of {total} results"
+      "showing": "Showing {from} to {to} of {total} results",
+      "emptyTitle": "No data yet",
+      "emptyDescription": "There is nothing to display here."
     },
     "category": {
       "addModal": {
@@ -140,8 +158,6 @@
         "statusLabel": "Status",
         "active": "Active",
         "inactive": "Inactive",
-        "cancel": "Cancel",
-        "save": "Save",
         "nameRequired": "Name is required",
         "emailRequired": "Email is required",
         "emailInvalid": "Please enter a valid email address",
@@ -167,8 +183,6 @@
         "statusLabel": "Status",
         "active": "Active",
         "inactive": "Inactive",
-        "cancel": "Cancel",
-        "save": "Save",
         "nameRequired": "Name is required",
         "emailRequired": "Email is required",
         "emailInvalid": "Please enter a valid email address",
@@ -217,8 +231,6 @@
     "dashboard": {
       "title": "Dashboard",
       "description": "Welcome to your CMS overview and activity performance dashboard",
-      "welcomeBack": "Welcome Back",
-      "todayOverview": "Here is a summary of your recent content activity and performance.",
       "totalArticles": "Total Articles",
       "totalViews": "Total Readers",
       "totalMessages": "Messages",
@@ -229,6 +241,14 @@
       "read": "Read",
       "viewsTrendTitle": "Views & Article Publications (Last 7 Days)",
       "viewsTrendDesc": "Daily accumulated readers and newly published articles",
+      "viewsAccumulation": "Accumulated article views",
+      "categoriesCount": "{count} Categories",
+      "faqsCount": "{count} FAQs",
+      "last7Days": "Last 7 Days",
+      "noStatistics": "No statistics data yet",
+      "noCategories": "No article categories yet",
+      "seriesViews": "Readers (Views)",
+      "seriesArticles": "Published Articles",
       "categoryDistTitle": "Category Distribution",
       "categoryDistDesc": "Distribution proportion of articles per category topic",
       "messagesTrendTitle": "Inquiry Messages Activity",
@@ -239,9 +259,7 @@
       "recentMessagesDesc": "Latest questions and contact messages received",
       "viewAll": "View All",
       "noRecentArticles": "No recent articles found",
-      "noRecentMessages": "No recent inquiries found",
-      "quickActionCreate": "New Article",
-      "quickActionMessages": "Inbox"
+      "noRecentMessages": "No recent inquiries found"
     },
     "faq": {
       "title": "FAQ",
@@ -256,7 +274,6 @@
       "columnAnswer": "Answer",
       "columnOrder": "Order",
       "columnStatus": "Status",
-      "columnCreatedAt": "Created At",
       "columnAction": "Action",
       "actionsDropdown": "Actions dropdown",
       "editFaq": "Edit FAQ",
@@ -291,17 +308,11 @@
       "columnDescription": "Description",
       "columnPermissions": "Permissions",
       "columnUsers": "Users",
-      "columnType": "Type",
       "columnAction": "Action",
       "permissionsBadge": "{count} permissions",
-      "usersBadge": "{count} users",
-      "systemRole": "System",
-      "customRole": "Custom",
       "actionsDropdown": "Actions dropdown",
       "editRole": "Edit Role",
       "deleteRole": "Delete Role",
-      "cannotDeleteSystem": "System roles cannot be deleted",
-      "cannotDeleteWithUsers": "Reassign active users before deleting this role",
       "deleteTitle": "Delete Role",
       "deletedSuccess": "Role deleted successfully!"
     },
@@ -317,7 +328,6 @@
         "login": "Sign In",
         "or": "OR",
         "continueWithGoogle": "Continue with Google",
-        "continueWithMicrosoft": "Continue with Microsoft",
         "emailRequired": "Email is required",
         "passwordRequired": "Password is required",
         "loginSuccess": "Login success! Welcome.",
@@ -400,6 +410,7 @@
       "title": "Categories",
       "description": "Manage categories for organizing your articles and content",
       "searchPlaceholder": "Search categories...",
+      "actionsDropdown": "Actions",
       "addCategory": "Add Category",
       "columnName": "Name",
       "columnSlug": "Slug",
@@ -411,6 +422,7 @@
       "title": "Articles",
       "description": "Manage blog posts, news, and published content",
       "searchPlaceholder": "Search articles...",
+      "actionsDropdown": "Actions",
       "addArticle": "Add Article",
       "filterCategory": "Category",
       "allCategories": "All Categories",
@@ -418,7 +430,6 @@
       "allStatuses": "All Statuses",
       "statusDraft": "Draft",
       "statusPublish": "Publish",
-      "columnCover": "Cover",
       "columnTitle": "Article",
       "columnCategory": "Category",
       "columnStatus": "Status",
@@ -450,8 +461,6 @@
       "fieldDescription": "Description",
       "placeholderDescription": "Write a brief description of the article...",
       "coverTitle": "Featured Image (Cover)",
-      "uploadCover": "Upload cover image",
-      "chooseFile": "Choose File",
       "coverUploaded": "Cover image uploaded successfully!",
       "coverUploadFailed": "Failed to upload cover image",
       "titleRequired": "Article title is required",
@@ -474,6 +483,7 @@
         "description": "Configure website name, description, meta keywords, and branding media.",
         "siteName": "Site Name",
         "siteNamePlaceholder": "e.g. AMTI CMS",
+        "siteNameRequired": "Site name is required",
         "siteDescription": "Site Description",
         "siteDescriptionPlaceholder": "Short description of website for search engines...",
         "metaKeywords": "Meta Keywords",
@@ -526,9 +536,7 @@
       },
       "uploadSuccess": "File uploaded successfully!",
       "uploadFailed": "Failed to upload file",
-      "removeMedia": "Remove",
-      "changeMedia": "Change",
-      "chooseFile": "Choose File"
+      "removeMedia": "Remove"
     },
     "messages": {
       "title": "Messages",
@@ -551,14 +559,11 @@
       "deleteMessage": "Delete Message",
       "deleteTitle": "Delete Message",
       "detailTitle": "Message Details",
-      "senderInfo": "Sender Information",
       "phone": "Phone",
       "email": "Email",
       "subject": "Subject",
       "message": "Message",
       "noPhone": "No phone provided",
-      "sentAt": "Sent At",
-      "close": "Close",
       "statusUpdatedSuccess": "Message status updated successfully!",
       "deletedSuccess": "Message deleted successfully!"
     }

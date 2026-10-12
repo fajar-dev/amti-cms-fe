@@ -79,7 +79,7 @@ definePageMeta({
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UBadge = resolveComponent('UBadge')
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToast()
 
 // State
@@ -184,18 +184,11 @@ const columns = computed<TableColumn<Faq>[]>(() => {
     },
     {
       accessorKey: 'createdAt',
-      header: sortHeader(() => t('pages.faq.columnCreatedAt'), 'createdAt'),
+      header: sortHeader(() => t('common.createdAt'), 'createdAt'),
       cell: ({ row }) => {
         const val = row.getValue('createdAt') as string
         if (!val) return '-'
-        return new Date(val).toLocaleString('en-US', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false
-        })
+        return h('span', { class: 'text-muted whitespace-nowrap' }, formatDateTime(val, locale.value))
       }
     }
   ]
@@ -223,6 +216,7 @@ const columns = computed<TableColumn<Faq>[]>(() => {
           () =>
             h(UButton, {
               'icon': 'i-lucide-ellipsis-vertical',
+              'size': 'xs',
               'color': 'neutral',
               'variant': 'ghost',
               'aria-label': t('pages.faq.actionsDropdown')
@@ -273,9 +267,15 @@ const handleDelete = async () => {
         color: 'success',
         icon: 'i-lucide-circle-check'
       })
+      showDeleteModal.value = false
+      fetchFaqs()
+    } else {
+      toast.add({
+        title: response.message || t('common.error'),
+        color: 'error',
+        icon: 'i-lucide-circle-alert'
+      })
     }
-    showDeleteModal.value = false
-    fetchFaqs()
   } finally {
     isDeleting.value = false
   }

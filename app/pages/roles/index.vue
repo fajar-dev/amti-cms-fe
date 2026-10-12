@@ -230,6 +230,7 @@ const columns = computed<TableColumn<Role>[]>(() => {
           () =>
             h(UButton, {
               'icon': 'i-lucide-ellipsis-vertical',
+              'size': 'xs',
               'color': 'neutral',
               'variant': 'ghost',
               'aria-label': t('pages.roles.actionsDropdown')

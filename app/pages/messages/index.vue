@@ -65,7 +65,7 @@ const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UBadge = resolveComponent('UBadge')
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToast()
 const { can } = usePermission()
 
@@ -199,14 +199,7 @@ const columns = computed<TableColumn<Message>[]>(() => {
       cell: ({ row }) => {
         const val = row.getValue('createdAt') as string
         if (!val) return '-'
-        return h('span', { class: 'text-xs text-muted whitespace-nowrap' }, new Date(val).toLocaleString('en-US', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false
-        }))
+        return h('span', { class: 'text-muted whitespace-nowrap' }, formatDateTime(val, locale.value))
       }
     }
   ]
@@ -247,6 +240,7 @@ const columns = computed<TableColumn<Message>[]>(() => {
           () =>
             h(UButton, {
               'icon': 'i-lucide-ellipsis-vertical',
+              'size': 'xs',
               'color': 'neutral',
               'variant': 'ghost',
               'aria-label': t('pages.messages.actionsDropdown')

@@ -1,6 +1,7 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { Category, CategoryPayload, ApiResponse } from '../types/content'
+import type { ApiResponse } from '../types/api'
+import type { Category, CategoryPayload } from '../types/content'
 import type { SortOrder } from '../composables/useTableQuery'
 
 export class CategoryService {

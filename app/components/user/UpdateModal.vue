@@ -7,50 +7,43 @@
     <template #body>
       <!-- Avatar Upload Section -->
       <div class="flex flex-col items-center justify-center pb-4 space-y-2">
-        <div
-          class="relative group cursor-pointer"
-          @click="triggerFileInput"
-        >
-          <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-default hover:border-primary/50 transition-colors duration-200 flex items-center justify-center bg-muted relative">
-            <img
-              v-if="previewUrl"
-              :src="previewUrl"
-              class="w-full h-full object-cover"
-            >
+        <div class="relative group">
+          <UAvatar
+            :src="previewUrl || undefined"
+            :alt="$t('components.user.updateModal.choosePhoto')"
+            icon="i-lucide-user"
+            :ui="{ root: 'size-24 text-3xl border-2 border-default' }"
+          />
+
+          <div class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
             <UIcon
-              v-else
-              name="i-lucide-user"
-              class="w-12 h-12 text-dimmed"
+              name="i-lucide-camera"
+              class="size-6 text-white"
             />
+          </div>
 
-            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <UIcon
-                name="i-lucide-camera"
-                class="w-6 h-6 text-white"
-              />
-            </div>
-
-            <div
-              v-if="isUploading"
-              class="absolute inset-0 bg-black/50 flex items-center justify-center"
-            >
-              <UIcon
-                name="i-lucide-loader-2"
-                class="w-6 h-6 text-white animate-spin"
-              />
-            </div>
+          <div
+            v-if="isUploading"
+            class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center"
+          >
+            <UIcon
+              name="i-lucide-loader-2"
+              class="size-6 text-white animate-spin"
+            />
           </div>
         </div>
         <div class="flex gap-2">
-          <UButton
+          <UFileUpload
+            v-model="photoFile"
+            variant="button"
             size="xs"
             color="neutral"
-            variant="outline"
             icon="i-lucide-upload"
-            @click="triggerFileInput"
-          >
-            {{ $t('components.user.updateModal.choosePhoto') }}
-          </UButton>
+            accept="image/*"
+            reset
+            :label="$t('components.user.updateModal.choosePhoto')"
+            :disabled="isUploading"
+          />
           <UButton
             v-if="previewUrl || form.photo"
             size="xs"
@@ -62,13 +55,6 @@
             {{ $t('components.user.updateModal.remove') }}
           </UButton>
         </div>
-        <input
-          ref="fileInput"
-          type="file"
-          class="hidden"
-          accept="image/*"
-          @change="onFileChange"
-        >
       </div>
 
       <UForm
@@ -172,9 +158,7 @@ const props = defineProps<{
 const emit = defineEmits<{ updated: [] }>()
 const toast = useToast()
 const isSubmitting = ref(false)
-const isUploading = ref(false)
-const fileInput = ref<HTMLInputElement | null>(null)
-const previewUrl = ref<string | null>(null)
+const photoFile = ref<File | null>(null)
 const roleOptions = ref<Array<{ label: string, value: number | null }>>([])
 
 const { t } = useI18n()
@@ -210,6 +194,23 @@ const form = reactive<UserPayload>({
   roleId: null
 })
 
+const {
+  isUploading,
+  previewUrl,
+  uploadFile,
+  clearPreview,
+  setPreviewFromUrl
+} = useImageUpload({
+  upload: file => userService.uploadPhoto(file),
+  onUploaded: (path) => { form.photo = path },
+  successMessage: t('components.user.updateModal.photoUploadSuccess'),
+  errorMessage: t('components.user.updateModal.photoUploadFailed')
+})
+
+watch(photoFile, (file) => {
+  if (file) uploadFile(file)
+})
+
 const populateForm = () => {
   if (props.user) {
     form.name = props.user.name
@@ -218,57 +219,15 @@ const populateForm = () => {
     form.photo = props.user.photo // will contain the MinIO presigned URL (or path)
     form.isActive = props.user.isActive
     form.roleId = props.user.roleId ?? props.user.role?.id ?? null
-    previewUrl.value = props.user.photo // display existing photo
-  }
-}
-
-const triggerFileInput = () => {
-  fileInput.value?.click()
-}
-
-const onFileChange = async (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const file = target.files?.[0]
-  if (!file) return
-
-  // Show local preview immediately
-  previewUrl.value = URL.createObjectURL(file)
-
-  // Upload to MinIO immediately
-  isUploading.value = true
-  try {
-    const response = await userService.uploadPhoto(file)
-    if (response.success && response.data?.path) {
-      form.photo = response.data.path
-      toast.add({
-        title: t('components.user.updateModal.photoUploadSuccess'),
-        color: 'success',
-        icon: 'i-lucide-circle-check'
-      })
-    } else {
-      toast.add({
-        title: t('components.user.updateModal.photoUploadFailed'),
-        color: 'error',
-        icon: 'i-lucide-circle-alert'
-      })
-    }
-  } catch {
-    toast.add({
-      title: t('components.user.updateModal.photoUploadFailed'),
-      color: 'error',
-      icon: 'i-lucide-circle-alert'
-    })
-  } finally {
-    isUploading.value = false
+    photoFile.value = null
+    setPreviewFromUrl(props.user.photo) // display existing photo
   }
 }
 
 const removePhoto = () => {
   form.photo = null
-  previewUrl.value = null
-  if (fileInput.value) {
-    fileInput.value.value = ''
-  }
+  photoFile.value = null
+  clearPreview()
 }
 
 const handleSubmit = async () => {
@@ -310,7 +269,8 @@ watch(open, async (val) => {
     await loadRoles()
     populateForm()
   } else {
-    previewUrl.value = null
+    photoFile.value = null
+    clearPreview()
   }
 })
 </script>

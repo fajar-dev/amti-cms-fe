@@ -1,6 +1,7 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { Faq, FaqPayload, ApiResponse } from '../types/faq'
+import type { ApiResponse } from '../types/api'
+import type { Faq, FaqPayload } from '../types/faq'
 import type { SortOrder } from '../composables/useTableQuery'
 
 export class FaqService {

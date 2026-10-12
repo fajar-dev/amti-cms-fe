@@ -1,5 +1,3 @@
-import type { ApiResponse, PaginationMeta } from './api'
-
 export interface Message {
   id: number
   name: string
@@ -23,5 +21,3 @@ export interface CreateMessagePayload {
 export interface UpdateMessageStatusPayload {
   isRead: boolean
 }
-
-export type { PaginationMeta, ApiResponse }
