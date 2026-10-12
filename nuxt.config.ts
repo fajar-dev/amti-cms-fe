@@ -29,10 +29,6 @@ export default defineNuxtConfig({
     }
   },
 
-  routeRules: {
-    '/': { redirect: '/app' }
-  },
-
   compatibilityDate: '2025-01-15',
 
   eslint: {

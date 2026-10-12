@@ -19,17 +19,13 @@ const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permissions: string[] }> = [
 export default defineNuxtRouteMiddleware(async (to) => {
   const { state, service } = useAuth()
 
-  const publicPaths = ['/auth/sign-in', '/auth/reset-password', '/auth/forgot-password']
-
-  // Allow public pages
-  if (publicPaths.includes(to.path)) return
-
-  // Redirect root path to /app or auth
-  if (to.path === '/') {
-    return navigateTo(state.token ? '/app' : '/auth/sign-in')
+  // Only protect routes under /app
+  const isProtectedRoute = to.path.startsWith('/app')
+  if (!isProtectedRoute) {
+    return
   }
 
-  // Require authentication
+  // Require authentication for /app routes
   if (!state.token) {
     return navigateTo('/auth/sign-in')
   }
