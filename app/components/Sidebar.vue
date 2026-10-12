@@ -55,49 +55,58 @@
               :key="item.id"
             >
               <template v-if="item.children && item.children.length">
-                <UPopover
+                <div
                   v-if="isCollapsed"
-                  :content="{ side: 'right', sideOffset: 12, align: 'start' }"
-                  :ui="{ content: 'p-0' }"
-                  mode="hover"
+                  class="flex justify-center w-full"
                 >
-                  <UButton
-                    :color="isParentActive(item) ? 'primary' : 'neutral'"
-                    :variant="isParentActive(item) ? 'solid' : 'ghost'"
-                    :icon="item.icon"
-                    square
-                    class="mx-auto"
-                  />
+                  <UPopover
+                    :content="{ side: 'right', sideOffset: 12, align: 'start' }"
+                    :ui="{ content: 'p-0' }"
+                    mode="hover"
+                  >
+                    <UButton
+                      :color="isParentActive(item) ? 'primary' : 'neutral'"
+                      :variant="isParentActive(item) ? 'solid' : 'ghost'"
+                      :icon="item.icon"
+                      class="w-10 h-10 mx-auto flex items-center justify-center rounded-md p-0"
+                      :class="[
+                        isParentActive(item)
+                          ? 'shadow-md shadow-primary/30'
+                          : ''
+                      ]"
+                      :aria-label="item.label"
+                    />
 
-                  <template #content>
-                    <div class="min-w-44 py-1">
-                      <div class="px-3 py-2 text-xs font-semibold text-dimmed uppercase tracking-wider">
-                        {{ item.label }}
-                      </div>
-                      <NuxtLink
-                        v-for="child in item.children"
-                        :key="child.id"
-                        :to="child.to"
-                        class="flex items-center gap-2.5 px-3 py-2 text-sm transition-colors"
-                        :class="[
-                          isItemActive(child)
-                            ? 'bg-primary/10 text-primary font-medium'
-                            : 'text-toned hover:bg-muted'
-                        ]"
-                      >
-                        <UIcon
-                          v-if="child.icon"
-                          :name="child.icon"
-                          class="w-4 h-4 shrink-0"
+                    <template #content>
+                      <div class="min-w-44 py-1">
+                        <div class="px-3 py-2 text-xs font-semibold text-dimmed uppercase tracking-wider">
+                          {{ item.label }}
+                        </div>
+                        <NuxtLink
+                          v-for="child in item.children"
+                          :key="child.id"
+                          :to="child.to"
+                          class="flex items-center gap-2.5 px-3 py-2 text-sm transition-colors"
                           :class="[
-                            isItemActive(child) ? 'text-primary' : 'text-dimmed'
+                            isItemActive(child)
+                              ? 'bg-primary/10 text-primary font-medium'
+                              : 'text-toned hover:bg-muted'
                           ]"
-                        />
-                        <span>{{ child.label }}</span>
-                      </NuxtLink>
-                    </div>
-                  </template>
-                </UPopover>
+                        >
+                          <UIcon
+                            v-if="child.icon"
+                            :name="child.icon"
+                            class="w-4 h-4 shrink-0"
+                            :class="[
+                              isItemActive(child) ? 'text-primary' : 'text-dimmed'
+                            ]"
+                          />
+                          <span>{{ child.label }}</span>
+                        </NuxtLink>
+                      </div>
+                    </template>
+                  </UPopover>
+                </div>
 
                 <template v-else>
                   <UButton
@@ -227,7 +236,6 @@
 
     <UButton
       v-if="isCollapsed"
-      color="neutral"
       variant="solid"
       size="xs"
       icon="i-lucide-panel-left-open"
