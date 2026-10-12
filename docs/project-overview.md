@@ -21,6 +21,8 @@ SPA (Single Page Application) dengan Nuxt 4, NuxtUI v4, dan Tailwind CSS v4.
 | Icons         | Lucide via Iconify   | `@iconify-json/lucide ^1.2.108`                                   |
 | Validation    | Zod v4               | `zod ^4.4.3`                                                      |
 | HTTP Client   | Axios                | `axios ^1.16.1`                                                   |
+| Charts        | nuxt-charts          | `nuxt-charts ^3.1.0` — `AreaChart`/`BarChart`/`DonutChart` di dashboard |
+| Rich Text     | Tiptap               | `@tiptap/* ^3.31.4` — editor artikel (`CommonTiptapEditor`)        |
 | Auth Provider | Google Sign-In       | `nuxt-vue3-google-signin 0.0.13`                                  |
 | Linting       | ESLint + Nuxt ESLint | `@nuxt/eslint ^1.15.2`                                            |
 | Type Checking | TypeScript + vue-tsc | `typescript ^6.0.3`                                               |
@@ -42,14 +44,32 @@ fe/
 │   │   ├── LanguageSwitcher.vue   # Switch bahasa (kanan atas Header & auth layout)
 │   │   ├── UserPopover.vue        # User profile dropdown + logout
 │   │   ├── DeleteModal.vue        # Generic delete confirmation modal
+│   │   ├── DataTable.vue          # Generic list table (search, per-page, pagination, empty state)
+│   │   ├── common/                # Dipakai lintas fitur
+│   │   │   ├── SortableHeader.vue # Header kolom yang bisa diklik (via useTableQuery().sortHeader)
+│   │   │   ├── EditorUrlModal.vue # Modal input URL link/gambar untuk editor Tiptap
+│   │   │   └── TiptapEditor.vue   # Rich text editor artikel
+│   │   ├── content/               # Komponen modul CMS
+│   │   │   ├── ArticleForm.vue    # Form artikel bersama (create & edit)
+│   │   │   └── category/          # AddModal.vue, UpdateModal.vue
 │   │   └── <feature>/             # Feature-specific components
 │   │       └── AddModal.vue       # Auto-named: <FeatureAddModal />
 │   │       └── UpdateModal.vue
 │   │       └── DeleteModal.vue
-│   ├── composables/
+│   ├── composables/               # Auto-imported — boleh punya state/reaktif
 │   │   ├── useAuth.ts             # Auth state accessor (readonly)
 │   │   ├── useNavigation.ts       # Sidebar navigation config + active state (i18n-aware)
+│   │   ├── usePermission.ts       # Cek permission RBAC (can(...))
+│   │   ├── useTableQuery.ts       # State search/page/perPage/sort + sortHeader()
+│   │   ├── useImageUpload.ts      # Alur upload + preview gambar (cara baku)
 │   │   └── error-helper.ts        # Global error handler untuk service layer
+│   ├── utils/                     # Auto-imported — HANYA fungsi murni (tanpa state)
+│   │   ├── slug.ts                # slugify()
+│   │   ├── format.ts              # formatDate/formatDateTime/formatNumber/formatTimeAgo
+│   │   ├── file.ts                # createPreviewUrl/revokePreviewUrl
+│   │   ├── payload.ts             # trimOrNull/trimRequired
+│   │   ├── html.ts                # isEmptyHtml()
+│   │   └── chart-colors.ts        # Palet chart dari token design system
 │   ├── layouts/
 │   │   ├── dashboard.vue          # Layout utama: sidebar + main content
 │   │   └── auth.vue               # Layout auth: split-screen (gradient | form)
@@ -64,15 +84,14 @@ fe/
 │   │   │   └── reset-password.vue
 │   │   └── <feature>/
 │   │       └── index.vue          # CRUD listing page
-│   ├── plugins/
-│   │   └── *.client.ts            # Client-only plugin
 │   ├── services/
 │   │   ├── api-service.ts         # Axios instance factory + interceptors
 │   │   ├── auth-service.ts        # Auth: login, logout, refresh, Google OAuth
 │   │   └── <feature>-service.ts   # Feature CRUD service
 │   └── types/
-│       ├── auth.d.ts              # User, AuthData, ApiResponse, AuthResponse
-│       └── <feature>.d.ts         # Feature types + payload + PaginationMeta
+│       ├── api.d.ts               # ApiResponse + PaginationMeta (shared)
+│       ├── auth.d.ts              # User, AuthData, AuthResponse (re-export ApiResponse)
+│       └── <feature>.d.ts         # Feature types + payload
 ├── i18n/
 │   └── locales/
 │       ├── en.json                # WAJIB sinkron dengan id.json — lihat docs/i18n-guide.md
@@ -87,16 +106,18 @@ fe/
 
 ## Konfigurasi Design System
 
-### Warna (dari `main.css`)
+### Warna (dari `main.css` + `app.config.ts`)
 
-Project menggunakan custom color palette yang di-override di `@theme static`:
+Project menggunakan custom color palette yang di-override di `@theme static`, lalu dipetakan ke peran NuxtUI
+di `app.config.ts`:
 
-| Nama     | Primary (500) | Fungsi                                 |
-| -------- | ------------- | -------------------------------------- |
-| `green`  | `#009838`     | **Primary** — Brand color utama        |
-| `yellow` | `#D97706`     | **Warning**                            |
-| `red`    | `#B91C1C`     | **Error/Danger**                       |
-| `slate`  | —             | **Neutral** — Teks, border, background |
+| Ramp     | Shade 500 | Peran (di `app.config.ts`)                          |
+| -------- | --------- | --------------------------------------------------- |
+| `blue`   | `#2D4E6F` | **Primary** — navy brand utama (ramp kustom)        |
+| `red`    | `#CC0007` | **Error/Danger**                                    |
+| `yellow` | `#D97706` | **Warning**                                         |
+| `green`  | `#009838` | Bukan primary — dipakai sebagai aksen hijau/sukses  |
+| —        | —         | **Neutral**: ramp bawaan `neutral` (bukan `slate`)  |
 
 ### Font
 
@@ -108,21 +129,43 @@ Project menggunakan custom color palette yang di-override di `@theme static`:
 ```typescript
 ui: {
   colors: {
-    primary: 'green',
+    primary: 'blue',
     error: 'red',
     warning: 'yellow',
-    neutral: 'slate'
+    neutral: 'neutral'
   },
   button: {
     defaultVariants: { size: 'lg' }
   },
   input: {
     defaultVariants: { size: 'lg' }
+  },
+  selectMenu: {
+    defaultVariants: { size: 'lg' }
+  },
+  select: {
+    defaultVariants: { size: 'lg' }
+  },
+  textarea: {
+    defaultVariants: { size: 'lg' }
+  },
+  modal: {
+    slots: {
+      content: 'sm:max-w-lg',
+      overlay: '!backdrop-blur-xs !bg-white/10',
+      body: 'border-0 !py-0',
+      header: 'border-0'
+    }
   }
 }
 ```
 
-> **Catatan**: Button dan Input default size adalah `lg`. Tidak perlu menambahkan `size="lg"` secara manual kecuali perlu override.
+> **Catatan**: `button`, `input`, `select`, `selectMenu`, dan `textarea` default size-nya `lg` — tidak perlu
+> menambahkan `size="lg"` secara manual kecuali perlu override.
+>
+> **Slot `modal` di atas berlaku global**: semua `<UModal>` sudah memakai lebar `sm:max-w-lg`, overlay blur,
+> serta body/header tanpa border & padding atas. Jangan menulis ulang `:ui` yang sama di tiap modal — override
+> hanya untuk yang memang berbeda (mis. modal RBAC memakai `content: 'max-w-2xl'`).
 
 ## Environment Variables
 
@@ -148,10 +191,14 @@ ui: {
 
 ### 2. `auth` Layout
 
-- Split screen: 60% gradient background (kiri) | 40% form (kanan)
+- Split screen: 60% hero background (kiri) | 40% form (kanan)
 - Mobile: full-width form only
-- Background menggunakan SVG gradient + grid overlay
+- Background memakai `bg-[url('/hero.png')]` + grid overlay
 - `LanguageSwitcher` di kanan atas panel form
+
+> **Diketahui**: kedua layout ini masih memakai markup custom (drawer mobile dengan `Transition` manual di
+> `dashboard.vue`, hero `bg-[url(...)]` di `auth.vue`), bukan komponen NuxtUI seperti `UDrawer`/`UPageHero`.
+> Ini kandidat perbaikan berikutnya — bukan pelanggaran baru, dan bukan pola yang perlu ditiru di halaman baru.
 
 ## Authentication Flow
 

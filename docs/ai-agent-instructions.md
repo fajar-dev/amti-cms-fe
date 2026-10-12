@@ -45,7 +45,7 @@ Sebelum menulis kode apapun, baca file-file ini secara berurutan:
 <UButton>Save</UButton>
 
 <!-- ✅ BENAR -->
-<UButton>{{ $t('components.contact.addModal.save') }}</UButton>
+<UButton>{{ $t('components.faq.addModal.save') }}</UButton>
 ```
 
 - Semua teks (label, placeholder, toast, pesan Zod, `aria-label`) lewat `$t()` / `t()` dari `useI18n()`
@@ -60,11 +60,11 @@ Sebelum menulis kode apapun, baca file-file ini secara berurutan:
 
 ### 5. Ikuti Pattern yang Ada
 
-- **Service**: Copy pattern dari `contact-service.ts`
-- **Types**: Copy pattern dari `contact.d.ts`
-- **Page CRUD**: Copy pattern dari `pages/contact/index.vue`
-- **Add Modal**: Copy pattern dari `components/contact/AddModal.vue`
-- **Update Modal**: Copy pattern dari `components/contact/UpdateModal.vue`
+- **Service**: Copy pattern dari `faq-service.ts`
+- **Types**: Copy pattern dari `faq.d.ts`
+- **Page CRUD**: Copy pattern dari `pages/faq/index.vue`
+- **Add Modal**: Copy pattern dari `components/faq/AddModal.vue`
+- **Update Modal**: Copy pattern dari `components/faq/UpdateModal.vue`
 - **Delete**: Gunakan `DeleteModal` global
 
 ### 6. Script Setup Order
@@ -100,16 +100,20 @@ Saat AI agent diminta membuat fitur CRUD baru (misal: `product`):
 
 | Tipe | File Referensi | Gunakan Sebagai Template |
 |------|---------------|-------------------------|
-| Type definition | `app/types/contact.d.ts` | ✅ |
-| Service class | `app/services/contact-service.ts` | ✅ |
-| Add Modal | `app/components/contact/AddModal.vue` | ✅ |
-| Update Modal | `app/components/contact/UpdateModal.vue` | ✅ |
-| CRUD Page | `app/pages/contact/index.vue` | ✅ |
+| Type definition | `app/types/faq.d.ts` | ✅ |
+| Service class | `app/services/faq-service.ts` | ✅ |
+| Add Modal | `app/components/faq/AddModal.vue` | ✅ |
+| Update Modal | `app/components/faq/UpdateModal.vue` | ✅ |
+| CRUD Page | `app/pages/faq/index.vue` | ✅ |
 | Auth Page | `app/pages/auth/sign-in.vue` | ✅ |
 | Delete Modal | `app/components/DeleteModal.vue` | ❌ Gunakan langsung, jangan buat baru |
 | Sidebar Nav | `app/composables/useNavigation.ts` | Tambah item di sini (pola stable-id) |
 | Language Switcher | `app/components/LanguageSwitcher.vue` | ❌ Gunakan langsung, jangan buat baru |
 | Locale files | `i18n/locales/en.json` + `id.json` | Tambah key di sini untuk teks baru |
+| Form + halaman create/edit bersama | `app/components/content/ArticleForm.vue` | ✅ Satu form dipakai dua halaman |
+| Upload gambar | `app/composables/useImageUpload.ts` | ✅ Jalur baku upload (preview + rollback + toast) |
+| Format tanggal/angka | `app/utils/format.ts` | ✅ Jangan pakai `toLocaleDateString` langsung |
+| Empty state tabel | `app/components/DataTable.vue` | ✅ Sudah bawaan, tidak perlu dibuat per halaman |
 
 ## Konvensi Penting
 

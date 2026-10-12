@@ -4,6 +4,49 @@ Semua perubahan penting pada project ini didokumentasikan di file ini.
 
 Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
+## [Unreleased] — 2026-10-12
+
+### Added
+- Folder **`app/utils/`** untuk fungsi murni yang bisa dipakai ulang (auto-import Nuxt, sama seperti `app/composables/`):
+  - `slug.ts` — `slugify()`, dipakai form artikel (sebelumnya fungsi ini hanya ada di halaman create sehingga halaman edit tidak punya auto-slug dari judul).
+  - `format.ts` — `formatDate()`, `formatDateTime()`, `formatNumber()`, `formatTimeAgo()`. Semuanya sadar-locale (mengikuti bahasa aktif), menggantikan **9 implementasi format tanggal** yang tersebar.
+  - `file.ts` — `createPreviewUrl()` / `revokePreviewUrl()`.
+  - `payload.ts` — `trimOrNull()` / `trimRequired()`.
+  - `html.ts` — `isEmptyHtml()` untuk deteksi konten editor yang kosong.
+  - `chart-colors.ts` — palet chart dari token design system.
+- Composable `app/composables/useImageUpload.ts` — satu jalur baku untuk "pilih file → preview lokal → upload → simpan path → rollback", menggantikan 6 salinan alur yang perilakunya berbeda-beda.
+- Komponen `app/components/common/SortableHeader.vue` — header kolom tabel yang bisa diklik untuk sorting, memakai `UIcon` (sebelumnya chevron digambar sebagai SVG manual dari dalam file `.ts`).
+- Komponen `app/components/common/EditorUrlModal.vue` — modal input URL untuk editor, menggantikan `window.prompt`.
+- Komponen `app/components/content/ArticleForm.vue` — satu form artikel untuk halaman **create** dan **edit**.
+- `DataTable.vue` kini punya **empty state bawaan** (`UEmpty`), sehingga keenam halaman CRUD mendapatkannya tanpa konfigurasi.
+
+### Changed
+- Halaman `content/article/create.vue` dan `[id].vue` disatukan: keduanya kini pembungkus tipis (`<Header>` + `<ContentArticleForm>`) — dari ~740 baris duplikat menjadi ~40 baris.
+- Semua format tanggal/tanggal-waktu memakai `app/utils/format.ts`. Sebelumnya separuh halaman memakai locale `en-US` dan separuh `id-ID`, sehingga tabel berbeda menampilkan format berbeda pada bahasa yang sama.
+- Upload gambar di modal user, halaman profil, settings, dan cover artikel memakai `useImageUpload` + `UFileUpload`, seragam dengan pola yang sudah dipakai `settings/meta.vue`.
+- Avatar picker memakai `UAvatar` (sebelumnya `<img>` + hidden `<input type="file">`).
+- Dashboard: warna aksen memakai token design system (bukan pasangan class `dark:` yang dilarang), warna chart tidak lagi memakai hex default Tailwind, dan seluruh label/legend-nya lewat i18n.
+- `Sidebar.vue`: seluruh tombol native (`<button>`) diganti `UButton` — tidak ada lagi tombol non-NuxtUI di sidebar.
+- Tombol aksi tabel, ikon menu aksi (`i-lucide-edit`), ukuran badge status, dan `aria-label` diseragamkan antar keenam halaman CRUD.
+- `<UApp>` meneruskan locale i18n aktif sehingga teks bawaan NuxtUI (mis. "No data") ikut bahasa yang dipilih; `htmlAttrs.lang` juga mengikuti locale.
+- Semua arbitrary Tailwind value (`min-h-[420px]`, `text-[10px]`, `min-w-[160px]`, dst.) diganti skala standar.
+- Tipe `ApiResponse` kini hanya didefinisikan di `app/types/api.d.ts` — 4 re-export perantara dihapus dan seluruh service diarahkan ke sumber tunggal itu.
+
+### Fixed
+- **Kolom tanggal pada tabel CRUD diseragamkan.** Sebelumnya `createdAt`/`receivedAt` tampil dalam tiga bentuk berbeda: `formatDate` (tanggal saja) di user/category/article vs `formatDateTime` (tanggal + jam) di faq/messages, dengan tiga class sel berbeda (`text-xs text-muted`, `text-sm text-muted`, dan tanpa pembungkus). Sekarang kelimanya memakai `formatDateTime` + pembungkus `text-muted whitespace-nowrap` yang sama. Key i18n duplikat `pages.faq.columnCreatedAt` (isinya sama dengan `common.createdAt`) dihapus, dan aturan kolom tanggal di `docs/page-pattern.md` diperketat agar tidak terulang.
+- Upload gambar kini **selalu** me-rollback preview dan me-`revokeObjectURL` saat gagal (sebelumnya blob bocor dan dua modal menampilkan preview yang tidak akan tersimpan).
+- Toast gagal hapus di halaman `user`, `faq`, `content/category`, dan `content/article` (sebelumnya modal tertutup dan data di-refetch seolah berhasil).
+- `window.prompt` untuk menyisipkan link/gambar di editor diganti modal NuxtUI + validasi URL.
+- Teks hardcoded yang melanggar aturan i18n diganti key terjemahan: label dashboard & legend chart, alt/label upload media, `aria-label: 'Actions'`, copyright halaman sign-in.
+- Field slug di halaman edit artikel kini ikut tersinkron dari judul seperti di halaman create.
+
+### Removed
+- `bottomNavItems` di `useNavigation.ts` — menu `/feedback` yang halamannya tidak pernah ada dan tidak pernah dirender.
+- Tipe mati: `SelectOption`, `PaginationSummary`, `DashboardStats`, `SettingPayload`; method `settingService.update()` yang tidak pernah dipanggil; dan `app/types/tiptap.d.ts` yang tidak melakukan apa pun (tanpa `declare module`/`export`).
+- 27 key i18n yatim di `en.json` dan `id.json` (key lama yang tidak lagi dirujuk kode mana pun).
+
+---
+
 ## [Unreleased]
 
 ### Added

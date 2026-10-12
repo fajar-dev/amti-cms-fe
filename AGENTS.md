@@ -15,6 +15,7 @@
 - **Tailwind CSS v4** (`^4.3.0`) — Utility-first CSS
 - **Zod v4** (`^4.4.3`) — Schema validation untuk forms
 - **Axios** (`^1.16.1`) — HTTP client
+- **nuxt-charts** (`^3.1.0`) — Chart dashboard (`AreaChart`, `BarChart`, `DonutChart`)
 - **TypeScript** (`^6.0.3`) — Strict mode
 - **Bun** (`1.3.1`) — Package manager
 - **Icons**: `@iconify-json/lucide` — Prefix: `i-lucide-*`
@@ -67,6 +68,8 @@ Tidak ada test runner otomatis di project ini saat ini. Verifikasi perubahan lew
 | Tabs | `<UTabs>` | Custom tabs |
 | Breadcrumb | `<UBreadcrumb>` | Custom breadcrumb |
 | Skeleton | `<USkeleton>` | Custom loading |
+| Empty state | `<UEmpty>` | Custom "no data" div |
+| Upload file | `<UFileUpload>` | `<input type="file">` |
 
 Daftar lengkap 125+ komponen: baca `docs/nuxtui-components.md`
 
@@ -86,7 +89,8 @@ Jangan install package baru jika NuxtUI/Tailwind sudah bisa menangani kebutuhan 
 
 ```
 ❌ SALAH:  <UButton>Save</UButton>
-✅ BENAR:  <UButton>{{ $t('components.contact.addModal.save') }}</UButton>
+✅ BENAR:  <UButton>{{ $t('common.save') }}</UButton>
+           <UFormField :label="$t('components.faq.addModal.questionLabel')">
 ```
 
 Semua teks yang tampil ke user (label, placeholder, judul, toast, pesan validasi Zod, `aria-label`)
@@ -107,6 +111,39 @@ diberi atribut `required` (menampilkan tanda `*` otomatis). Field opsional (swit
 eksplisit `.optional()`) **jangan** diberi `required`. Baca `docs/component-guide.md` §"Aturan: `required`
 di UFormField" untuk detail & kasus khusus (mis. password opsional di update modal).
 
+### 7. WAJIB Format Tanggal/Angka Lewat `app/utils/format.ts`
+
+```
+❌ SALAH:  {{ new Date(item.createdAt).toLocaleDateString('id-ID') }}
+✅ BENAR:  {{ formatDate(item.createdAt, locale) }}   // `locale` dari useI18n()
+```
+
+Jangan panggil `toLocaleDateString` / `toLocaleString` / `Intl.*` langsung di halaman atau komponen. Semua
+format tanggal, tanggal-waktu, dan angka WAJIB lewat util di `app/utils/format.ts` (`formatDate`,
+`formatDateTime`, `formatNumber`, `formatTimeAgo`).
+
+Alasan historis: dulu tiap halaman memanggil `toLocaleDateString` sendiri dengan locale hardcode — separuh
+`'en-US'`, separuh `'id-ID'` — sehingga dua tabel bisa menampilkan format berbeda pada bahasa yang sama.
+
+### 8. WAJIB Upload/Preview Gambar Lewat `useImageUpload`
+
+```
+❌ SALAH:  URL.createObjectURL(file) + panggil service.upload() manual di dalam modal
+✅ BENAR:  const { isUploading, previewUrl, uploadFile, clearPreview, setPreviewFromUrl } =
+             useImageUpload({ upload, onUploaded, successMessage, errorMessage })
+```
+
+`app/composables/useImageUpload.ts` adalah cara BAKU alur "pilih file → preview lokal → upload → simpan path →
+rollback bila gagal". Composable ini **selalu** me-revoke object URL dan **selalu** me-rollback preview saat
+upload gagal. Jangan panggil `URL.createObjectURL` langsung dari modal/halaman (pakai `app/utils/file.ts`
+hanya dari dalam composable tersebut).
+
+### 9. DILARANG `window.prompt` / `window.confirm`
+
+Input dari user (termasuk URL link/gambar di editor Tiptap) WAJIB lewat modal NuxtUI. Dialog bawaan browser
+tidak bisa memakai i18n, tidak punya validasi, dan tidak bisa di-style. Contoh nyata:
+`app/components/common/EditorUrlModal.vue` — pengganti `window.prompt` di `TiptapEditor.vue`.
+
 ## Struktur Folder
 
 ```
@@ -118,14 +155,32 @@ app/
 │   ├── LanguageSwitcher.vue # Global: switch bahasa (di pojok kanan atas)
 │   ├── UserPopover.vue  # Global: user profile dropdown
 │   ├── DeleteModal.vue  # Global: generic delete confirmation
+│   ├── DataTable.vue    # Global: tabel + search + pagination + empty state bawaan
+│   ├── common/          # Dipakai lintas fitur
+│   │   ├── SortableHeader.vue  # Header kolom yang bisa diklik (via useTableQuery().sortHeader)
+│   │   ├── EditorUrlModal.vue  # Modal input URL link/gambar untuk editor Tiptap
+│   │   └── TiptapEditor.vue    # Rich text editor
+│   ├── content/         # Komponen modul CMS
+│   │   ├── ArticleForm.vue     # Form artikel bersama untuk halaman create & edit
+│   │   └── category/           # AddModal.vue, UpdateModal.vue
 │   └── <feature>/       # Feature-specific components
 │       ├── AddModal.vue      → <FeatureAddModal />
 │       ├── UpdateModal.vue   → <FeatureUpdateModal />
 │       └── DeleteModal.vue   → <FeatureDeleteModal /> (opsional)
-├── composables/
+├── composables/         # Auto-imported — BOLEH punya state/reaktif
 │   ├── useAuth.ts       # Auth state (readonly)
 │   ├── useNavigation.ts # Sidebar nav config (reaktif terhadap locale, lihat docs/i18n-guide.md)
+│   ├── usePermission.ts # Cek permission RBAC (can(...))
+│   ├── useTableQuery.ts # State search/page/perPage/sort + sortHeader()
+│   ├── useImageUpload.ts# Alur upload + preview gambar (cara baku, lihat Larangan #8)
 │   └── error-helper.ts  # Global error handler
+├── utils/               # Auto-imported — HANYA fungsi murni, TANPA state reaktif
+│   ├── slug.ts          # slugify()
+│   ├── format.ts        # formatDate/formatDateTime/formatNumber/formatTimeAgo
+│   ├── file.ts          # createPreviewUrl/revokePreviewUrl
+│   ├── payload.ts       # trimOrNull/trimRequired
+│   ├── html.ts          # isEmptyHtml()
+│   └── chart-colors.ts  # CHART_COLORS/CHART_CATEGORY_PALETTE (token design system)
 ├── layouts/
 │   ├── dashboard.vue    # Sidebar + main content
 │   └── auth.vue         # Split-screen auth
@@ -137,14 +192,13 @@ app/
 │   ├── auth/            # Auth pages (layout: auth, middleware: guest)
 │   └── <feature>/
 │       └── index.vue    # CRUD listing page
-├── plugins/
-│   └── *.client.ts      # Client-only plugins (mis. restore locale, dsb.)
 ├── services/
 │   ├── api-service.ts   # Axios base client + interceptors
 │   ├── auth-service.ts  # Auth methods
 │   └── <feature>-service.ts  # CRUD service
 └── types/
-    ├── auth.d.ts        # User, AuthData, ApiResponse
+    ├── api.d.ts         # ApiResponse + PaginationMeta (shared)
+    ├── auth.d.ts        # User, AuthData (re-export ApiResponse)
     └── <feature>.d.ts   # Feature types + payload
 
 i18n/
@@ -153,28 +207,70 @@ i18n/
     └── id.json
 ```
 
+**Catatan `composables/` vs `utils/`** — pembagian tanggung jawabnya tegas:
+
+- **`app/utils/`** → fungsi murni (input → output, tanpa `ref`/`computed`/lifecycle). Contoh: `slugify()`,
+  `formatDate()`, `isEmptyHtml()`.
+- **`app/composables/`** → apa pun yang punya state atau reaktivitas (`ref`, `computed`, `useState`,
+  `onBeforeUnmount`). Contoh: `useImageUpload()`.
+
+Keduanya sama-sama di-auto-import Nuxt (tidak perlu `import` manual). Konvensi file: **kebab-case, satu concern
+per file** (`chart-colors.ts`, bukan `helpers.ts`). Yang dipindai hanya file di **level teratas** folder
+tersebut — subfolder `app/utils/<sub>/` **tidak** ikut di-auto-import, jadi jangan menaruh util di subfolder.
+
+**Tidak ada folder `app/plugins/`.** Persistensi bahasa ditangani `@nuxtjs/i18n` lewat
+`detectBrowserLanguage` di `nuxt.config.ts` (`useCookie: true`, cookie `i18n_redirected`) — bukan plugin custom.
+Lihat `docs/i18n-guide.md` §6.
+
 ## Design System
 
-- **Primary**: green (`#009838`)
-- **Error**: red (`#B91C1C`)
-- **Warning**: yellow (`#D97706`)
-- **Neutral**: slate
+Token warna didefinisikan di `app/assets/css/main.css` (`@theme static`), pemetaan perannya di
+`app/app.config.ts`.
+
+- **Primary**: `blue` — ramp navy kustom, **`blue-500: #2D4E6F`**
+- **Error**: `red` (`red-500: #CC0007`)
+- **Warning**: `yellow` (`yellow-500: #D97706`)
+- **Neutral**: `neutral`
+- **Green `#009838` masih ada di palet sebagai `green-500`, tapi BUKAN primary** — pakai hanya untuk aksen
+  hijau yang memang disengaja (mis. status sukses), bukan sebagai warna brand.
 - **Font**: Geist (Google Fonts)
-- **Button/Input default size**: `lg` (set di `app.config.ts`)
+- **Default size `lg`**: `button`, `input`, `select`, `selectMenu`, `textarea` (set di `app.config.ts`) — tidak
+  perlu menulis `size="lg"` manual.
+
+`app.config.ts` juga meng-override **slot `modal` secara global**:
+
+```ts
+modal: {
+  slots: {
+    content: 'sm:max-w-lg',
+    overlay: '!backdrop-blur-xs !bg-white/10',
+    body: 'border-0 !py-0',
+    header: 'border-0'
+  }
+}
+```
+
+Artinya **setiap `<UModal>` sudah otomatis** memakai lebar, overlay, dan padding body/header tersebut — jangan
+menulis ulang `:ui="{ content: ..., overlay: ..., body: ..., header: ... }"` di tiap modal baru. Override `:ui`
+per modal hanya untuk hal yang memang berbeda (mis. `content: 'max-w-2xl'` di modal RBAC, atau `#content` khusus
+di `DeleteModal`).
 
 ## Checklist: Menambah Fitur CRUD Baru
 
-Saat diminta membuat fitur baru (contoh: `product`):
+Saat diminta membuat fitur baru (contoh: `product`). Modul CRUD terkecil & paling bersih untuk dijadikan
+contoh adalah **`faq`**:
 
-1. `app/types/product.d.ts` — Interface `Product` + `ProductPayload`
-2. `app/services/product-service.ts` — Copy pattern dari `contact-service.ts`
-3. `app/components/product/AddModal.vue` — Copy pattern dari `contact/AddModal.vue`
-4. `app/components/product/UpdateModal.vue` — Copy pattern dari `contact/UpdateModal.vue`
-5. `app/pages/product/index.vue` — Copy pattern dari `contact/index.vue`
+1. `app/types/product.d.ts` — Interface `Product` + `ProductPayload` (contoh: `app/types/faq.d.ts`)
+2. `app/services/product-service.ts` — Copy pattern dari `faq-service.ts`
+3. `app/components/product/AddModal.vue` — Copy pattern dari `faq/AddModal.vue`
+4. `app/components/product/UpdateModal.vue` — Copy pattern dari `faq/UpdateModal.vue`
+5. `app/pages/product/index.vue` — Copy pattern dari `faq/index.vue`
 6. `app/composables/useNavigation.ts` — Tambah nav item baru (pakai pola stable-id, lihat `docs/i18n-guide.md` §5)
 7. `i18n/locales/en.json` **dan** `i18n/locales/id.json` — Tambah key untuk semua teks baru (lihat `docs/i18n-guide.md`)
 8. `docs/changelog.md` — Catat perubahan
 9. Gunakan `DeleteModal` global (jangan buat baru)
+10. Kalau halaman menampilkan tanggal → pakai `app/utils/format.ts`; kalau ada upload gambar → pakai
+    `useImageUpload` (lihat Larangan #7 & #8)
 
 ## Coding Conventions
 
@@ -183,6 +279,7 @@ Saat diminta membuat fitur baru (contoh: `product`):
 | File pages | `kebab-case.vue` |
 | File components | `PascalCase.vue` |
 | File composables | `camelCase.ts` dengan prefix `use` |
+| File utils | `kebab-case.ts` (fungsi murni, satu concern per file) |
 | File services | `kebab-case-service.ts` |
 | File types | `kebab-case.d.ts` |
 | Variables | `camelCase` |
@@ -221,6 +318,11 @@ Saat diminta membuat fitur baru (contoh: `product`):
 - `app/layouts/dashboard.vue` — Dashboard layout
 - `app/layouts/auth.vue` — Auth layout
 - `nuxt.config.ts` — Nuxt configuration
+
+> **Diketahui (bukan pelanggaran baru):** `app/layouts/dashboard.vue` (drawer mobile dengan `Transition` +
+> overlay manual) dan `app/layouts/auth.vue` (hero `bg-[url('/hero.png')]`) masih memakai markup custom, bukan
+> komponen NuxtUI seperti `UDrawer`/`UPageHero`. Ini **kandidat perbaikan berikutnya** — jangan ditiru untuk
+> halaman/komponen baru, tapi juga bukan alasan mengubahnya tanpa diminta.
 
 ## Sebelum Membuat Pull Request / Commit
 

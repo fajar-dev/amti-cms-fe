@@ -21,7 +21,7 @@
 <div class="px-2.5">...</div>
 <div class="m-1">...</div>
 <div class="w-52">...</div>
-<div class="h-screen/2">...</div>
+<div class="h-screen">...</div>
 <div class="text-sm">...</div>
 <div class="gap-3">...</div>
 <div class="max-w-md">...</div>
@@ -75,8 +75,69 @@
 <span>{{ new Date(item.createdAt).toLocaleDateString() }}</span>
 
 <!-- ✅ BENAR -->
-<span>{{ formatDate(item.createdAt) }}</span>
+<span>{{ formatDate(item.createdAt, locale) }}</span>
 ```
+
+### ❌ Dilarang Memformat Tanggal/Angka Manual
+
+Semua format tanggal, tanggal-waktu, dan angka **WAJIB** lewat `app/utils/format.ts`:
+
+```typescript
+// ❌ SALAH — locale hardcode, tiap halaman bisa beda format
+new Date(val).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+new Date(val).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' })
+new Intl.NumberFormat('id-ID').format(count)
+
+// ✅ BENAR — locale mengikuti bahasa aktif
+import { formatDate, formatDateTime, formatNumber, formatTimeAgo } from '~/utils/format'  // atau auto-import
+const { t, locale } = useI18n()
+
+formatDate(row.original.createdAt, locale.value)          // 12 Okt 2026
+formatDateTime(row.original.createdAt, locale.value)      // 12 Okt 2026, 14.30
+formatNumber(row.original.viewsCount, locale.value)       // 12.345
+formatTimeAgo(message.createdAt, t)                       // 3 jam lalu
+```
+
+> **Alasan historis:** dulu separuh halaman meng-hardcode `'id-ID'` dan separuh `'en-US'`, sehingga dua tabel
+> bisa menampilkan format tanggal berbeda pada bahasa yang sama. Jangan ulangi — `toLocaleDateString` /
+> `toLocaleString` / `Intl.*` tidak boleh muncul di halaman/komponen, hanya di `app/utils/format.ts`.
+
+### ❌ Dilarang `window.prompt` / `window.confirm`
+
+Dialog bawaan browser tidak bisa memakai i18n, tidak punya validasi, dan tidak bisa di-style. Semua input dari
+user WAJIB lewat `<UModal>`:
+
+```vue
+<!-- ❌ SALAH -->
+const url = window.prompt('Masukkan URL')
+if (window.confirm('Yakin?')) { /* ... */ }
+
+<!-- ✅ BENAR -->
+<CommonEditorUrlModal v-model="showLinkModal" mode="link" :initial-url="currentUrl" @submit="applyLink" />
+```
+
+Contoh nyata: `app/components/common/EditorUrlModal.vue` menggantikan `window.prompt` untuk link & gambar di
+`TiptapEditor.vue`; hapus data pakai `DeleteModal` global.
+
+### ❌ Dilarang Upload/Preview Gambar Tanpa `useImageUpload`
+
+```typescript
+// ❌ SALAH — object URL tidak pernah di-revoke, preview tidak di-rollback saat gagal
+const url = URL.createObjectURL(file)
+previewUrl.value = url
+
+// ✅ BENAR — pakai composable baku
+const { isUploading, previewUrl, uploadFile, clearPreview, setPreviewFromUrl } = useImageUpload({
+  upload: file => userService.uploadPhoto(file),
+  onUploaded: (path) => { form.photo = path },
+  successMessage: t('pages.profile.information.photoUploadSuccess'),
+  errorMessage: t('pages.profile.information.photoUploadFailed')
+})
+```
+
+`app/utils/file.ts` (`createPreviewUrl`/`revokePreviewUrl`) dipakai **dari dalam** composable tersebut, bukan
+dipanggil langsung dari modal/halaman. Detail pattern: [component-guide.md](./component-guide.md) §"Pattern:
+Upload Gambar".
 
 ### ❌ Dilarang Menggunakan `any` Tanpa Alasan
 
@@ -85,7 +146,7 @@
 const data: any = response.data
 
 // ✅ BENAR
-const data: Contact[] = response.data
+const data: Faq[] = response.data
 ```
 
 ### ❌ Dilarang Hardcode Teks UI (Wajib i18n)
@@ -96,12 +157,16 @@ const data: Contact[] = response.data
 <UInput placeholder="Enter name" />
 
 <!-- ✅ BENAR -->
-<UButton>{{ $t('components.contact.addModal.save') }}</UButton>
-<UInput :placeholder="$t('components.contact.addModal.namePlaceholder')" />
+<UButton>{{ $t('common.save') }}</UButton>
+<UInput :placeholder="$t('components.faq.addModal.questionPlaceholder')" />
 ```
 
 Berlaku juga untuk toast title, pesan validasi Zod, `useHead({ title })`, header kolom `UTable`,
 dan `aria-label` yang berisi kata-kata. Baca `docs/i18n-guide.md` untuk aturan lengkap.
+
+**Setiap key baru WAJIB ditambahkan ke KEDUA file locale** (`i18n/locales/en.json` **dan**
+`i18n/locales/id.json`) dengan key shape yang identik — bukan hanya ke file bahasa yang sedang dipakai.
+Key yang hanya ada di satu file akan tampil sebagai teks literal (`pages.faq.title`) saat bahasa itu aktif.
 
 ## 2. Naming Conventions
 
@@ -110,33 +175,49 @@ dan `aria-label` yang berisi kata-kata. Baca `docs/i18n-guide.md` untuk aturan l
 | Tipe | Convention | Contoh |
 |------|-----------|--------|
 | Pages | `kebab-case.vue` | `forgot-password.vue` |
-| Components (global) | `PascalCase.vue` | `BrandLogo.vue`, `DeleteModal.vue` |
-| Components (feature) | `PascalCase.vue` di subfolder | `contact/AddModal.vue` |
-| Composables | `camelCase.ts` dengan prefix `use` | `useAuth.ts`, `useNavigation.ts` |
-| Services | `kebab-case.ts` dengan suffix `-service` | `auth-service.ts`, `contact-service.ts` |
-| Types | `kebab-case.d.ts` | `auth.d.ts`, `contact.d.ts` |
+| Components (global) | `PascalCase.vue` | `BrandLogo.vue`, `DeleteModal.vue`, `DataTable.vue` |
+| Components (feature) | `PascalCase.vue` di subfolder | `faq/AddModal.vue`, `content/ArticleForm.vue` |
+| Composables | `camelCase.ts` dengan prefix `use` — **boleh punya state/reaktif** | `useAuth.ts`, `useImageUpload.ts` |
+| Utils | `kebab-case.ts` — **fungsi murni saja**, satu concern per file | `format.ts`, `chart-colors.ts` |
+| Services | `kebab-case.ts` dengan suffix `-service` | `auth-service.ts`, `faq-service.ts` |
+| Types | `kebab-case.d.ts` | `api.d.ts`, `faq.d.ts` |
 | Middleware | `kebab-case.ts` | `auth.global.ts`, `guest.ts` |
-| i18n key | `camelCase`, nested per file (lihat `docs/i18n-guide.md`) | `components.contact.addModal.nameRequired` |
+| i18n key | `camelCase`, nested per file (lihat `docs/i18n-guide.md`) | `components.faq.addModal.questionRequired` |
+
+### `app/utils/` vs `app/composables/`
+
+Keduanya di-auto-import Nuxt, tapi pembagiannya tegas:
+
+| Folder | Isi | Contoh |
+|--------|-----|--------|
+| `app/utils/` | Fungsi murni: input → output, tanpa `ref`/`computed`/lifecycle | `slugify()`, `formatDate()`, `isEmptyHtml()` |
+| `app/composables/` | Apa pun yang punya state/reaktivitas (`ref`, `computed`, `useState`, `onBeforeUnmount`) | `useImageUpload()`, `useTableQuery()` |
+
+Hanya file di **level teratas** folder tersebut yang dipindai Nuxt — `app/utils/<subfolder>/` **tidak**
+di-auto-import, jadi jangan menaruh util di subfolder.
 
 ### Variable & Function Naming
 
 | Tipe | Convention | Contoh |
 |------|-----------|--------|
-| Variables | `camelCase` | `isLoading`, `selectedContact` |
-| Functions | `camelCase` dengan prefix verb | `handleSubmit`, `fetchContacts` |
+| Variables | `camelCase` | `isLoading`, `selectedFaq` |
+| Functions | `camelCase` dengan prefix verb | `handleSubmit`, `fetchFaqs` |
 | Reactive state | `camelCase` | `const form = reactive({})` |
 | Ref | `camelCase` | `const isSubmitting = ref(false)` |
-| Constants | `UPPER_SNAKE_CASE` (di service) | `ACCESS_TOKEN_KEY` |
-| Interface/Type | `PascalCase` | `Contact`, `ContactPayload` |
+| Constants | `UPPER_SNAKE_CASE` (di service/util) | `ACCESS_TOKEN_KEY`, `CHART_COLORS` |
+| Interface/Type | `PascalCase` | `Faq`, `FaqPayload` |
 | Emits | `past-tense` verb | `created`, `updated`, `deleted` |
 
 ### Component Naming (Auto-import oleh Nuxt)
 
 ```
-app/components/BrandLogo.vue        → <BrandLogo />
-app/components/DeleteModal.vue      → <DeleteModal />
-app/components/contact/AddModal.vue → <ContactAddModal />
-app/components/contact/UpdateModal.vue → <ContactUpdateModal />
+app/components/BrandLogo.vue            → <BrandLogo />
+app/components/DeleteModal.vue          → <DeleteModal />
+app/components/DataTable.vue            → <DataTable />
+app/components/faq/AddModal.vue         → <FaqAddModal />
+app/components/faq/UpdateModal.vue      → <FaqUpdateModal />
+app/components/common/TiptapEditor.vue  → <CommonTiptapEditor />
+app/components/content/ArticleForm.vue  → <ContentArticleForm />
 ```
 
 ## 3. Script Setup Convention
@@ -147,15 +228,15 @@ Urutan penulisan dalam `<script setup lang="ts">`:
 <script setup lang="ts">
 // 1. Imports
 import { z } from 'zod'
-import { contactService } from '~/services/contact-service'
-import type { Contact, ContactPayload } from '~/types/contact'
+import { faqService } from '~/services/faq-service'
+import type { Faq, FaqPayload } from '~/types/faq'
 
 // 2. Page/Component Meta
 definePageMeta({ layout: 'dashboard' })
 
 // 3. Model & Props & Emits
 const open = defineModel<boolean>({ default: false })
-const props = defineProps<{ contact: Contact | null }>()
+const props = defineProps<{ faq: Faq | null }>()
 const emit = defineEmits<{ updated: [] }>()
 
 // 4. Composables & Injections
@@ -165,14 +246,14 @@ const { t } = useI18n()
 
 // 5. Reactive State
 const isSubmitting = ref(false)
-const form = reactive<ContactPayload>({ name: '', email: '', phone: '' })
+const form = reactive<FaqPayload>({ question: '', answer: '', order: 0, isActive: true })
 
 // 6. Computed Properties
-const isValid = computed(() => form.name.length > 0)
+const isValid = computed(() => form.question.length > 0)
 
 // 7. Validation Schema (pesan error WAJIB via t(), lihat docs/i18n-guide.md)
 const schema = z.object({
-  name: z.string().min(1, t('components.contact.addModal.nameRequired'))
+  question: z.string().min(1, t('components.faq.addModal.questionRequired'))
 })
 
 // 8. Functions/Methods
@@ -195,14 +276,14 @@ Urutan atribut pada element:
 <UButton
   v-model="value"                    <!-- 1. v-model / v-if / v-for -->
   type="submit"                       <!-- 2. Native attributes -->
-  form="add-contact-form"            <!-- 3. Binding attributes -->
+  form="add-faq-form"                 <!-- 3. Binding attributes -->
   color="primary"                     <!-- 4. Component props -->
-  variant="outline"                   <!-- 5. Variant/style props -->
+  variant="soft"                      <!-- 5. Variant/style props -->
   :loading="isSubmitting"             <!-- 6. Dynamic bindings -->
   class="w-full"                      <!-- 7. Class (terakhir) -->
   @click="handleSubmit"               <!-- 8. Events -->
 >
-  Save
+  {{ $t('common.save') }}
 </UButton>
 ```
 
@@ -249,48 +330,37 @@ Setiap feature HARUS memiliki file type di `app/types/<feature>.d.ts`:
 
 ```typescript
 // Interface untuk data dari API
-export interface Contact {
+export interface Faq {
   id: number
-  name: string
-  email: string
-  phone: string
+  question: string
+  answer: string
+  order: number
+  isActive: boolean
+  createdAt?: string
+  updatedAt?: string
 }
 
 // Interface untuk payload (create/update)
-export interface ContactPayload {
-  name: string
-  email: string
-  phone: string
+export interface FaqPayload {
+  question: string
+  answer: string
+  order?: number
+  isActive: boolean
 }
 
-// Pagination meta (reusable)
-export interface PaginationMeta {
-  total: number
-  perPage: number
-  currentPage: number
-  lastPage: number
-  from: number
-  to: number
-}
-
-// Generic API response
-export interface ApiResponse<T = any> {
-  success: boolean
-  statusCode?: number
-  message?: string
-  data: T
-  meta?: PaginationMeta
-}
+// PaginationMeta & ApiResponse TIDAK ditulis ulang per fitur —
+// keduanya sudah shared di app/types/api.d.ts (lihat docs/service-layer.md §4)
+import type { ApiResponse } from './api'
 ```
 
 ### Import Types
 
 ```typescript
 // Gunakan `import type` untuk type-only imports
-import type { Contact, ContactPayload } from '~/types/contact'
+import type { Faq, FaqPayload } from '~/types/faq'
 
 // Bukan:
-import { Contact } from '~/types/contact'
+import { Faq } from '~/types/faq'
 ```
 
 ## 8. Git Commit Convention
@@ -308,7 +378,7 @@ Format: `<type>(<scope>): <description>`
 
 Contoh:
 ```
-feat(contact): add create contact modal
+feat(faq): add create faq modal
 fix(auth): handle token refresh race condition
 docs: update component guide
 refactor(service): extract error handler

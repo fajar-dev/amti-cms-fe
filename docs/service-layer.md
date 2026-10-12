@@ -8,10 +8,24 @@ app/services/
 ├── auth-service.ts       # Auth: login, logout, refresh, Google OAuth
 └── <feature>-service.ts  # Feature CRUD operations
 
-app/composables/
+app/composables/          # Auto-imported — boleh punya state/reaktif
 ├── useAuth.ts            # Auth state accessor
 ├── useNavigation.ts      # Sidebar nav config
+├── usePermission.ts      # Cek permission RBAC (can(...))
+├── useTableQuery.ts      # State search/page/perPage/sort + sortHeader()
+├── useImageUpload.ts     # Alur upload + preview gambar (cara baku)
 └── error-helper.ts       # Global error handler
+
+app/utils/                # Auto-imported — fungsi murni (tanpa state)
+├── slug.ts               # slugify()
+├── format.ts             # formatDate/formatDateTime/formatNumber/formatTimeAgo
+├── file.ts               # createPreviewUrl/revokePreviewUrl
+├── payload.ts            # trimOrNull/trimRequired
+├── html.ts               # isEmptyHtml()
+└── chart-colors.ts       # Palet chart dari token design system
+
+app/types/
+└── api.d.ts              # ApiResponse + PaginationMeta (shared, dipakai semua service)
 ```
 
 ## 1. API Service (Base Client)
@@ -47,7 +61,9 @@ Setiap feature memiliki service class yang mengikuti pattern ini:
 ```typescript
 import { apiService } from "./api-service"
 import { handleServiceError } from "../composables/error-helper"
-import type { Feature, FeaturePayload, ApiResponse } from "../types/feature"
+import type { SortOrder } from "../composables/useTableQuery"
+import type { Feature, FeaturePayload } from "../types/feature"
+import type { ApiResponse } from "../types/api"
 
 export class FeatureService {
 
@@ -56,11 +72,23 @@ export class FeatureService {
     return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
   }
 
-  // GET ALL (dengan pagination + search)
-  async getAll(page = 1, perPage = 10, q = ''): Promise<ApiResponse<Feature[]>> {
+  // GET ALL (pagination + search + sorting server-side)
+  async getAll(
+    page = 1,
+    perPage = 10,
+    q = '',
+    sortBy = '',
+    order: SortOrder = 'DESC'
+  ): Promise<ApiResponse<Feature[]>> {
     try {
+      // ⚠️ Nama parameter query adalah `limit` (konvensi backend), BUKAN `perPage`.
+      const params = new URLSearchParams({ page: String(page), limit: String(perPage), q })
+      if (sortBy) {
+        params.set('sortBy', sortBy)
+        params.set('order', order)
+      }
       const response = await apiService.client.get<ApiResponse<Feature[]>>(
-        `/feature?page=${page}&perPage=${perPage}&q=${q}`,
+        `/feature?${params.toString()}`,
         this.authHeaders
       )
       return response.data
@@ -202,27 +230,24 @@ export interface FeaturePayload {
   // ... field yang dikirim ke API (tanpa id, timestamps)
 }
 
-// Pagination meta (sudah ada di contact.d.ts, bisa dipakai ulang)
-export interface PaginationMeta {
-  total: number
-  perPage: number
-  currentPage: number
-  lastPage: number
-  from: number
-  to: number
-}
-
-// API Response wrapper (sudah ada di contact.d.ts & auth.d.ts)
-export interface ApiResponse<T = any> {
-  success: boolean
-  statusCode?: number
-  message?: string
-  data: T
-  meta?: PaginationMeta
-}
+// ApiResponse & PaginationMeta TIDAK didefinisikan di sini —
+// keduanya shared di app/types/api.d.ts:
+import type { ApiResponse } from './api'
 ```
 
-> **⚠️ TODO**: `ApiResponse` dan `PaginationMeta` saat ini didefinisikan di dua file (`auth.d.ts` dan `contact.d.ts`). Idealnya dipindahkan ke `app/types/api.d.ts` sebagai shared type.
+`app/types/api.d.ts` adalah sumber tunggal untuk wrapper response (`ApiResponse<T>`, `PaginationMeta`).
+Type file per fitur cukup meng-import-nya (beberapa file seperti `auth.d.ts` & `setting.d.ts` juga
+me-`export type { ApiResponse }` supaya pemanggil lama tidak perlu ganti import).
+
+### ⚠️ `limit` (request) vs `perPage` (response) — jangan tertukar
+
+| Arah | Nama | Isi |
+| ---- | ---- | --- |
+| **Request** (query string) | `limit` | Jumlah baris per halaman yang **dikirim** service, mis. `?page=2&limit=25` |
+| **Response** (`response.meta`) | `perPage` | Jumlah baris per halaman yang **dilaporkan** backend, bersama `currentPage`, `lastPage`, `total`, `from`, `to` |
+
+Jadi service memakai `perPage` sebagai nama **parameter fungsi** (biar jelas di sisi frontend), tapi
+mengirimnya ke backend sebagai `limit`; sementara `response.meta.perPage` tetap dibaca apa adanya.
 
 ## 5. Auth Service
 
@@ -274,28 +299,73 @@ service.login(email, password)
 ### useNavigation
 
 - **Fungsi**: Konfigurasi sidebar navigation + active state detection
-- **Data**: `navGroups` (menu utama), `bottomNavItems` (menu bawah), `isCollapsed` (sidebar state)
-- **Tambah menu**: Tambahkan item baru di `navGroups` atau `bottomNavItems`
-- ⚠️ **i18n-aware** — `navGroups`/`bottomNavItems` adalah `computed()`, bukan array statis, dan
-  setiap `label` diambil dari `t('components.sidebar.nav.<key>')`. Lihat
-  [i18n-guide.md](./i18n-guide.md) §5 untuk aturan pola stable-`id` sebelum menambah menu baru.
+- **Data**: `navGroups` (menu utama, termasuk grup bersarang seperti CMS & User Management) dan `isCollapsed`
+  (sidebar state)
+- **Tambah menu**: Tambahkan item baru di dalam `navGroups`
+- ⚠️ **i18n-aware** — `navGroups` adalah `computed()`, bukan array statis, dan setiap `label` diambil dari
+  `t('components.sidebar.nav.<key>')`. Lihat [i18n-guide.md](./i18n-guide.md) §5 untuk aturan pola
+  stable-`id` sebelum menambah menu baru.
 
 ```typescript
 // Menambah menu baru (pola nyata — bukan array statis):
 const { t } = useI18n()
 
-const navGroups = computed<NavGroup[]>(() => [
-  {
+const navGroups = computed<NavGroup[]>(() => {
+  const groups: NavGroup[] = [
+    {
+      items: [
+        { id: 'dashboard', label: t('components.sidebar.nav.dashboard'), to: '/', icon: 'i-lucide-layout-dashboard' }
+      ]
+    }
+  ]
+
+  // Tambah di sini — id WAJIB stabil (bahasa Inggris), label lewat t():
+  // Item dengan permission dicek lewat can('products.view') sebelum di-push.
+  groups.push({
     items: [
-      { id: 'dashboard', label: t('components.sidebar.nav.dashboard'), to: '/', icon: 'i-lucide-layout-dashboard' },
-      // Tambah di sini — id WAJIB stabil (bahasa Inggris), label lewat t():
       { id: 'product', label: t('components.sidebar.nav.product'), to: '/product', icon: 'i-lucide-package' }
     ]
-  }
-])
+  })
+
+  return groups
+})
 ```
 
 Jangan lupa tambah `components.sidebar.nav.product` ke **kedua** `i18n/locales/en.json` dan `id.json`.
+
+### useImageUpload
+
+- **Fungsi**: Alur baku "pilih file → preview lokal → upload → simpan path → rollback bila gagal"
+- **File**: `app/composables/useImageUpload.ts` — dipakai modal user, halaman profil, `settings/meta.vue`, dan
+  form artikel
+- **Signature**:
+
+```typescript
+const { isUploading, previewUrl, uploadFile, clearPreview, setPreviewFromUrl } = useImageUpload({
+  upload: file => userService.uploadPhoto(file), // method upload dari service
+  onUploaded: (path) => { form.photo = path },  // simpan path hasil upload ke form
+  successMessage: t('pages.profile.information.photoUploadSuccess'),
+  errorMessage: t('pages.profile.information.photoUploadFailed')
+})
+```
+
+| Return | Tipe | Keterangan |
+| ------ | ---- | ---------- |
+| `isUploading` | `Ref<boolean>` | Untuk `:disabled` / spinner |
+| `previewUrl` | `Ref<string \| null>` | Blob lokal (setelah pilih file) atau URL tersimpan |
+| `uploadFile` | `(file) => Promise<boolean>` | Jalankan upload; `false` kalau gagal |
+| `clearPreview` | `() => void` | Buang preview + revoke object URL |
+| `setPreviewFromUrl` | `(url) => void` | Pasang preview dari path/URL yang sudah tersimpan |
+
+Jaminan yang sudah dipegang composable ini (jangan diduplikasi di komponen):
+
+1. **Object URL selalu di-revoke** — saat preview diganti, di-rollback, atau komponen di-unmount
+   (`onBeforeUnmount(clearPreview)`). Sebelumnya blob tertahan di memori selama sesi berlangsung.
+2. **Preview selalu di-rollback saat upload gagal** — URL lama dipulihkan dan toast error muncul, sehingga
+   preview tidak lagi "berbohong" menampilkan gambar yang sebenarnya gagal tersimpan.
+
+Aturan pemakaian: jangan memanggil `URL.createObjectURL` langsung dari modal/halaman — util di
+`app/utils/file.ts` hanya dipakai dari dalam composable ini.
 
 ### error-helper (handleServiceError)
 
@@ -308,10 +378,11 @@ Jangan lupa tambah `components.sidebar.nav.product` ke **kedua** `i18n/locales/e
 
 ```typescript
 // Service — direct import
-import { contactService } from '~/services/contact-service'
+import { faqService } from '~/services/faq-service'
 
 // Types — type-only import
-import type { Contact, ContactPayload } from '~/types/contact'
+import type { Faq, FaqPayload } from '~/types/faq'
+import type { ApiResponse } from '~/types/api'
 
 // Composable — auto-imported oleh Nuxt (tidak perlu import)
 const { state } = useAuth()
@@ -325,10 +396,12 @@ import axios from 'axios'
 
 ## 8. Checklist Membuat Service Baru
 
-1. Buat file type: `app/types/<feature>.d.ts`
+1. Buat file type: `app/types/<feature>.d.ts` (import `ApiResponse` dari `app/types/api.d.ts`)
 2. Buat file service: `app/services/<feature>-service.ts`
-3. Ikuti pattern `ContactService` persis
+3. Ikuti pattern `FaqService` persis (`app/services/faq-service.ts`)
 4. Export singleton di akhir file
 5. Gunakan `handleServiceError` di setiap catch
 6. Type semua response dengan generic `ApiResponse<T>`
 7. Tambahkan `authHeaders` di setiap method yang butuh auth
+8. Kalau ada upload gambar: sediakan method upload yang mengembalikan `ApiResponse<{ path: string }>`, lalu
+   pakai dari komponen lewat `useImageUpload` (lihat §6)

@@ -6,7 +6,7 @@
 2. **Single Responsibility** — Satu komponen, satu tanggung jawab
 3. **Props Down, Events Up** — Data mengalir ke bawah via props, perubahan dikomunikasikan via emit
 4. **Modal = Component** — Semua modal, dialog, dan popup **HARUS** dijadikan component terpisah, BUKAN ditulis inline di page
-5. **Dark mode via semantic tokens, BUKAN class `dark:`** — App ini support dark mode (toggle: `UColorModeButton`, `useColorMode()` dari `@nuxtjs/color-mode`). JANGAN hardcode warna neutral/white (`bg-white`, `text-neutral-900`, `border-neutral-200`, dst) — pakai token semantik NuxtUI yang otomatis adaptif ke dark mode:
+5. **Dark mode via semantic tokens, BUKAN class `dark:`** — App ini support dark mode (toggle: `UColorModeButton` di `layouts/auth.vue`, dan item toggle di `UserPopover.vue` via `useColorMode()` dari `@nuxtjs/color-mode`). JANGAN hardcode warna neutral/white (`bg-white`, `text-neutral-900`, `border-neutral-200`, dst) — pakai token semantik NuxtUI yang otomatis adaptif ke dark mode:
    - Background: `bg-default` (putih/neutral-900), `bg-muted` (neutral-50/neutral-800), `bg-elevated`, `bg-accented`
    - Text: `text-highlighted` (judul/neutral-900), `text-toned`, `text-default`, `text-muted`, `text-dimmed` (paling redup)
    - Border/ring: `border-default`, `border-muted`, `border-accented`, `ring-default`, `ring-muted`
@@ -26,10 +26,28 @@ Komponen yang digunakan di seluruh aplikasi. Auto-imported oleh Nuxt.
 | `Header` | Page header: title, description, tabs, actions, mobile nav | `title: string`, `description?: string` | — |
 | `Sidebar` | Navigasi sidebar (collapsible, responsive, i18n-aware) | — | — |
 | `LanguageSwitcher` | Switch bahasa (English/Indonesia) | — | — |
-| `UColorModeButton` | Toggle dark/light mode (built-in NuxtUI, taruh selalu di sebelah kiri `LanguageSwitcher`) | `variant?` (pakai `"soft"` biar konsisten) | — |
-| `UserPopover` | User profile dropdown + logout | `popoverProps?: Record<string, any>` | — |
+| `UserPopover` | User profile dropdown + logout + toggle dark/light (via `useColorMode()`) | `popoverProps?: Record<string, any>` | — |
 | `DeleteModal` | Generic delete confirmation modal | `title?: string`, `itemName?: string`, `loading?: boolean` | `confirm` |
-| `DataTable` | Generic list table: search, per-page, sortable headers (via `useTableQuery`), pagination, `#filters`/`#actions`/`#expanded` slots | `columns`, `data`, `loading?`, `total?`, `from?`, `to?`, `searchPlaceholder?`, `limitOptions?`, `tableClass?` (+ `v-model` untuk `search`/`page`/`perPage`/`expanded`) | — |
+| `DataTable` | Generic list table: search, per-page, sortable headers (via `useTableQuery`), pagination, **empty state bawaan**, `#filters`/`#actions`/`#expanded` slots | `columns`, `data`, `loading?`, `total?`, `from?`, `to?`, `searchPlaceholder?`, `limitOptions?`, `tableClass?` (+ `v-model` untuk `search`/`page`/`perPage`/`expanded`) | — |
+
+**Subfolder `common/`** (`app/components/common/`) — komponen bantu yang dipakai lintas fitur:
+
+| Komponen | Fungsi | Props | Emits |
+|----------|--------|-------|-------|
+| `CommonSortableHeader` | Header kolom tabel yang bisa diklik untuk sorting; dipasang lewat `useTableQuery().sortHeader()` | `label: () => string`, `active?: boolean`, `order?: SortOrder`, `align?: 'left' \| 'center' \| 'right'` | `toggle` |
+| `CommonEditorUrlModal` | Modal input URL untuk editor Tiptap (link & gambar) — **pengganti `window.prompt`** | `modelValue: boolean` (v-model), `mode: 'link' \| 'image'`, `initialUrl?: string` | `submit` (payload: `string`) |
+| `CommonTiptapEditor` | Rich text editor artikel (Tiptap) | `modelValue?: string`, `placeholder?: string` | `update:modelValue` |
+
+**Subfolder `content/`** (`app/components/content/`) — komponen modul CMS:
+
+| Komponen | Fungsi | Props | Emits |
+|----------|--------|-------|-------|
+| `ContentArticleForm` | Form artikel bersama untuk halaman **create & edit** — lihat [page-pattern.md](./page-pattern.md) §"Pattern 4" | `articleId?: number` (kosong = create) | `submitted` |
+| `ContentCategoryAddModal` / `ContentCategoryUpdateModal` | Modal CRUD kategori artikel | `modelValue: boolean` (v-model), + item untuk update | `created` / `updated` |
+
+> **Toggle dark mode:** tombol toggle di area dashboard ada di dalam `UserPopover` (memakai `useColorMode()`),
+> sedangkan `UColorModeButton` bawaan NuxtUI dipakai di `app/layouts/auth.vue`. Jangan tambah tombol toggle
+> baru di tempat lain.
 
 > ⚠️ **Semua teks di atas (title, description, label toast, dsb.) di kode asli lewat `$t()`, bukan string statis.** Lihat [i18n-guide.md](./i18n-guide.md). Contoh kode di bawah ini disederhanakan pakai teks polos agar mudah dibaca — saat implementasi nyata, **ganti semua teks dengan `$t('...')` / `t('...')`**.
 
@@ -37,15 +55,19 @@ Komponen yang digunakan di seluruh aplikasi. Auto-imported oleh Nuxt.
 
 Komponen spesifik untuk fitur tertentu. Dinamakan dengan prefix folder.
 
-**Contoh: `contact/`**
+**Contoh: `faq/`** — modul CRUD terkecil & paling bersih di project ini, dipakai sebagai acuan:
 
 | Komponen | Fungsi | Props | Emits |
 |----------|--------|-------|-------|
-| `ContactAddModal` | Form tambah contact | `modelValue: boolean` (v-model) | `created` |
-| `ContactUpdateModal` | Form edit contact | `modelValue: boolean`, `contact: Contact \| null` | `updated` |
-| `ContactDeleteModal` | Konfirmasi hapus contact | `modelValue: boolean`, `contact: Contact \| null` | `deleted` |
+| `FaqAddModal` | Form tambah FAQ | `modelValue: boolean` (v-model) | `created` |
+| `FaqUpdateModal` | Form edit FAQ | `modelValue: boolean`, `faq: Faq \| null` | `updated` |
 
-> **Auto-naming oleh Nuxt:** File `components/contact/AddModal.vue` otomatis jadi `<ContactAddModal />`.
+Contoh lain yang lebih kompleks: `user/` (modal + upload foto), `content/category/` (modal kategori artikel),
+`content/ArticleForm.vue` (form halaman penuh, bukan modal).
+
+> **Auto-naming oleh Nuxt:** File `components/faq/AddModal.vue` otomatis jadi `<FaqAddModal />`.
+>
+> **Delete tidak perlu modal sendiri** — pakai `DeleteModal` global.
 
 ## Aturan Wajib: Modal HARUS Jadi Component
 
@@ -94,21 +116,36 @@ Komponen spesifik untuk fitur tertentu. Dinamakan dengan prefix folder.
 > (`components.[feature].addModal.*`) dan tambahkan ke **kedua** `i18n/locales/en.json` & `id.json`.
 >
 > **Field required:** kalau field itu wajib di Zod schema (tidak `.optional()`/`.nullable()`), `<UFormField>`-nya **WAJIB** diberi atribut `required` — ini yang menampilkan tanda `*` di label. Field opsional (switch/toggle, select dengan default, atau field yang eksplisit `.optional()`) **tidak** diberi `required`. Lihat §"Aturan: `required` di UFormField" di bawah.
+>
+> **JANGAN menulis `:ui` lebar/overlay/body di modal baru.** `app/app.config.ts` sudah meng-override slot
+> `modal` secara global:
+>
+> ```ts
+> modal: {
+>   slots: {
+>     content: 'sm:max-w-lg',
+>     overlay: '!backdrop-blur-xs !bg-white/10',
+>     body: 'border-0 !py-0',
+>     header: 'border-0'
+>   }
+> }
+> ```
+>
+> Tulis `:ui="..."` hanya kalau modal itu memang butuh hal berbeda (mis. modal RBAC pakai
+> `content: 'max-w-2xl'`). Modal `faq/user/messages` tidak menulis `:ui` sama sekali.
+>
+> **Tombol Cancel baku:** `color="neutral" variant="soft"` + label `$t('common.cancel')` — bukan
+> `variant="outline"`, dan label tidak perlu key per-fitur.
 
 ```vue
 <template>
   <UModal
+    v-model:open="open"
     :title="$t('components.[feature].addModal.title')"
     :description="$t('components.[feature].addModal.description')"
-    v-model:open="open"
-    :ui="{
-      content: 'sm:max-w-md',
-      overlay: 'bg-black/40',
-      footer: 'justify-end'
-    }"
   >
     <template #body>
-      <UForm id="add-[feature]-form" :schema="schema" :state="form" @submit="handleSubmit" class="space-y-2">
+      <UForm id="add-[feature]-form" :schema="schema" :state="form" @submit="handleSubmit" class="space-y-3">
         <UFormField :label="$t('components.[feature].addModal.fieldNameLabel')" name="fieldName" required>
           <UInput v-model="form.fieldName" :placeholder="$t('components.[feature].addModal.fieldNamePlaceholder')" class="w-full" />
         </UFormField>
@@ -117,14 +154,14 @@ Komponen spesifik untuk fitur tertentu. Dinamakan dengan prefix folder.
     </template>
     <template #footer>
       <div class="flex justify-end items-center gap-2 w-full">
-        <UButton :label="$t('components.[feature].addModal.cancel')" @click="open = false" color="neutral" variant="outline" />
+        <UButton :label="$t('common.cancel')" color="neutral" variant="soft" @click="() => { open = false }" />
         <UButton
           type="submit"
           form="add-[feature]-form"
           color="primary"
           :loading="isSubmitting"
         >
-          {{ $t('components.[feature].addModal.save') }}
+          {{ $t('common.save') }}
         </UButton>
       </div>
     </template>
@@ -185,21 +222,21 @@ Setiap `<UFormField>` untuk field yang **wajib diisi** di Zod schema (bukan `.op
 
 ```vue
 <!-- ✅ BENAR — field wajib di schema, UFormField diberi required -->
-<UFormField :label="$t('components.contact.addModal.emailLabel')" name="email" required>
-  <UInput v-model="form.email" ... />
+<UFormField :label="$t('components.user.addModal.nameLabel')" name="name" required>
+  <UInput v-model="form.name" ... />
 </UFormField>
 
 <!-- ✅ BENAR — field opsional di schema, TIDAK diberi required -->
-<UFormField :label="$t('components.contact.addModal.salutationLabel')" name="salutation">
-  <USelect v-model="form.salutation" ... />
+<UFormField :label="$t('components.user.addModal.roleLabel')" name="role">
+  <USelect v-model="form.role" ... />
 </UFormField>
 ```
 
 ```typescript
 const schema = z.object({
-  email: z.string().min(1, t('...')),                    // wajib → required di UFormField
-  salutation: z.enum(['mr', 'mrs']).nullable().optional(), // opsional → JANGAN required
-  oldPassword: z.string().optional().or(z.literal('')),    // opsional → JANGAN required
+  name: z.string().min(1, t('...')),                    // wajib → required di UFormField
+  role: z.enum(['admin', 'user']).nullable().optional(), // opsional → JANGAN required
+  oldPassword: z.string().optional().or(z.literal('')),  // opsional → JANGAN required
 })
 ```
 
@@ -212,26 +249,22 @@ const schema = z.object({
 
 ```vue
 <template>
+  <!-- Sama seperti Add Modal: TANPA :ui override (ikut app.config.ts global) -->
   <UModal
+    v-model:open="open"
     :title="$t('components.[feature].updateModal.title')"
     :description="$t('components.[feature].updateModal.description')"
-    v-model:open="open"
-    :ui="{
-      content: 'sm:max-w-md',
-      overlay: 'bg-black/40',
-      footer: 'justify-end'
-    }"
   >
     <template #body>
-      <UForm id="update-[feature]-form" :schema="schema" :state="form" @submit="handleSubmit" class="space-y-2">
+      <UForm id="update-[feature]-form" :schema="schema" :state="form" @submit="handleSubmit" class="space-y-3">
         <!-- Same fields as Add (namespace components.[feature].updateModal), populated from props.item -->
       </UForm>
     </template>
     <template #footer>
       <div class="flex justify-end items-center gap-2 w-full">
-        <UButton :label="$t('components.[feature].updateModal.cancel')" @click="open = false" color="neutral" variant="outline" />
+        <UButton :label="$t('common.cancel')" color="neutral" variant="soft" @click="() => { open = false }" />
         <UButton type="submit" form="update-[feature]-form" color="primary" :loading="isSubmitting">
-          {{ $t('components.[feature].updateModal.save') }}
+          {{ $t('common.save') }}
         </UButton>
       </div>
     </template>
@@ -323,16 +356,156 @@ const handleDelete = async () => {
         color: 'success',
         icon: 'i-lucide-circle-check'
       })
+      // Modal ditutup HANYA saat sukses:
+      showDeleteModal.value = false
+      fetchItems()
+    } else {
+      // Gagal → modal TETAP TERBUKA + toast error, user bisa coba lagi
+      toast.add({
+        title: response.message || t('common.error'),
+        color: 'error',
+        icon: 'i-lucide-circle-alert'
+      })
     }
-    showDeleteModal.value = false
-    fetchItems()
   } finally {
     isDeleting.value = false
   }
 }
 ```
 
-> `DeleteModal` sendiri sudah punya default title/description via i18n (`components.deleteModal.*`) — kirim `:title` custom hanya kalau perlu override, seperti contoh di atas.
+> **Jangan tutup modal seolah-olah sukses.** Kalau delete gagal, tampilkan toast error dan biarkan modal
+> terbuka (contoh nyata: `app/pages/faq/index.vue` dan halaman CRUD lain) — sebelumnya beberapa halaman
+> menutup modal tanpa memberi tahu user bahwa data masih ada.
+>
+> `DeleteModal` sendiri sudah punya default title/description via i18n (`components.deleteModal.*`) — kirim
+> `:title` custom hanya kalau perlu override, seperti contoh di atas.
+>
+> **Catatan `variant`:** `DeleteModal` (konfirmasi destruktif) memakai Cancel `variant="outline"`, sedangkan
+> modal form (Add/Update/Editor) memakai `variant="soft"`. Pembeda ini disengaja — jangan diseragamkan.
+
+## Pattern: Upload Gambar — WAJIB `useImageUpload`
+
+Semua alur "pilih file → preview lokal → upload → simpan path → rollback bila gagal" **WAJIB** lewat
+composable `useImageUpload` (`app/composables/useImageUpload.ts`). Jangan menulis sendiri
+`URL.createObjectURL` + panggil service upload manual di modal/halaman.
+
+```vue
+<template>
+  <!-- Preview -->
+  <UAvatar v-if="previewUrl" :src="previewUrl" size="3xl" />
+
+  <UFileUpload
+    v-model="photoFile"
+    variant="button"
+    size="xs"
+    color="neutral"
+    icon="i-lucide-upload"
+    accept="image/*"
+    reset
+    :label="$t('components.user.addModal.choosePhoto')"
+    :disabled="isUploading"
+  />
+</template>
+
+<script setup lang="ts">
+const photoFile = ref<File | null>(null)
+
+const { isUploading, previewUrl, uploadFile, clearPreview } = useImageUpload({
+  upload: file => userService.uploadPhoto(file),   // method upload dari service
+  onUploaded: (path) => { form.photo = path },     // simpan path hasil upload ke form
+  successMessage: t('components.user.addModal.photoUploadSuccess'),
+  errorMessage: t('components.user.addModal.photoUploadFailed')
+})
+
+// Auto-upload begitu user memilih file
+watch(photoFile, (file) => {
+  if (file) uploadFile(file)
+})
+</script>
+```
+
+| Return | Tipe | Keterangan |
+| ------ | ---- | ---------- |
+| `isUploading` | `Ref<boolean>` | Untuk `:disabled` / spinner |
+| `previewUrl` | `Ref<string \| null>` | Blob lokal (setelah pilih file) atau URL tersimpan |
+| `uploadFile` | `(file) => Promise<boolean>` | Jalankan upload; `false` kalau gagal |
+| `clearPreview` | `() => void` | Buang preview + revoke object URL |
+| `setPreviewFromUrl` | `(url) => void` | Pasang preview dari path yang sudah tersimpan (mode edit) |
+
+Contoh nyata: `app/components/user/AddModal.vue`, `app/components/user/UpdateModal.vue`,
+`app/pages/settings/meta.vue` (logo/favicon/og-image), `app/pages/profile/information.vue`, dan
+`app/components/content/ArticleForm.vue` (cover artikel).
+
+Jaminan yang sudah dipegang composable ini — **jangan diduplikasi di komponen**:
+
+1. **Object URL selalu di-revoke** saat preview diganti, di-rollback, atau komponen di-unmount
+   (`onBeforeUnmount(clearPreview)`). Sebelumnya blob tertahan di memori selama sesi berlangsung.
+2. **Preview selalu di-rollback saat upload gagal** — URL lama dipulihkan dan toast error muncul, sehingga
+   preview tidak lagi "berbohong" menampilkan gambar yang sebenarnya gagal tersimpan.
+
+> `app/utils/file.ts` (`createPreviewUrl`/`revokePreviewUrl`) dipakai **dari dalam** composable tersebut,
+> bukan dipanggil langsung dari modal/halaman.
+
+## Pattern: `SortableHeader` (Header Kolom Tabel)
+
+`app/components/common/SortableHeader.vue` adalah header kolom `UTable` yang bisa diklik untuk sorting.
+**Jangan** menulis header sendiri di kolom: pakai `sortHeader()` dari `useTableQuery`, yang otomatis
+memasang komponen ini beserta state `sortBy`/`order`-nya.
+
+```typescript
+const { search, page, perPage, sortBy, order, sortHeader } = useTableQuery(fetchFaqs)
+
+const columns = computed<TableColumn<Faq>[]>(() => [
+  {
+    accessorKey: 'question',
+    header: sortHeader(() => t('pages.faq.question'), 'question'),
+    cell: ({ row }) => row.original.question
+  }
+])
+```
+
+**Kenapa harus komponen `.vue`, bukan render function di file `.ts`?** `SortableHeader` memakai `UIcon` dan
+token warna semantik NuxtUI di template-nya. Komponen NuxtUI tidak bisa dirender lewat `h(...)` dari file
+`.ts` biasa tanpa resolve manual; dengan file `.vue`, auto-import Nuxt dan kompilasi template Tailwind
+tetap jalan normal. Ini alasan `sortHeader()` di `useTableQuery.ts` menerima **fungsi** `() => string`
+(bukan string) — label harus reaktif terhadap locale, dan komponennya hidup di file `.vue`.
+
+## Pattern: `EditorUrlModal` (Link & Gambar Tiptap)
+
+`window.prompt` **DILARANG** (tidak bisa i18n, tidak ada validasi, tidak bisa di-style). Untuk input URL
+link/gambar di editor, `TiptapEditor.vue` membuka `app/components/common/EditorUrlModal.vue`:
+
+```vue
+<CommonEditorUrlModal
+  v-model="showUrlModal"
+  :mode="urlModalMode"          <!-- 'link' | 'image' -->
+  :initial-url="currentUrl"
+  @submit="applyUrl"
+/>
+```
+
+- `mode="link"` → label/judul modal untuk menyisipkan tautan; `mode="image"` → untuk menyisipkan gambar.
+- `initialUrl` diisi URL node yang sedang aktif, supaya user bisa mengedit (bukan cuma menambah).
+- `@submit` mengirim URL yang sudah lolos validasi Zod (`z.string().url()`), lalu `TiptapEditor` memanggil
+  command Tiptap yang sesuai.
+- Modal ini mengecilkan lebar (`content: 'sm:max-w-md'`) karena kontennya cuma satu input — inilah contoh
+  override `:ui` yang **sah**: memang beda dari default global (`sm:max-w-lg`).
+
+## Pattern: `ArticleForm` (Form Halaman Penuh, Bukan Modal)
+
+`app/components/content/ArticleForm.vue` adalah form artikel bersama untuk halaman **create** dan **edit**.
+Halaman `app/pages/content/article/create.vue` dan `[id].vue` hanyalah pembungkus tipis:
+
+```vue
+<!-- create.vue -->
+<ContentArticleForm />
+
+<!-- [id].vue -->
+<ContentArticleForm :article-id="articleId" />
+```
+
+Ketika `articleId` kosong → mode create; ketika diisi → mode edit (fetch by id lalu hydrate form). Detail
+pola ini ada di [page-pattern.md](./page-pattern.md) §"Pattern 4: Halaman Form Create / Edit".
 
 ## Pattern: Header Component
 
@@ -351,7 +524,7 @@ Digunakan di setiap dashboard page sebagai header pertama:
 
   <!-- Optional: Action buttons -->
   <template #actions>
-    <UButton icon="i-lucide-download">Export</UButton>
+    <UButton icon="i-lucide-download">{{ $t('pages.[feature].export') }}</UButton>
   </template>
 </Header>
 ```
@@ -365,7 +538,7 @@ Saat menambah fitur CRUD baru (misal: `product`):
    - Interface `ProductPayload` (payload create/update)
 
 2. **Service**: Buat `app/services/product-service.ts`
-   - Class `ProductService` mengikuti pattern `ContactService`
+   - Class `ProductService` mengikuti pattern `FaqService` (`app/services/faq-service.ts`)
    - Export singleton: `export const productService = new ProductService()`
 
 3. **Components**: Buat folder `app/components/product/`
@@ -374,7 +547,10 @@ Saat menambah fitur CRUD baru (misal: `product`):
    - Gunakan `DeleteModal` global (jangan buat baru)
 
 4. **Page**: Buat `app/pages/product/index.vue`
-   - Mengikuti pattern `contact/index.vue`
+   - Mengikuti pattern `app/pages/faq/index.vue` (halaman CRUD paling ringkas)
+   - Kalau butuh filter status/tanggal, lihat `app/pages/messages/index.vue`
+   - Kalau ada form create + edit halaman penuh (bukan modal), lihat pola `ContentArticleForm` di
+     [page-pattern.md](./page-pattern.md) §"Pattern 4"
 
 5. **Navigation**: Update `app/composables/useNavigation.ts`
    - Tambahkan nav item baru di `navGroups`, pakai pola stable-`id` (lihat [i18n-guide.md](./i18n-guide.md) §5)
@@ -402,11 +578,18 @@ const open = defineModel<boolean>({ default: false })
 |----------|------|--------|
 | `Header` | `#tabs` | Tab navigation links |
 | `Header` | `#actions` | Action buttons (filter, export, dll) |
+| `DataTable` | `#filters` | Control tambahan di baris search (mis. `USelectMenu` status) |
+| `DataTable` | `#actions` | Tombol/aksi di kanan baris search |
+| `DataTable` | `#expanded` | Konten baris yang di-expand (`{ row }`) |
 | `DeleteModal` | `#description` | Custom delete message |
 | `UModal` | `#body` | Modal body content |
 | `UModal` | `#footer` | Modal footer (action buttons) |
-| `UModal` | `#content` | Full custom modal content |
+| `UModal` | `#content` | Full custom modal content (dipakai `DeleteModal`) |
 | `UInput` | `#trailing` | Trailing element (password toggle) |
 | `UFormField` | `#hint` | Hint text/link |
 | `UserPopover` | `default` | Custom trigger element |
 | `UPopover` | `#content` | Popover body |
+
+> **Empty state `DataTable` tidak perlu diisi manual** — `DataTable.vue` sudah memasang `<UEmpty>` lewat slot
+> `#empty` milik `UTable`, jadi semua halaman CRUD otomatis punya tampilan "tidak ada data" (teksnya dari
+> `components.dataTable.emptyTitle` / `emptyDescription`). Jangan buat empty state sendiri di halaman.

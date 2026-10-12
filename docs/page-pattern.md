@@ -12,12 +12,13 @@
 
 | Layout      | Halaman                                                          | Middleware               |
 | ----------- | ---------------------------------------------------------------- | ------------------------ |
-| `dashboard` | `/`, `/contact`, dan semua halaman protected                     | `auth.global` (otomatis) |
-| `auth`      | `/auth/sign-in`, `/auth/sign-up`, `/auth/forgot-password`, `/auth/reset-password` | `guest`                  |
+| `dashboard` | `/` (dashboard), `/faq`, `/user`, `/roles`, `/messages`, `/content/category`, `/content/article`, `/settings/*`, `/profile/*` | `auth.global` (otomatis) |
+| `auth`      | `/auth/sign-in`, `/auth/forgot-password`, `/auth/reset-password` | `guest`                  |
 
 ## Pattern 1: Dashboard Page (CRUD Listing)
 
-Referensi: `app/pages/contact/index.vue`, `app/pages/user/index.vue`
+Referensi: `app/pages/faq/index.vue` (modul CRUD paling bersih), `app/pages/messages/index.vue` (ada filter +
+kolom tanggal), `app/pages/content/article/index.vue` (filter + kolom relasi).
 
 > ⚠️ Semua teks (`title`, `description`, `placeholder`, label button, header kolom tabel, toast)
 > WAJIB lewat `$t()` / `t()`. Lihat [i18n-guide.md](./i18n-guide.md). Namespace di bawah:
@@ -25,9 +26,9 @@ Referensi: `app/pages/contact/index.vue`, `app/pages/user/index.vue`
 
 Listing page **WAJIB** pakai component global `DataTable` + composable `useTableQuery` (lihat
 [component-guide.md](./component-guide.md) §"Global Components") — jangan tulis ulang search/pagination/table
-manual seperti versi lama. `DataTable` menangani search (debounced), per-page select, table, dan pagination.
-`useTableQuery` menangani state-nya (search/page/perPage/sortBy/order) dan `sortHeader()` untuk kolom yang bisa
-diklik untuk sorting.
+manual seperti versi lama. `DataTable` menangani search (debounced), per-page select, table, pagination, dan
+**empty state bawaan** (`UEmpty` — tidak perlu dikonfigurasi per halaman). `useTableQuery` menangani state-nya
+(search/page/perPage/sortBy/order) dan `sortHeader()` untuk kolom yang bisa diklik untuk sorting.
 
 ```vue
 <template>
@@ -85,6 +86,8 @@ import type { Row } from "@tanstack/vue-table";
 import { featureService } from "~/services/feature-service";
 import type { Feature } from "~/types/feature";
 
+// formatDate/formatDateTime dari app/utils/format.ts (auto-import, tidak perlu import manual)
+
 // Page meta
 definePageMeta({
   layout: "dashboard",
@@ -93,7 +96,7 @@ definePageMeta({
 // Resolve components untuk render function di column
 const UButton = resolveComponent("UButton");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 // State
 const data = ref<Feature[]>([]);
@@ -145,7 +148,7 @@ const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetch
 // Table columns — kolom yang bisa di-sort pakai sortHeader(labelFn, columnKey),
 // columnKey HARUS ada di whitelist SORTABLE_COLUMNS backend (lihat DATABASE_GUIDE.md §5).
 // Kolom lain (id, actions) tetap header: () => t('...') biasa.
-const columns: TableColumn<Feature>[] = [
+const columns = computed<TableColumn<Feature>[]>(() => [
   {
     accessorKey: "id",
     header: () => t("pages.[feature].columnId"),
@@ -155,6 +158,22 @@ const columns: TableColumn<Feature>[] = [
     accessorKey: "name",
     header: sortHeader(() => t("pages.[feature].columnName"), "name"),
   },
+  // Kolom tanggal — ATURAN TETAP, jangan divariasikan per halaman:
+  //  1. Formatter: formatDateTime() dari app/utils/format.ts (tanggal + jam).
+  //     formatDate() (tanpa jam) hanya untuk konteks non-tabel yang memang butuh ringkas.
+  //  2. Sel dibungkus span dengan class "text-muted whitespace-nowrap" — seragam di semua halaman.
+  //  3. Selalu sortable lewat sortHeader(..., "createdAt").
+  //  4. Label header: t("common.createdAt") untuk kolom audit standar. Label domain-spesifik
+  //     hanya kalau maknanya memang beda (mis. t("pages.user.columnJoinedDate"), t("pages.messages.columnDate")).
+  {
+    accessorKey: "createdAt",
+    header: sortHeader(() => t("common.createdAt"), "createdAt"),
+    cell: ({ row }) => {
+      const val = row.getValue("createdAt") as string;
+      if (!val) return "-";
+      return h("span", { class: "text-muted whitespace-nowrap" }, formatDateTime(val, locale.value));
+    },
+  },
   // ... more columns
   {
     id: "actions",
@@ -163,6 +182,7 @@ const columns: TableColumn<Feature>[] = [
       class: { td: "text-right", th: "text-right" },
     },
     cell: ({ row }) => {
+      // Ukuran ikon aksi SERAGAM: size 'xs' + variant 'ghost' + color 'neutral'
       return h(
         UDropdownMenu,
         {
@@ -172,15 +192,16 @@ const columns: TableColumn<Feature>[] = [
         },
         () =>
           h(UButton, {
-            icon: "i-lucide-ellipsis-vertical",
-            color: "neutral",
-            variant: "ghost",
-            "aria-label": t("pages.[feature].actionsDropdown"),
+            'icon': "i-lucide-ellipsis-vertical",
+            'size': "xs",
+            'color': "neutral",
+            'variant': "ghost",
+            'aria-label': t("pages.[feature].actionsDropdown"),
           }),
       );
     },
   },
-];
+]);
 
 // Row action items
 function getRowItems(row: Row<Feature>) {
@@ -205,7 +226,8 @@ function getRowItems(row: Row<Feature>) {
   ];
 }
 
-// Handle delete
+// Handle delete — modal HANYA ditutup kalau delete benar-benar berhasil,
+// dan kegagalan tetap memberi toast error (jangan tutup modal seolah sukses).
 const toast = useToast();
 const handleDelete = async () => {
   if (!selectedItem.value) return;
@@ -218,9 +240,15 @@ const handleDelete = async () => {
         color: "success",
         icon: "i-lucide-circle-check",
       });
+      showDeleteModal.value = false;
+      fetchItems();
+    } else {
+      toast.add({
+        title: response.message || t("common.error"),
+        color: "error",
+        icon: "i-lucide-circle-alert",
+      });
     }
-    showDeleteModal.value = false;
-    fetchItems();
   } finally {
     isDeleting.value = false;
   }
@@ -235,9 +263,24 @@ onMounted(() => {
 
 ### Aturan DataTable / useTableQuery
 
-- **Service `getAll`** harus menerima `sortBy`/`order` sebagai parameter tambahan dan meneruskannya ke query string (`sortBy`, `order`) — lihat `contact-service.ts`/`user-service.ts`. Query string per-page pakai nama `limit` (bukan `perPage`), sesuai konvensi backend (`docs/API_CONVENTIONS.md`).
-- **`sortHeader(labelFn, columnKey, align?)`** — `labelFn` HARUS function (`() => t('...')`), bukan string langsung, supaya label tetap reaktif ganti bahasa. `columnKey` harus persis sama dengan key di whitelist `SORTABLE_COLUMNS` backend module tersebut.
-- Kolom yang **tidak** perlu sortable (mis. `id`, `actions`, kolom hasil komputasi) tetap pakai `header: () => t('...')` biasa, jangan dibungkus `sortHeader`.
+- **Empty state sudah otomatis** — `DataTable` merender `<UEmpty>` (key `components.dataTable.emptyTitle` /
+  `emptyDescription`) saat data kosong. Jangan menambahkan empty state sendiri di halaman.
+- **Tombol aksi baris seragam** — `size: 'xs'`, `color: 'neutral'`, `variant: 'ghost'`,
+  `icon: 'i-lucide-ellipsis-vertical'`, dan `aria-label: t('pages.<fitur>.actionsDropdown')` (bukan
+  `aria-label: 'Actions'` yang hardcode).
+- **Service `getAll`** harus menerima `sortBy`/`order` sebagai parameter tambahan dan meneruskannya ke query
+  string (`sortBy`, `order`) — lihat `faq-service.ts`/`user-service.ts`. Query string per-page pakai nama
+  `limit` (bukan `perPage`), sesuai konvensi backend; `response.meta` tetap memakai `perPage`/`currentPage`/
+  `lastPage` (lihat [service-layer.md](./service-layer.md) §4).
+- **`sortHeader(labelFn, columnKey, align?)`** — `labelFn` HARUS function (`() => t('...')`), bukan string
+  langsung, supaya label tetap reaktif ganti bahasa. `columnKey` harus persis sama dengan key di whitelist
+  `SORTABLE_COLUMNS` backend module tersebut. Chevron sorting dirender `app/components/common/SortableHeader.vue`.
+- Kolom yang **tidak** perlu sortable (mis. `id`, `actions`, kolom hasil komputasi) tetap pakai
+  `header: () => t('...')` biasa, jangan dibungkus `sortHeader`.
+- **Kolom tanggal/waktu WAJIB** memakai `formatDate()` / `formatDateTime()` dari `app/utils/format.ts` dengan
+  `locale.value` dari `useI18n()` — jangan `toLocaleDateString`/`toLocaleString` langsung (lihat §"Date
+  Formatting").
+- `columns` ditulis sebagai `computed<TableColumn<T>[]>(() => [...])` supaya ikut berubah saat bahasa diganti.
 - `DataTable` sudah merender teks "Showing X to Y of Z results" sendiri (key `components.dataTable.showing`) — jangan tambah key `pages.[feature].showingResults` lagi di halaman.
 - Backend WAJIB whitelist kolom yang boleh di-sort (jangan masukkan `sortBy` langsung ke `.orderBy()`) — lihat `docs/DATABASE_GUIDE.md` §5.
 
@@ -250,12 +293,12 @@ Referensi: `app/pages/auth/sign-in.vue`
 ```vue
 <template>
   <div class="w-full max-w-md mx-auto">
-    <!-- 1. Logo + Header -->
+    <!-- 1. Logo + Header — pakai token semantik (text-highlighted/text-toned), bukan text-neutral-900 -->
     <div class="flex flex-col gap-5 mb-6">
       <BrandLogo />
       <div class="space-y-1">
-        <h1 class="text-3xl font-bold text-neutral-900">{{ $t('pages.auth.[pageName].title') }}</h1>
-        <p class="text-neutral-600">{{ $t('pages.auth.[pageName].description') }}</p>
+        <h1 class="text-3xl font-bold text-highlighted">{{ $t('pages.auth.[pageName].title') }}</h1>
+        <p class="text-toned">{{ $t('pages.auth.[pageName].description') }}</p>
       </div>
     </div>
 
@@ -269,7 +312,7 @@ Referensi: `app/pages/auth/sign-in.vue`
       <UFormField
         :label="$t('pages.auth.[pageName].emailLabel')"
         name="email"
-        :ui="{ label: 'text-sm font-medium text-neutral-800' }"
+        required
       >
         <UInput
           v-model="state.email"
@@ -368,6 +411,62 @@ definePageMeta({
 </script>
 ```
 
+## Pattern 4: Halaman Form Create / Edit (Halaman Tipis + Form Bersama)
+
+Referensi: `app/pages/content/article/create.vue` + `app/pages/content/article/[id].vue` +
+`app/components/content/ArticleForm.vue`.
+
+Untuk fitur yang punya halaman **create** dan **edit** dengan form yang sama, JANGAN menulis dua halaman
+kembar. Buat satu komponen form bersama, lalu halaman create/edit hanya jadi pembungkus tipis yang mengirim
+`Header` + id (kalau mode edit):
+
+```vue
+<!-- app/pages/content/article/create.vue — hanya pembungkus -->
+<template>
+  <div class="space-y-6">
+    <Header :title="$t('pages.article.createTitle')" :description="$t('pages.article.createDescription')" />
+    <ContentArticleForm />
+  </div>
+</template>
+
+<script setup lang="ts">
+definePageMeta({ layout: 'dashboard' })
+</script>
+```
+
+```vue
+<!-- app/pages/content/article/[id].vue — pembungkus + id dari route -->
+<template>
+  <div class="space-y-6">
+    <Header :title="$t('pages.article.editTitle')" :description="$t('pages.article.editDescription')" />
+    <ContentArticleForm :article-id="articleId" />
+  </div>
+</template>
+
+<script setup lang="ts">
+definePageMeta({ layout: 'dashboard' })
+
+const route = useRoute()
+const articleId = Number(route.params.id)
+</script>
+```
+
+Komponen form (`app/components/content/ArticleForm.vue`) yang menentukan mode:
+
+```typescript
+const props = defineProps<{ articleId?: number }>()
+const isEditMode = computed(() => props.articleId !== undefined)
+// articleId kosong → create; diisi → edit (fetch by id di onMounted, lalu hydrate form)
+```
+
+Ketentuan:
+
+- Form bersama memakai `useImageUpload` untuk cover/thumbnail, `isEmptyHtml()` untuk validasi rich text, dan
+  `slugify()` untuk auto-slug dari judul.
+- Halaman create & edit **tidak boleh** lagi berisi field form, schema Zod, atau panggilan service — semua
+  pindah ke komponen form.
+- Perubahan field cukup di satu file, sehingga create & edit tidak bisa lagi "jadi beda" tanpa sengaja.
+
 ## Responsive Design Pattern
 
 ### Toolbar (Search + Action)
@@ -390,42 +489,57 @@ definePageMeta({
 
 ### Pagination
 
+Sudah built-in di `DataTable` — jangan tulis manual di halaman:
+
 ```vue
-<!-- Center on mobile, space-between on desktop -->
-<div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-  <span class="text-sm text-muted-foreground">
-    {{ $t('pages.[feature].showingResults', { from, to, total }) }}
-  </span>
-  <UPagination ... />
-</div>
+<!-- Isi DataTable.vue -->
+<span class="text-sm text-muted">
+  {{ $t('components.dataTable.showing', { from, to, total }) }}
+</span>
+<UPagination v-model:page="page" size="md" :total="total" :items-per-page="perPage" />
 ```
 
 ### Table
 
 ```vue
-<!-- Horizontal scroll on small screens -->
+<!-- Horizontal scroll on small screens — lebar minimum via `table-class`, pakai skala max-w standar -->
 <div class="overflow-x-auto">
-  <UTable class="min-w-[640px]" />
+  <UTable class="min-w-2xl" />
 </div>
 ```
 
+> Halaman nyata memakai `table-class="min-w-2xl"` (kategori) sampai `min-w-5xl` (artikel), bukan nilai
+> arbitrary seperti `min-w-[640px]` — lihat Larangan #1 di `CLAUDE.md`.
+
 ## Date Formatting
 
+**WAJIB lewat util** `app/utils/format.ts` (auto-import) dengan locale i18n aktif. Jangan memanggil
+`toLocaleDateString`/`toLocaleString`/`Intl.*` langsung di halaman.
+
 ```typescript
-// Pattern untuk format tanggal di table column
+const { t, locale } = useI18n();
+
+// Di table column
 cell: ({ row }) => {
-  const val = row.getValue("createdAt") as string;
-  if (!val) return "-";
-  return new Date(val).toLocaleString("en-US", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  const val = row.getValue('createdAt') as string;
+  if (!val) return '-';
+  return formatDateTime(val, locale.value); // 12 Okt 2026, 14.30
+  // formatDate(val, locale.value)       → 12 Okt 2026
+  // formatNumber(val, locale.value)     → 12.345
+  // formatTimeAgo(val, t)               → 3 jam lalu (teksnya lewat i18n)
 };
 ```
+
+| Fungsi | Output (id) | Output (en) |
+| ------ | ----------- | ----------- |
+| `formatDate(value, locale)` | `12 Okt 2026` | `Oct 12, 2026` |
+| `formatDateTime(value, locale)` | `12 Okt 2026, 14.30` | `Oct 12, 2026, 14:30` |
+| `formatNumber(value, locale)` | `12.345` | `12,345` |
+| `formatTimeAgo(value, t)` | `3 jam lalu` | `3 h ago` |
+
+> **Alasan historis:** dulu tiap halaman memformat tanggal sendiri — separuh memakai `'en-US'`, separuh
+> `'id-ID'` — sehingga dua tabel bisa menampilkan format berbeda pada bahasa yang sama. Util ini yang
+> menyatukannya; jangan tambahkan format tanggal manual baru di halaman.
 
 ## Toast Pattern
 
@@ -437,7 +551,7 @@ const { t } = useI18n();
 
 // Success toast (setelah create/update/delete berhasil)
 toast.add({
-  title: t("components.contact.addModal.createdSuccess"),
+  title: t("components.faq.addModal.createdSuccess"),
   color: "success",
   icon: "i-lucide-circle-check",
 });
@@ -450,23 +564,31 @@ toast.add({
 });
 
 // Error toast (manual, biasanya sudah di-handle oleh error-helper)
+// Dipakai juga saat response.success === false — jangan tutup modal seolah berhasil.
 toast.add({
-  title: t("components.contact.deleteModal.genericError"),
+  title: response.message || t("common.error"),
   color: "error",
-  icon: "i-lucide-circle-x",
+  icon: "i-lucide-circle-alert",
 });
 ```
 
 ## Search Debounce Pattern
 
+Sudah ditangani `useTableQuery()` — **jangan tulis debounce manual di halaman**. Composable itu men-debounce
+`search` 300 ms, reset `page` ke 1, lalu memanggil callback `onQueryChange`:
+
 ```typescript
-let searchTimeout: ReturnType<typeof setTimeout>;
-watch(search, () => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    page.value = 1; // Reset ke halaman 1
-    fetchItems();
-  }, 300); // 300ms debounce
+// Di dalam useTableQuery.ts — halaman cukup memanggil:
+const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchItems);
+// search/page/perPage/sortBy/order berubah → fetchItems() otomatis dipanggil
+```
+
+Kalau menambah filter baru (mis. status), reset halaman dan refetch manual seperti halaman `faq`:
+
+```typescript
+watch(selectedStatusFilter, () => {
+  page.value = 1;
+  fetchItems();
 });
 ```
 
