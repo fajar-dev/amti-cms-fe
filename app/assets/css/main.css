@@ -59,4 +59,38 @@ body,
   --color-red-800: #670004;
   --color-red-900: #4B0003;
   --color-red-950: #300002;
+
+  --color-amti-navy: #2D4E6F;
+  --color-amti-lime: #A7E629;
+  --color-amti-cyan: #06B6D4;
+}
+
+@layer utilities {
+  .bg-tech-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+
+  .bg-tech-dots {
+    background-size: 24px 24px;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  }
+
+  .bg-light-tech-grid {
+    background-size: 32px 32px;
+    background-image: 
+      linear-gradient(to right, rgba(45, 78, 111, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(45, 78, 111, 0.06) 1px, transparent 1px);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: floatSlow 5s ease-in-out infinite;
 }

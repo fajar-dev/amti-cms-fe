@@ -1,26 +1,31 @@
 <template>
-  <div class="relative overflow-hidden">
+  <div class="relative overflow-hidden bg-slate-950">
     <!-- 1. SHMS HERO SECTION -->
-    <section class="relative min-h-[85vh] flex items-center justify-center bg-slate-950 text-white overflow-hidden pt-24 pb-20">
-      <!-- Ambient Lighting & Tech Grid Overlay -->
+    <section class="relative min-h-[85vh] flex items-center justify-center bg-slate-950 text-white overflow-hidden pt-28 pb-20">
+      <!-- Ambient Lighting & Blueprint Grid -->
       <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#121C28] via-[#1D334A] to-slate-950 opacity-90" />
-        <div class="absolute top-1/4 left-1/4 w-[500px] h-[300px] bg-[#A7E629]/10 rounded-full blur-3xl pointer-events-none" />
-        <div class="absolute bottom-10 right-10 w-[600px] h-[350px] bg-[#2D4E6F]/30 rounded-full blur-3xl pointer-events-none" />
+        <div class="absolute inset-0 bg-tech-grid opacity-30 pointer-events-none" />
+        <div class="absolute inset-0 bg-gradient-to-br from-[#121C28] via-[#1D334A]/80 to-slate-950 opacity-95" />
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[300px] bg-[#A7E629]/15 rounded-full blur-3xl pointer-events-none" />
+        <div class="absolute bottom-10 right-10 w-[600px] h-[350px] bg-[#2D4E6F]/40 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <!-- Text Column -->
           <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold tracking-wider uppercase text-slate-200">
-              <span class="size-2 rounded-full bg-[#A7E629] animate-pulse" />
-              Infrastructure Health Telemetry
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-semibold tracking-wider uppercase text-slate-200 backdrop-blur-md shadow-lg">
+              <span class="size-2 rounded-full bg-[#A7E629] animate-ping" />
+              <span>Infrastructure Health Telemetry</span>
+              <span class="text-slate-500">|</span>
+              <span class="text-cyan-400 font-mono">REAL-TIME DIAGNOSTICS</span>
             </div>
 
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
               Structure Health <br>
-              <span class="text-[#A7E629]">Monitoring System (SHMS)</span>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#A7E629] via-emerald-300 to-cyan-400">
+                Monitoring System (SHMS)
+              </span>
             </h1>
 
             <p class="text-lg sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
@@ -30,34 +35,34 @@
             <!-- Actions -->
             <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <a
-                href="#structures"
+                href="#diagnostics"
                 class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-slate-950 bg-[#A7E629] hover:bg-[#bbf33e] shadow-lg shadow-[#A7E629]/25 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <UIcon
-                  name="i-lucide-grid"
+                  name="i-lucide-activity"
                   class="size-5"
+                />
+                <span>Pusat Diagnostik Interaktif</span>
+              </a>
+
+              <a
+                href="#structures"
+                class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-medium text-white bg-slate-900 hover:bg-slate-800 border border-slate-700 transition-all duration-200"
+              >
+                <UIcon
+                  name="i-lucide-grid"
+                  class="size-5 text-[#A7E629]"
                 />
                 <span>7 Objek Infrastruktur</span>
               </a>
-
-              <NuxtLink
-                to="/#contact"
-                class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-medium text-white bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 transition-all duration-200"
-              >
-                <UIcon
-                  name="i-lucide-phone-call"
-                  class="size-5 text-[#A7E629]"
-                />
-                <span>Konsultasi Teknis</span>
-              </NuxtLink>
             </div>
           </div>
 
-          <!-- Hero Image Column (Authentic shms-title.png) -->
+          <!-- Hero Image Column -->
           <div class="lg:col-span-5 flex justify-center">
             <div class="relative group">
               <div class="absolute -inset-4 bg-gradient-to-r from-[#A7E629]/30 to-[#2D4E6F]/50 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300" />
-              <div class="relative rounded-2xl overflow-hidden border border-white/20 bg-slate-900/60 p-4 shadow-2xl backdrop-blur-sm max-w-md">
+              <div class="relative rounded-2xl overflow-hidden border border-slate-700/80 bg-slate-900/80 p-4 shadow-2xl backdrop-blur-md max-w-md">
                 <img
                   src="/amti/img/shms/shms-title.png"
                   alt="Structure Health Monitoring System"
@@ -73,210 +78,133 @@
       <div class="absolute bottom-0 inset-x-0 z-10">
         <WebCurveDivider
           type="curve"
-          fill="#ffffff"
+          fill="#0B1120"
           height="h-10 sm:h-14 md:h-16"
         />
       </div>
     </section>
 
-    <!-- 2. SHMS WORKING PRINCIPLE (DEWESOFT STYLE PIPELINE) -->
-    <section class="py-16 sm:py-20 bg-white">
+    <!-- 2. SHMS WORKING PRINCIPLE PIPELINE -->
+    <section class="py-20 bg-[#0B1120] text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#2D4E6F] block">
-            Alur Kerja Sistem
+          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono">
+            Alur Instrumentasi
           </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Bagaimana SHMS Melindungi Struktur Anda
           </h2>
-          <p class="text-slate-600 text-sm sm:text-base">
+          <p class="text-slate-400 text-sm sm:text-base">
             Integrasi sensor fisik, unit akuisisi data, dan sistem analitik otomatis untuk deteksi degradasi material sedini mungkin.
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Step 1 -->
-          <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-lg transition-all duration-300">
-            <div class="size-12 rounded-2xl bg-[#2D4E6F] text-white flex items-center justify-center font-extrabold text-lg mb-6 shadow-md">
+          <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-[#A7E629]/40 transition-all duration-300 shadow-xl">
+            <div class="size-14 rounded-2xl bg-[#A7E629]/15 text-[#A7E629] flex items-center justify-center font-extrabold text-lg mb-6 border border-[#A7E629]/30 font-mono">
               01
             </div>
-            <h3 class="text-lg font-bold text-slate-900 mb-2">
+            <h3 class="text-xl font-bold text-white mb-2">
               Sensor Deployment
             </h3>
-            <p class="text-sm text-slate-600 leading-relaxed">
-              Pemasangan sensor regangan (strain gauge), accelerometer, tiltmeter, sensor pergeseran, dan load cells pada titik tumpu kritis struktur.
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Pemasangan sensor regangan (*strain gauge*), akselerometer triaksial, tiltmeter, sensor pergeseran LVDT, dan load cells pada titik tumpu kritis struktur.
             </p>
           </div>
 
-          <!-- Step 2 -->
-          <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-lg transition-all duration-300">
-            <div class="size-12 rounded-2xl bg-[#2D4E6F] text-white flex items-center justify-center font-extrabold text-lg mb-6 shadow-md">
+          <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-cyan-400/40 transition-all duration-300 shadow-xl">
+            <div class="size-14 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-extrabold text-lg mb-6 border border-cyan-400/30 font-mono">
               02
             </div>
-            <h3 class="text-lg font-bold text-slate-900 mb-2">
+            <h3 class="text-xl font-bold text-white mb-2">
               Continuous Telemetry
             </h3>
-            <p class="text-sm text-slate-600 leading-relaxed">
-              Pengumpulan data berkala berkecepatan tinggi tanpa jeda, mencatat respons beban lalu lintas, getaran angin, dan deformasi mikro.
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Pengumpulan data berkala berkecepatan tinggi tanpa jeda, mencatat respons beban lalu lintas dinamis, getaran angin, dan deformasi termal mikroskopis.
             </p>
           </div>
 
-          <!-- Step 3 -->
-          <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-lg transition-all duration-300">
-            <div class="size-12 rounded-2xl bg-[#2D4E6F] text-white flex items-center justify-center font-extrabold text-lg mb-6 shadow-md">
+          <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-emerald-400/40 transition-all duration-300 shadow-xl">
+            <div class="size-14 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-extrabold text-lg mb-6 border border-emerald-400/30 font-mono">
               03
             </div>
-            <h3 class="text-lg font-bold text-slate-900 mb-2">
+            <h3 class="text-xl font-bold text-white mb-2">
               Diagnostic & Action Alerts
             </h3>
-            <p class="text-sm text-slate-600 leading-relaxed">
-              Analisis algoritma kecerdasan struktur membandingkan batas toleransi keselamatan dan memberikan rekomendasi pemeliharaan sebelum terjadi keruntuhan.
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Analisis algoritma kecerdasan struktur membandingkan batas toleransi keselamatan dan memberikan rekomendasi pemeliharaan sebelum terjadi keruntuhan katastropik.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 3. 7 INFRASTRUCTURE APPLICATIONS (from shms.html) -->
+    <!-- 3. INTERACTIVE DIAGNOSTIC HUB COMPONENT -->
     <section
-      id="structures"
-      class="py-20 bg-slate-50 border-t border-slate-200/70"
+      id="diagnostics"
+      class="py-20 bg-slate-950 border-t border-slate-800"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#2D4E6F] block">
+        <WebShmsDiagnosticHub />
+      </div>
+    </section>
+
+    <!-- 4. 7 INFRASTRUCTURE APPLICATIONS CATALOG -->
+    <section
+      id="structures"
+      class="py-24 bg-slate-900 text-white border-t border-slate-800"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono mb-1">
             Cakupan Infrastruktur
           </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-1">
-            7 Objek Penerapan SHMS
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            Katalog 7 Objek Penerapan SHMS
           </h2>
-          <p class="text-slate-600 text-sm sm:text-base mt-2">
+          <p class="text-slate-400 text-sm sm:text-base mt-2">
             Dari jembatan bentang panjang hingga terowongan bawah tanah, SHMS memberikan kepastian integritas fisik aset jangka panjang.
           </p>
-
-          <!-- Quick Filter Selector -->
-          <div class="flex flex-wrap items-center justify-center gap-2 mt-8">
-            <button
-              v-for="(item, idx) in structures"
-              :key="idx"
-              type="button"
-              class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200"
-              :class="[
-                activeStructureIndex === idx
-                  ? 'bg-[#2D4E6F] text-white shadow-md shadow-[#2D4E6F]/20'
-                  : 'bg-white text-slate-700 border border-slate-200/80 hover:bg-slate-100'
-              ]"
-              @click="activeStructureIndex = idx"
-            >
-              {{ item.title }}
-            </button>
-          </div>
         </div>
 
-        <!-- Featured Active Structure Card -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-200/50 p-6 sm:p-10 mb-16">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <!-- Left Info -->
-            <div class="lg:col-span-6 space-y-4">
-              <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md bg-[#2D4E6F]/10 text-[#2D4E6F] inline-block">
-                Struktur 0{{ activeStructureIndex + 1 }}
-              </span>
-
-              <h3 class="text-3xl font-extrabold text-slate-900 tracking-tight">
-                {{ currentStructure.title }}
-              </h3>
-
-              <div class="text-xs font-semibold text-[#2D4E6F] tracking-wide uppercase leading-relaxed">
-                {{ currentStructure.tags }}
-              </div>
-
-              <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
-                {{ currentStructure.description }}
-              </p>
-
-              <!-- Parameter Indicators -->
-              <div class="pt-4 border-t border-slate-100">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-900 block mb-2">
-                  Parameter Pemantauan Utama:
-                </span>
-                <div class="flex flex-wrap gap-2">
-                  <span
-                    v-for="(tag, tIdx) in currentStructure.tagList"
-                    :key="tIdx"
-                    class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium"
-                  >
-                    {{ tag }}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Image -->
-            <div class="lg:col-span-6">
-              <div class="aspect-4/3 rounded-2xl overflow-hidden shadow-xl bg-slate-900 border border-slate-200 relative group">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            v-for="(item, idx) in structures"
+            :key="idx"
+            class="rounded-2xl p-6 bg-slate-950 border border-slate-800 hover:border-[#A7E629]/50 transition-all duration-300 flex flex-col justify-between"
+          >
+            <div class="space-y-3">
+              <div class="aspect-16/10 rounded-xl overflow-hidden bg-slate-900 border border-slate-800">
                 <img
-                  :src="currentStructure.image"
-                  :alt="currentStructure.title"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  :src="item.image"
+                  :alt="item.title"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 >
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none" />
-                <div class="absolute bottom-4 left-4 text-white text-xs font-bold uppercase">
-                  {{ currentStructure.title }}
-                </div>
               </div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-[#A7E629] block font-mono truncate">
+                {{ item.tags }}
+              </span>
+              <h4 class="text-lg font-bold text-white">
+                {{ item.title }}
+              </h4>
+              <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+                {{ item.description }}
+              </p>
             </div>
-          </div>
-        </div>
 
-        <!-- Comprehensive 7 Cards Grid for Overview -->
-        <div class="space-y-6">
-          <div class="text-center">
-            <h3 class="text-xl font-bold text-slate-900">
-              Katalog Lengkap Seluruh Infrastruktur
-            </h3>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div
-              v-for="(item, idx) in structures"
-              :key="idx"
-              class="rounded-2xl p-6 bg-white border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
-              :class="activeStructureIndex === idx ? 'ring-2 ring-[#2D4E6F]' : ''"
-              @click="activeStructureIndex = idx"
-            >
-              <div class="space-y-3">
-                <div class="aspect-16/10 rounded-xl overflow-hidden bg-slate-900 border border-slate-100">
-                  <img
-                    :src="item.image"
-                    :alt="item.title"
-                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  >
-                </div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-[#2D4E6F] block truncate">
-                  {{ item.tags }}
-                </span>
-                <h4 class="text-lg font-bold text-slate-900">
-                  {{ item.title }}
-                </h4>
-                <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                  {{ item.description }}
-                </p>
-              </div>
-
-              <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-semibold text-[#2D4E6F]">
-                <span>Tampilkan Detail</span>
-                <UIcon
-                  name="i-lucide-arrow-right"
-                  class="size-4"
-                />
-              </div>
+            <div class="pt-4 border-t border-slate-800 mt-4 flex items-center justify-between text-xs font-semibold text-[#A7E629]">
+              <span>Sensor Telemetri Aktif</span>
+              <UIcon
+                name="i-lucide-activity"
+                class="size-4"
+              />
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. CALL TO ACTION -->
+    <!-- 5. CALL TO ACTION -->
     <WebContactCta />
   </div>
 </template>
@@ -348,7 +276,4 @@ const structures: StructureItem[] = [
     description: 'With SHMS, tunnel safety is greatly enhanced through real-time monitoring of structural stress and vibration. This system allows for immediate responses to potential threats, safeguarding both infrastructure and people.'
   }
 ]
-
-const activeStructureIndex = ref(0)
-const currentStructure = computed<StructureItem>(() => structures[activeStructureIndex.value] || structures[0]!)
 </script>

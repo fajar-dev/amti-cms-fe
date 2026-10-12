@@ -1,36 +1,40 @@
 <template>
-  <div class="relative overflow-hidden">
-    <!-- 1. EEWS HERO WITH VIDEO BACKGROUND -->
-    <section class="relative min-h-[85vh] flex items-center justify-center bg-slate-950 text-white overflow-hidden pt-24 pb-20">
+  <div class="relative overflow-hidden bg-slate-950">
+    <!-- 1. EEWS HERO WITH VIDEO BACKGROUND & AMBIENT GLOW -->
+    <section class="relative min-h-[85vh] flex items-center justify-center bg-slate-950 text-white overflow-hidden pt-28 pb-20">
       <div class="absolute inset-0 z-0 overflow-hidden">
         <video
           autoplay
           muted
           loop
           playsinline
-          class="w-full h-full object-cover opacity-45 scale-105 filter saturate-125"
+          class="w-full h-full object-cover opacity-35 scale-105 filter saturate-150"
         >
           <source
             src="/amti/videos/header_eews.mp4"
             type="video/mp4"
           >
         </video>
-        <!-- Overlay Gradients -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/50" />
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-transparent to-slate-950/80" />
-        <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-gradient-to-tr from-[#2D4E6F]/35 to-[#A7E629]/20 blur-3xl pointer-events-none rounded-full" />
+        <div class="absolute inset-0 bg-tech-grid opacity-30 pointer-events-none" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/40" />
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/40 to-slate-950/90" />
+        <div class="absolute top-1/4 left-1/3 w-[600px] h-[350px] bg-[#A7E629]/15 blur-3xl pointer-events-none rounded-full" />
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center">
         <div class="max-w-4xl mx-auto space-y-6">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold tracking-wider uppercase text-slate-200">
-            <span class="size-2 rounded-full bg-[#A7E629] animate-pulse" />
-            Seismic Risk Mitigation
+          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-semibold tracking-wider uppercase text-slate-200 backdrop-blur-md shadow-lg">
+            <span class="size-2 rounded-full bg-[#A7E629] animate-ping" />
+            <span>Seismic Risk Mitigation Network</span>
+            <span class="text-slate-500">|</span>
+            <span class="text-[#A7E629] font-mono">P-WAVE INTERVENTION</span>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            Earthquake Early Warning System <br>
-            <span class="text-[#A7E629]">(EEWS)</span>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
+            Earthquake Early Warning <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#A7E629] via-emerald-300 to-cyan-400">
+              System (EEWS)
+            </span>
           </h1>
 
           <p class="text-xl sm:text-2xl text-slate-200 font-semibold max-w-2xl mx-auto">
@@ -41,124 +45,71 @@
             By identifying P-waves, the first waves to arrive in an earthquake, our system provides crucial alerts seconds to minutes before the stronger S-waves hit. This early notification allows users to take swift actions, such as moving to a safer location or halting critical operations, ultimately saving lives and minimizing damage.
           </p>
 
+          <!-- Action Buttons -->
           <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
             <a
-              href="#sectors"
+              href="#simulation"
               class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-slate-950 bg-[#A7E629] hover:bg-[#bbf33e] shadow-lg shadow-[#A7E629]/25 hover:-translate-y-0.5 transition-all duration-200"
             >
               <UIcon
-                name="i-lucide-layers"
+                name="i-lucide-play-circle"
                 class="size-5"
               />
-              <span>Jelajahi 5 Sektor Penerapan</span>
+              <span>Simulasi Deteksi P-Wave</span>
             </a>
 
-            <NuxtLink
-              to="/#contact"
-              class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-medium text-white bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 transition-all duration-200"
+            <a
+              href="#sectors"
+              class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-medium text-white bg-slate-900 hover:bg-slate-800 border border-slate-700 transition-all duration-200"
             >
               <UIcon
-                name="i-lucide-phone-call"
+                name="i-lucide-layers"
                 class="size-5 text-[#A7E629]"
               />
-              <span>Konsultasi Teknis</span>
-            </NuxtLink>
+              <span>5 Sektor Penerapan</span>
+            </a>
           </div>
         </div>
       </div>
 
-      <!-- Wave Divider -->
+      <!-- Bottom Curve -->
       <div class="absolute bottom-0 inset-x-0 z-10">
         <WebCurveDivider
           type="wave"
-          fill="#ffffff"
+          fill="#0B1120"
           height="h-10 sm:h-14 md:h-16"
         />
       </div>
     </section>
 
-    <!-- 2. P-WAVE VS S-WAVE DETECTION PRINCIPLE -->
-    <section class="py-16 sm:py-20 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div class="lg:col-span-6 space-y-4">
-            <span class="text-xs font-bold uppercase tracking-widest text-[#2D4E6F] block">
-              Prinsip Deteksi Ilmiah
-            </span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              P-Wave Detection: Waktu Berharga Menyelamatkan Jiwa
-            </h2>
-            <p class="text-base text-slate-600 leading-relaxed">
-              Gempa bumi menghasilkan dua gelombang utama: gelombang primer (P-wave) yang bergerak lebih cepat tetapi berdaya rusak rendah, dan gelombang geser (S-wave) yang bergerak lebih lambat namun membawa energi destruktif terbesar.
-            </p>
-            <p class="text-base text-slate-600 leading-relaxed">
-              Sensor seismik presisi tinggi AMTI mendeteksi P-wave seketika di titik episentrum/lokasi pemasangan dan mengaktifkan protokol otomatis ke sistem kendali gedung dan fasilitas industri sebelum guncangan hebat tiba.
-            </p>
-          </div>
-
-          <div class="lg:col-span-6">
-            <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 shadow-lg space-y-4">
-              <div class="flex items-center justify-between pb-4 border-b border-slate-200">
-                <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-xl bg-[#2D4E6F] text-white flex items-center justify-center font-bold">
-                    P
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-slate-900">
-                      Primary Wave (P-Wave)
-                    </h3>
-                    <p class="text-xs text-slate-500">
-                      Kecepatan ~5-8 km/s • Kompresional
-                    </p>
-                  </div>
-                </div>
-                <span class="text-xs font-bold text-[#009838] uppercase">Deteksi Awal</span>
-              </div>
-
-              <div class="flex items-center justify-between pb-4 border-b border-slate-200">
-                <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-xl bg-red-600 text-white flex items-center justify-center font-bold">
-                    S
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-slate-900">
-                      Secondary Wave (S-Wave)
-                    </h3>
-                    <p class="text-xs text-slate-500">
-                      Kecepatan ~3-4.5 km/s • Destruktif
-                    </p>
-                  </div>
-                </div>
-                <span class="text-xs font-bold text-red-600 uppercase">Potensi Bahaya</span>
-              </div>
-
-              <div class="pt-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200/60 leading-relaxed">
-                <strong class="text-slate-900">Jeda Emas (Golden Window):</strong> Memberi interval waktu <strong>detik hingga menit</strong> untuk evakuasi aman, mematikan kompor & gas pipa, menghentikan kereta berkecepatan tinggi, serta mengamankan peralatan bedah rumah sakit.
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- 2. INTERACTIVE EARTHQUAKE TIMELINE (P-WAVE VS S-WAVE SIMULATION) -->
+    <section
+      id="simulation"
+      class="py-20 bg-[#0B1120] text-white relative"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <WebEewsTimeline />
       </div>
     </section>
 
-    <!-- 3. SECTOR SELECTOR TABS & DEEP-DIVE CARDS (dewesoft style) -->
+    <!-- 3. SECTOR COCKPIT & CATALOG (5 CRITICAL SECTORS) -->
     <section
       id="sectors"
-      class="py-20 bg-slate-50 border-t border-slate-200/70"
+      class="py-24 bg-slate-950 text-white relative border-t border-slate-800"
     >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#2D4E6F] block">
-            Implementasi Multi-Sektor
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono mb-1">
+            Penerapan Lapangan
           </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-1">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
             Solusi EEWS untuk 5 Sektor Kritis
           </h2>
-          <p class="text-slate-600 text-sm sm:text-base mt-2">
+          <p class="text-slate-400 text-sm sm:text-base mt-2">
             Setiap sektor memiliki risiko spesifik. AMTI menghadirkan sistem mitigasi otomatis yang terintegrasi langsung dengan operasional fasilitas Anda.
           </p>
 
-          <!-- Sector Quick Nav Tabs -->
+          <!-- Interactive Sector Pills -->
           <div class="flex flex-wrap items-center justify-center gap-2 mt-8">
             <button
               v-for="(sector, idx) in sectors"
@@ -167,8 +118,8 @@
               class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200"
               :class="[
                 activeSectorIndex === idx
-                  ? 'bg-[#2D4E6F] text-white shadow-md shadow-[#2D4E6F]/20'
-                  : 'bg-white text-slate-700 border border-slate-200/80 hover:bg-slate-100'
+                  ? 'bg-[#A7E629] text-slate-950 shadow-md shadow-[#A7E629]/25 font-bold'
+                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
               ]"
               @click="activeSectorIndex = idx"
             >
@@ -178,41 +129,41 @@
         </div>
 
         <!-- Active Sector Deep Dive Card -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-200/50 p-6 sm:p-10 lg:p-12 mb-16">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl p-6 sm:p-10 lg:p-12 mb-16 relative overflow-hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
             <!-- Left Info -->
             <div class="lg:col-span-6 space-y-5">
               <div class="flex items-center gap-3">
-                <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md bg-[#2D4E6F]/10 text-[#2D4E6F]">
-                  Sektor 0{{ activeSectorIndex + 1 }}
+                <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md bg-[#A7E629]/20 text-[#A7E629] font-mono">
+                  SEKTOR 0{{ activeSectorIndex + 1 }}
                 </span>
-                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   {{ currentSector.target }}
                 </span>
               </div>
 
-              <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              <h3 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 {{ currentSector.title }}
               </h3>
 
-              <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+              <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
                 {{ currentSector.description }}
               </p>
 
               <!-- Capability List -->
               <div class="pt-2">
-                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3">
-                  Tindakan Mitigasi Otomatis:
+                <h4 class="text-xs font-bold uppercase tracking-wider text-[#A7E629] mb-3 font-mono">
+                  TINDAKAN MITIGASI OTOMATIS:
                 </h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div
                     v-for="(action, aIdx) in currentSector.actions"
                     :key="aIdx"
-                    class="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-slate-700 p-2.5 rounded-lg bg-slate-50 border border-slate-200/60"
+                    class="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-slate-200 p-2.5 rounded-lg bg-slate-950 border border-slate-800"
                   >
                     <UIcon
-                      name="i-lucide-check-circle"
-                      class="size-4 text-[#009838] shrink-0"
+                      name="i-lucide-shield-check"
+                      class="size-4 text-[#A7E629] shrink-0"
                     />
                     <span>{{ action }}</span>
                   </div>
@@ -222,14 +173,14 @@
 
             <!-- Right Image Showcase -->
             <div class="lg:col-span-6">
-              <div class="relative rounded-2xl overflow-hidden shadow-xl bg-slate-950 border border-slate-200 group aspect-4/3 flex items-center justify-center">
+              <div class="relative rounded-2xl overflow-hidden shadow-2xl bg-slate-950 border border-slate-700/80 group aspect-4/3 flex items-center justify-center">
                 <img
                   :src="currentSector.image"
                   :alt="currentSector.title"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 >
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
-                <div class="absolute bottom-4 left-4 right-4 text-white text-xs font-medium">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent pointer-events-none" />
+                <div class="absolute bottom-4 left-4 right-4 text-white text-xs font-bold font-mono">
                   {{ currentSector.target }}
                 </div>
               </div>
@@ -240,8 +191,8 @@
         <!-- Grid of All 5 Sectors for Overview -->
         <div class="space-y-6">
           <div class="text-center">
-            <h3 class="text-xl font-bold text-slate-900">
-              Rangkuman Seluruh 5 Sektor
+            <h3 class="text-xl font-bold text-white">
+              Ringkasan Seluruh 5 Sektor
             </h3>
           </div>
 
@@ -249,31 +200,31 @@
             <div
               v-for="(sector, sIdx) in sectors"
               :key="sIdx"
-              class="rounded-2xl p-6 bg-white border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
-              :class="activeSectorIndex === sIdx ? 'ring-2 ring-[#2D4E6F]' : ''"
+              class="rounded-2xl p-6 bg-slate-900 border border-slate-800 hover:border-[#A7E629]/50 transition-all duration-300 flex flex-col justify-between cursor-pointer"
+              :class="activeSectorIndex === sIdx ? 'ring-2 ring-[#A7E629]' : ''"
               @click="activeSectorIndex = sIdx"
             >
               <div class="space-y-3">
-                <div class="aspect-16/10 rounded-xl overflow-hidden bg-slate-900 border border-slate-100">
+                <div class="aspect-16/10 rounded-xl overflow-hidden bg-slate-950 border border-slate-800">
                   <img
                     :src="sector.image"
                     :alt="sector.title"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   >
                 </div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-[#2D4E6F] block">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-[#A7E629] block font-mono truncate">
                   {{ sector.target }}
                 </span>
-                <h4 class="text-lg font-bold text-slate-900">
+                <h4 class="text-lg font-bold text-white">
                   {{ sector.title }}
                 </h4>
-                <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
                   {{ sector.description }}
                 </p>
               </div>
 
-              <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-semibold text-[#2D4E6F]">
-                <span>Pelajari Sektor Ini</span>
+              <div class="pt-4 border-t border-slate-800 mt-4 flex items-center justify-between text-xs font-semibold text-[#A7E629]">
+                <span>Tampilkan Detail Sektor</span>
                 <UIcon
                   name="i-lucide-arrow-right"
                   class="size-4"
