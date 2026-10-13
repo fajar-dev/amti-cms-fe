@@ -1,666 +1,632 @@
 <template>
-  <div class="relative overflow-hidden bg-slate-950">
-    <!-- 1. HIGH-TECH HERO SECTION WITH LIVE TELEMETRY CONSOLE -->
-    <section class="relative min-h-[92vh] flex items-center bg-slate-950 text-white overflow-hidden pt-28 pb-20">
-      <!-- Ambient Lighting & Video Background -->
-      <div class="absolute inset-0 z-0 overflow-hidden">
-        <video
-          autoplay
-          muted
-          loop
-          playsinline
-          class="w-full h-full object-cover opacity-35 scale-105 filter saturate-150"
-        >
-          <source
-            src="/amti/videos/home_amti.mp4"
-            type="video/mp4"
+  <div>
+    <section class="relative flex min-h-screen items-center overflow-hidden">
+      <video
+        v-if="playHeroVideo"
+        ref="heroVideoRef"
+        class="hero-video absolute inset-0 size-full object-cover"
+        :src="heroVideo"
+        :poster="heroPoster"
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-hidden="true"
+      />
+      <img
+        v-else
+        :src="heroPoster"
+        alt=""
+        class="absolute inset-0 size-full object-cover"
+      >
+
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-blue-950/80 via-blue-950/45 to-blue-950/90" />
+      <div class="hero-vignette pointer-events-none absolute inset-0" />
+      <SiteBackground
+        dark
+        pattern="lines"
+        grain
+      />
+
+      <div class="relative mx-auto w-full max-w-5xl px-4 py-28 text-center sm:px-6 lg:px-8">
+        <div class="hero-seq">
+          <p class="flex items-center justify-center gap-3 text-xs font-semibold uppercase tracking-widest text-amber-400">
+            <span
+              class="h-px w-8 bg-amber-400/50"
+              aria-hidden="true"
+            />
+            {{ $t('site.identity.fullName') }}
+            <span
+              class="h-px w-8 bg-amber-400/50"
+              aria-hidden="true"
+            />
+          </p>
+
+          <h1 class="mt-8 text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+            {{ $t('site.hero.title') }}
+          </h1>
+
+          <p class="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-white/75 sm:text-xl">
+            {{ $t('site.hero.subtitle') }}
+          </p>
+
+          <div class="mt-11 flex flex-wrap items-center justify-center gap-3">
+            <UButton
+              to="/eews"
+              color="secondary"
+              size="xl"
+              icon="i-lucide-radio"
+              class="rounded-full px-7 shadow-lg shadow-amber-500/20"
+              :label="$t('site.hero.exploreEews')"
+            />
+            <UButton
+              to="/shms"
+              color="neutral"
+              variant="ghost"
+              size="xl"
+              icon="i-lucide-building-2"
+              class="rounded-full px-6 text-white ring-1 ring-white/40 hover:bg-white/10"
+              :label="$t('site.hero.exploreShms')"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute inset-x-0 bottom-8 hidden justify-center sm:flex">
+        <span class="hero-cue flex flex-col items-center gap-2 text-xs uppercase tracking-widest text-white/50">
+          {{ $t('site.hero.scrollCue') }}
+          <UIcon
+            name="i-lucide-chevron-down"
+            class="size-5"
+          />
+        </span>
+      </div>
+    </section>
+
+    <section class="bg-muted">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="grid items-center gap-16 lg:grid-cols-12">
+          <SiteReveal class="lg:col-span-6">
+            <SiteFrame corners>
+              <div class="aspect-video w-full overflow-hidden bg-black">
+                <iframe
+                  :src="smartVideoUrl"
+                  title="Smart Monitoring Video"
+                  class="size-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                />
+              </div>
+            </SiteFrame>
+          </SiteReveal>
+
+          <SiteReveal
+            :delay="120"
+            class="lg:col-span-6"
           >
-        </video>
-        <!-- Layered tech grid and gradient meshes -->
-        <div class="absolute inset-0 bg-tech-grid opacity-30 pointer-events-none" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/40" />
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/40 to-slate-950/90" />
-        <div class="absolute top-1/4 left-1/4 w-[500px] h-[300px] bg-[#A7E629]/15 blur-3xl pointer-events-none rounded-full" />
-        <div class="absolute bottom-1/4 right-1/4 w-[600px] h-[350px] bg-[#2D4E6F]/40 blur-3xl pointer-events-none rounded-full" />
-      </div>
-
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <!-- Left: Hero Text Column -->
-          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-semibold tracking-wider uppercase text-slate-200 backdrop-blur-md shadow-lg">
-              <span class="size-2 rounded-full bg-[#A7E629] animate-ping" />
-              <span>24/7 Sensor-Based Asset Protection</span>
-              <span class="text-slate-500">|</span>
-              <span class="text-cyan-400 font-mono">LATENCY &lt; 0.15s</span>
-            </div>
-
-            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white">
-              <span>Earthquake Early Warning &</span> <br>
-              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#A7E629] via-emerald-300 to-cyan-400 drop-shadow-md">
-                Structure Health Monitoring
-              </span>
-            </h1>
-
-            <p class="text-lg sm:text-xl text-slate-300 font-normal max-w-2xl leading-relaxed">
-              Protect Your Assets with 24/7 Real-Time Sensor-Based Monitoring. Sistem telemetri presisi tinggi untuk keselamatan jiwa dan ketahanan infrastruktur nasional.
-            </p>
-
-            <!-- Action Buttons -->
-            <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              <NuxtLink
-                to="/eews"
-                class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-slate-950 bg-[#A7E629] hover:bg-[#bbf33e] shadow-lg shadow-[#A7E629]/25 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-              >
-                <UIcon
-                  name="i-lucide-activity"
-                  class="size-5"
-                />
-                <span>Solusi EEWS</span>
-              </NuxtLink>
-
-              <NuxtLink
-                to="/shms"
-                class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-white bg-[#2D4E6F] hover:bg-[#386088] border border-white/20 shadow-lg shadow-[#2D4E6F]/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-              >
-                <UIcon
-                  name="i-lucide-building"
-                  class="size-5 text-[#A7E629]"
-                />
-                <span>Solusi SHMS</span>
-              </NuxtLink>
-
-              <a
-                href="#company-profile"
-                class="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl font-medium text-white bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 hover:border-white/30 transition-all duration-200"
-              >
-                <UIcon
-                  name="i-lucide-play-circle"
-                  class="size-5 text-white"
-                />
-                <span>Video Profile</span>
-              </a>
-            </div>
-
-            <!-- Fast Stat Badges -->
-            <div class="pt-4 grid grid-cols-3 gap-3 max-w-lg border-t border-slate-800/80">
-              <div>
-                <span class="text-2xl font-bold text-[#A7E629] block font-mono">100%</span>
-                <span class="text-[11px] text-slate-400 font-medium">Real-Time Data</span>
-              </div>
-              <div>
-                <span class="text-2xl font-bold text-cyan-400 block font-mono">P-Wave</span>
-                <span class="text-[11px] text-slate-400 font-medium">Early Warning</span>
-              </div>
-              <div>
-                <span class="text-2xl font-bold text-white block font-mono">24/7/365</span>
-                <span class="text-[11px] text-slate-400 font-medium">Uptime Monitoring</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right: Interactive Live Telemetry Waveform HUD -->
-          <div class="lg:col-span-5">
-            <WebTelemetryWaveform />
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom Curve Divider -->
-      <div class="absolute bottom-0 inset-x-0 z-10">
-        <WebCurveDivider
-          type="wave"
-          fill="#0B1120"
-          height="h-10 sm:h-14 md:h-16"
-        />
-      </div>
-    </section>
-
-    <!-- 2. STAY AHEAD WITH SMART MONITORING & 3 CORE CAPABILITIES -->
-    <section class="py-20 bg-[#0B1120] text-white relative">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono">
-            Keunggulan Pemantauan Cerdas
-          </span>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Stay Ahead with Smart Monitoring
-          </h2>
-          <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
-            Our advanced system ensures real-time seismic detection, structural monitoring, instant alerts, and safeguarding your assets and lives. With state-of-the-art technology and trusted expertise, we empower you to prepare, respond, and recover effectively. Make safety your ultimate priority.
-          </p>
-        </div>
-
-        <!-- 3 Feature Focus Cards (Dewesoft Style Precision Hardware / Software Cards) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-[#A7E629]/50 hover:bg-slate-900 transition-all duration-300 shadow-xl group">
-            <div class="size-14 rounded-2xl bg-[#A7E629]/15 text-[#A7E629] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-[#A7E629]/30">
-              <UIcon
-                name="i-lucide-activity"
-                class="size-7"
-              />
-            </div>
-            <h3 class="text-xl font-bold text-white mb-3">
-              Real-Time Seismic Detection
-            </h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Mendeteksi gelombang P secara instan beberapa detik sebelum kedatangan gelombang S yang destruktif, memberikan jendela waktu evakuasi berharga dan aktivasi protokol keselamatan otomatis.
-            </p>
-          </div>
-
-          <div class="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-cyan-400/50 hover:bg-slate-900 transition-all duration-300 shadow-xl group">
-            <div class="size-14 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-cyan-400/30">
-              <UIcon
-                name="i-lucide-gauge"
-                class="size-7"
-              />
-            </div>
-            <h3 class="text-xl font-bold text-white mb-3">
-              Structural Health Telemetry
-            </h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Pemantauan kontinu mikro-regangan (*micro-strain*), frekuensi alami, pergeseran sudut, dan defleksi jembatan serta gedung untuk mendeteksi kelelahan material jauh sebelum terjadi kegagalan struktur.
-            </p>
-          </div>
-
-          <div class="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-400/50 hover:bg-slate-900 transition-all duration-300 shadow-xl group">
-            <div class="size-14 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-emerald-400/30">
-              <UIcon
-                name="i-lucide-bell-ring"
-                class="size-7"
-              />
-            </div>
-            <h3 class="text-xl font-bold text-white mb-3">
-              Instant Automated Intervention
-            </h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Integrasi langsung ke Building Management System (BMS) untuk mematikan katup pipa gas, memutus pasokan listrik bertegangan tinggi, memarkir lift darurat, dan membunyikan alarm multi-saluran.
-            </p>
-          </div>
-        </div>
-
-        <!-- Comparison Matrix Section -->
-        <div class="mt-20">
-          <WebComparisonMatrix />
+            <SiteSectionHeader
+              :eyebrow="$t('site.smart.eyebrow')"
+              :title="$t('site.smart.title')"
+              :body="$t('site.smart.body')"
+            />
+          </SiteReveal>
         </div>
       </div>
     </section>
 
-    <!-- 3. ABOUT AMTI & REAL INFRASTRUCTURE GALLERY (from about.html) -->
-    <section
-      id="about"
-      class="py-20 bg-slate-900 text-white relative border-t border-slate-800/80"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <!-- Text Content -->
-          <div class="lg:col-span-6 space-y-6">
-            <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono">
-              Tentang Solusi Kami
-            </span>
+    <section class="relative overflow-hidden">
+      <SiteCurveDivider
+        fill="var(--ui-bg-muted)"
+        flip
+      />
+      <SiteBackground contour />
 
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-              We provide advanced <br>
-              <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-[#A7E629]">
-                SHMS & EEWS solutions
-              </span>
-            </h2>
+      <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <SiteReveal class="lg:col-span-5">
+            <SiteSectionHeader
+              :eyebrow="$t('site.profile.label')"
+              :title="$t('site.profile.title')"
+            />
+          </SiteReveal>
 
-            <div class="w-16 h-1 bg-[#A7E629] rounded-full" />
-
-            <div class="space-y-4 text-base text-slate-300 leading-relaxed">
-              <p>
-                Our SHMS (Structure Health Monitoring System) and EEWS (Earthquake Early Warning System) solutions are designed to ensure the safety and integrity of critical infrastructure across various regions.
-              </p>
-              <p>
-                Through real-time monitoring and advanced alert systems, our technology helps detect structural changes and seismic activity early, allowing timely intervention and minimizing risks.
-              </p>
-            </div>
-
-            <!-- Two Highlights -->
-            <div class="grid grid-cols-2 gap-4 pt-2">
-              <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span class="text-2xl font-extrabold text-[#A7E629] block font-mono">100%</span>
-                <span class="text-xs text-slate-400 font-medium">Real-Time Sensor Monitoring</span>
-              </div>
-              <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span class="text-2xl font-extrabold text-cyan-400 block font-mono">Seconds</span>
-                <span class="text-xs text-slate-400 font-medium">P-Wave Early Notification</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Real Image Showcase Grid from about.html -->
-          <div class="lg:col-span-6">
-            <div class="grid grid-cols-2 gap-4">
-              <!-- Item 1: Cipali -->
-              <div class="space-y-2 group">
-                <div class="aspect-4/3 rounded-2xl overflow-hidden shadow-xl bg-slate-950 border border-slate-800">
-                  <img
-                    src="/amti/img/about/jembatan_cipali.JPG"
-                    alt="Jembatan Cipali Monitoring"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  >
-                </div>
-                <span class="text-xs font-semibold text-slate-300 block">Jembatan Cipali</span>
-              </div>
-
-              <!-- Item 2: Kedang Pahu -->
-              <div class="space-y-2 group">
-                <div class="aspect-4/3 rounded-2xl overflow-hidden shadow-xl bg-slate-950 border border-slate-800">
-                  <img
-                    src="/amti/img/about/kedang_pahu.jpg"
-                    alt="Jembatan Kedang Pahu"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  >
-                </div>
-                <span class="text-xs font-semibold text-slate-300 block">Jembatan Kedang Pahu</span>
-              </div>
-
-              <!-- Item 3: Astra -->
-              <div class="space-y-2 group">
-                <div class="aspect-4/3 rounded-2xl overflow-hidden shadow-xl bg-slate-950 border border-slate-800">
-                  <img
-                    src="/amti/img/about/astra.JPG"
-                    alt="Astra Industrial Asset"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  >
-                </div>
-                <span class="text-xs font-semibold text-slate-300 block">Fasilitas Astra</span>
-              </div>
-
-              <!-- Item 4: Monitoring Setup -->
-              <div class="space-y-2 group">
-                <div class="aspect-4/3 rounded-2xl overflow-hidden shadow-xl bg-slate-950 border border-slate-800">
-                  <img
-                    src="/amti/img/about/monitoring.JPG"
-                    alt="Sensor Deployment Diagnostics"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  >
-                </div>
-                <span class="text-xs font-semibold text-slate-300 block">Sensor Diagnostics</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. LEADING ASSET MONITORING SOLUTION (HARDWARE & SOFTWARE from about.html) -->
-    <section
-      id="solution"
-      class="py-20 bg-slate-950 text-white border-t border-slate-800/80"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-14">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono">
-            Arsitektur Solusi
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mt-1">
-            Leading Asset Monitoring Solution
-          </h2>
-          <p class="text-base text-slate-400 mt-3">
-            Kombinasi perangkat keras plug-and-play andal dan perangkat lunak analitik mutakhir untuk perlindungan menyeluruh.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <!-- Hardware Card -->
-          <div class="p-8 sm:p-10 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl relative overflow-hidden group hover:border-[#A7E629]/40 transition-all duration-300">
-            <div class="size-14 rounded-2xl bg-[#A7E629]/15 text-[#A7E629] flex items-center justify-center mb-6 border border-[#A7E629]/30">
-              <UIcon
-                name="i-lucide-cpu"
-                class="size-7"
-              />
-            </div>
-
-            <h3 class="text-xl sm:text-2xl font-bold text-white mb-3">
-              Effortless <span class="text-[#A7E629]">plug-and-play</span> deployment
-            </h3>
-
-            <p class="text-sm text-slate-300 mb-6">
-              Kemudahan instalasi tanpa kerumitan infrastruktur tambahan, dirancang untuk efisiensi implementasi di berbagai sektor.
+          <SiteReveal
+            :delay="120"
+            class="lg:col-span-7"
+          >
+            <p class="text-base leading-relaxed text-muted lg:text-lg">
+              {{ $t('site.profile.body') }}
             </p>
-
-            <ul class="space-y-3.5 text-sm text-slate-300">
-              <li class="flex items-start gap-3">
-                <UIcon
-                  name="i-lucide-check-circle"
-                  class="size-5 text-[#A7E629] shrink-0 mt-0.5"
-                />
-                <span>Deploy without technical expertise</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <UIcon
-                  name="i-lucide-check-circle"
-                  class="size-5 text-[#A7E629] shrink-0 mt-0.5"
-                />
-                <span>Seamlessly integrates with diverse machinery</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <UIcon
-                  name="i-lucide-check-circle"
-                  class="size-5 text-[#A7E629] shrink-0 mt-0.5"
-                />
-                <span>Independent of external systems or integrations</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Software Card -->
-          <div class="p-8 sm:p-10 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl relative overflow-hidden group hover:border-cyan-400/40 transition-all duration-300">
-            <div class="size-14 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center mb-6 border border-cyan-400/30">
-              <UIcon
-                name="i-lucide-layout-dashboard"
-                class="size-7"
-              />
-            </div>
-
-            <h3 class="text-xl sm:text-2xl font-bold text-white mb-3">
-              Immediate insights with <span class="text-cyan-400">advanced software</span>
-            </h3>
-
-            <p class="text-sm text-slate-300 mb-6">
-              Platform telemetri terpadu dengan algoritma pengolahan data presisi tinggi untuk pengambilan keputusan cepat dan tepat.
-            </p>
-
-            <ul class="space-y-3.5 text-sm text-slate-300">
-              <li class="flex items-start gap-3">
-                <UIcon
-                  name="i-lucide-check-circle"
-                  class="size-5 text-cyan-400 shrink-0 mt-0.5"
-                />
-                <span>Real-time asset data visualization</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <UIcon
-                  name="i-lucide-check-circle"
-                  class="size-5 text-cyan-400 shrink-0 mt-0.5"
-                />
-                <span>Enhanced analysis with cutting-edge algorithms</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <UIcon
-                  name="i-lucide-check-circle"
-                  class="size-5 text-cyan-400 shrink-0 mt-0.5"
-                />
-                <span>Comprehensive system-level performance tracking</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. COMPANY PROFILE VIDEO -->
-    <section
-      id="company-profile"
-      class="py-24 bg-slate-900 text-white relative overflow-hidden border-t border-slate-800"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono">
-            Mengenal Lebih Dekat
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            COMPANY PROFILE
-          </h2>
-          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Saksikan paparan komprehensif mengenai visi, kapabilitas teknologi, serta komitmen AMTI dalam melindungi infrastruktur nasional.
-          </p>
+          </SiteReveal>
         </div>
 
-        <WebVideoModal />
-      </div>
-    </section>
-
-    <!-- 6. WHY CHOOSE US -->
-    <section
-      id="why-us"
-      class="py-20 bg-slate-950 text-white relative overflow-hidden border-t border-slate-800"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-14">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono mb-1">
-            Nilai Keunggulan
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            <span>WHY</span> <span class="text-[#A7E629]">CHOOSE US?</span>
-          </h2>
-          <p class="text-slate-400 text-sm mt-2 max-w-xl mx-auto">
-            Empat pilar utama yang mendasari setiap inovasi dan layanan pemantauan dari AMTI.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <!-- 4 Pillars -->
-          <div class="lg:col-span-7 space-y-4">
-            <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-[#A7E629]/50 transition-all duration-200">
-              <div class="size-12 rounded-xl bg-[#A7E629]/15 flex items-center justify-center shrink-0 p-2.5">
-                <img
-                  src="/amti/img/icon/technology.png"
-                  alt="Superior Technology"
-                  class="size-full object-contain"
-                >
-              </div>
-              <div class="space-y-1">
-                <h3 class="text-lg font-bold text-white tracking-wide">
-                  SUPERIOR TECHNOLOGY
-                </h3>
-                <p class="text-sm text-slate-300 leading-relaxed">
-                  We use the latest technology to ensure the best and fastest solutions in every aspect of our services.
-                </p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-[#A7E629]/50 transition-all duration-200">
-              <div class="size-12 rounded-xl bg-[#A7E629]/15 flex items-center justify-center shrink-0 p-2.5">
-                <img
-                  src="/amti/img/icon/customer_driven.png"
-                  alt="Customer Driven"
-                  class="size-full object-contain"
-                >
-              </div>
-              <div class="space-y-1">
-                <h3 class="text-lg font-bold text-white tracking-wide">
-                  CUSTOMER DRIVEN
-                </h3>
-                <p class="text-sm text-slate-300 leading-relaxed">
-                  You are our top priority. We focus on delivering service that exceeds your expectations.
-                </p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-[#A7E629]/50 transition-all duration-200">
-              <div class="size-12 rounded-xl bg-[#A7E629]/15 flex items-center justify-center shrink-0 p-2.5">
-                <img
-                  src="/amti/img/icon/listenncares.png"
-                  alt="Our Solutions Listens"
-                  class="size-full object-contain"
-                >
-              </div>
-              <div class="space-y-1">
-                <h3 class="text-lg font-bold text-white tracking-wide">
-                  OUR SOLUTIONS LISTENS
-                </h3>
-                <p class="text-sm text-slate-300 leading-relaxed">
-                  Our solutions work efficiently and care about your needs. We aim to make a positive impact.
-                </p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-[#A7E629]/50 transition-all duration-200">
-              <div class="size-12 rounded-xl bg-[#A7E629]/15 flex items-center justify-center shrink-0 p-2.5">
-                <img
-                  src="/amti/img/icon/personalized_service.png"
-                  alt="Personalized For You"
-                  class="size-full object-contain"
-                >
-              </div>
-              <div class="space-y-1">
-                <h3 class="text-lg font-bold text-white tracking-wide">
-                  PERSONALIZED FOR YOU
-                </h3>
-                <p class="text-sm text-slate-300 leading-relaxed">
-                  Each of our solutions is tailored to your personal needs and specifications.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Image Column -->
-          <div class="lg:col-span-5 flex justify-center">
-            <div class="rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-900 p-2 max-w-md w-full">
+        <div class="mt-16 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+          <SiteReveal
+            v-for="(photo, index) in aboutGallery"
+            :key="photo.src"
+            :delay="index * 80"
+            :class="index % 2 === 1 ? 'lg:mt-10' : ''"
+          >
+            <div class="group overflow-hidden rounded-3xl border border-default shadow-sm">
               <img
-                src="/amti/img/index/why-choose-us.png"
-                alt="Why Choose Us"
-                class="w-full h-auto object-cover rounded-2xl"
+                :src="photo.src"
+                :alt="photo.alt"
+                loading="lazy"
+                class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
               >
             </div>
+          </SiteReveal>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-muted">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <SiteReveal>
+          <SiteSectionHeader
+            :eyebrow="$t('site.about.title')"
+            :title="$t('site.about.headline')"
+            :body="$t('site.about.body')"
+          />
+        </SiteReveal>
+
+        <div class="mt-14 grid gap-6 lg:grid-cols-2">
+          <SiteReveal
+            v-for="(solution, index) in solutions"
+            :key="solution.to"
+            :delay="index * 120"
+            class="h-full"
+          >
+            <SiteCard :to="solution.to">
+              <div class="relative overflow-hidden">
+                <img
+                  :src="solution.image"
+                  alt=""
+                  loading="lazy"
+                  class="aspect-video w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                >
+                <span class="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-950/25 to-transparent" />
+                <p class="absolute bottom-6 left-7 right-7 text-xs font-semibold uppercase tracking-widest text-amber-400">
+                  {{ solution.label }}
+                </p>
+              </div>
+
+              <div class="flex flex-1 flex-col p-7">
+                <h3 class="text-xl font-semibold text-highlighted">
+                  {{ solution.title }}
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted">
+                  {{ solution.body }}
+                </p>
+                <span class="mt-auto flex items-center gap-2 pt-6 text-sm font-medium text-primary">
+                  {{ solution.linkLabel }}
+                  <UIcon
+                    name="i-lucide-arrow-right"
+                    class="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </span>
+              </div>
+            </SiteCard>
+          </SiteReveal>
+        </div>
+      </div>
+    </section>
+
+    <section class="relative overflow-hidden">
+      <SiteCurveDivider
+        fill="var(--ui-bg-muted)"
+        flip
+      />
+      <SiteBackground pattern="lines" />
+
+      <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <SiteReveal>
+          <SiteSectionHeader
+            align="center"
+            :eyebrow="$t('site.why.eyebrow')"
+            :title="$t('site.why.title')"
+          />
+        </SiteReveal>
+
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <SiteReveal
+            v-for="(item, index) in whyChooseUs"
+            :key="item.id"
+            :delay="index * 90"
+            class="h-full"
+          >
+            <SiteCard>
+              <div class="flex h-full flex-col p-7">
+                <span class="flex size-16 items-center justify-center rounded-2xl bg-white border border-muted">
+                  <img
+                    :src="item.icon"
+                    alt=""
+                    loading="lazy"
+                    class="size-9 object-contain"
+                  >
+                </span>
+
+                <h3 class="mt-6 text-sm font-semibold uppercase tracking-wide text-highlighted">
+                  {{ $t(`site.why.items.${item.id}.title`) }}
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted">
+                  {{ $t(`site.why.items.${item.id}.body`) }}
+                </p>
+              </div>
+            </SiteCard>
+          </SiteReveal>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-muted">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <SiteReveal>
+          <SiteSectionHeader
+            :eyebrow="$t('site.leading.eyebrow')"
+            :title="$t('site.leading.title')"
+          />
+        </SiteReveal>
+
+        <div class="mt-14 grid gap-6 lg:grid-cols-2">
+          <SiteReveal
+            v-for="(block, index) in leadingBlocks"
+            :key="block.title"
+            :delay="index * 110"
+            class="h-full"
+          >
+            <SiteCard>
+              <div class="flex h-full flex-col p-8">
+                <h3 class="text-lg font-semibold text-highlighted">
+                  {{ block.title }}
+                </h3>
+                <ul class="mt-6 space-y-4">
+                  <li
+                    v-for="entry in block.items"
+                    :key="entry"
+                    class="flex gap-3 text-sm leading-relaxed text-muted"
+                  >
+                    <span class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-amber-500/15">
+                      <UIcon
+                        name="i-lucide-check"
+                        class="size-3 text-amber-600"
+                      />
+                    </span>
+                    <span>{{ entry }}</span>
+                  </li>
+                </ul>
+              </div>
+            </SiteCard>
+          </SiteReveal>
+        </div>
+      </div>
+    </section>
+
+    <section class="relative overflow-hidden">
+      <SiteCurveDivider
+        fill="var(--ui-bg-muted)"
+        flip
+      />
+      <SiteBackground contour />
+
+      <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+          <SiteReveal class="lg:col-span-5">
+            <SiteSectionHeader
+              :eyebrow="$t('site.mission.title')"
+              :title="$t('site.mission.lead')"
+            />
+
+            <div class="relative mt-9 overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-transparent to-amber-500/10 p-8">
+              <span
+                class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+                aria-hidden="true"
+              />
+              <h3 class="text-xs font-semibold uppercase tracking-widest text-primary">
+                {{ $t('site.mission.heading') }}
+              </h3>
+              <p class="mt-5 text-base font-medium leading-relaxed text-highlighted">
+                {{ $t('site.mission.statement') }}
+              </p>
+              <p class="mt-4 text-sm leading-relaxed text-muted">
+                {{ $t('site.mission.followUp') }}
+              </p>
+            </div>
+          </SiteReveal>
+
+          <div class="lg:col-span-7">
+            <SiteReveal>
+              <p class="text-xs font-semibold uppercase tracking-widest text-primary">
+                {{ $t('site.values.title') }}
+              </p>
+            </SiteReveal>
+
+            <div class="mt-6 border-t border-default">
+              <SiteReveal
+                v-for="(valueKey, index) in valueKeys"
+                :key="valueKey"
+                :delay="index * 70"
+              >
+                <div class="value-row group relative flex gap-6 border-b border-default py-6">
+                  <span
+                    class="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-gradient-to-b from-primary to-amber-500 transition-transform duration-500 group-hover:scale-y-100"
+                    aria-hidden="true"
+                  />
+                  <span class="w-10 shrink-0 pl-4 text-2xl font-bold leading-none text-primary/25 transition-colors duration-300 group-hover:text-primary/60">
+                    {{ String(index + 1).padStart(2, '0') }}
+                  </span>
+                  <div class="pr-4 transition-transform duration-500 group-hover:translate-x-1">
+                    <h4 class="text-base font-semibold text-highlighted">
+                      {{ $t(`site.values.items.${valueKey}.name`) }}
+                    </h4>
+                    <p class="mt-2 text-sm leading-relaxed text-muted">
+                      {{ $t(`site.values.items.${valueKey}.description`) }}
+                    </p>
+                  </div>
+                </div>
+              </SiteReveal>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 7. MISSION & VALUES -->
-    <section class="py-20 bg-slate-900 text-white border-t border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-14">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono mb-1">
-            Komitmen Profesional
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Our Mission & Values
-          </h2>
-          <p class="text-base text-slate-400 mt-2">
-            Guided by our commitment to excellence and innovation.
+    <section class="border-y border-default bg-default">
+      <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <SiteReveal>
+          <p class="text-center text-xs font-semibold uppercase tracking-widest text-muted">
+            {{ $t('site.clients.title') }}
           </p>
-        </div>
-
-        <div class="bg-slate-950 rounded-3xl p-8 sm:p-12 shadow-2xl border border-slate-800">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <!-- Mission -->
-            <div class="lg:col-span-6 lg:pr-8 lg:border-r lg:border-slate-800 space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="size-11 rounded-xl bg-[#2D4E6F] text-white flex items-center justify-center shrink-0">
-                  <UIcon
-                    name="i-lucide-target"
-                    class="size-6 text-[#A7E629]"
-                  />
-                </div>
-                <h3 class="text-2xl font-bold text-white">
-                  Our Mission
-                </h3>
-              </div>
-              <p class="text-slate-300 leading-relaxed text-base">
-                To protect lives, assets, and infrastructure through innovative monitoring solutions that provide early warning and comprehensive structural health assessment.
-              </p>
-              <p class="text-slate-300 leading-relaxed text-base">
-                We are dedicated to making communities and critical infrastructure more resilient against natural disasters and structural failures through cutting-edge technology and expertise.
-              </p>
-            </div>
-
-            <!-- Values -->
-            <div class="lg:col-span-6 lg:pl-4 space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="size-11 rounded-xl bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center shrink-0">
-                  <UIcon
-                    name="i-lucide-sparkles"
-                    class="size-6"
-                  />
-                </div>
-                <h3 class="text-2xl font-bold text-white">
-                  Our Values
-                </h3>
-              </div>
-
-              <div class="space-y-3 text-sm">
-                <div>
-                  <h4 class="font-bold text-white text-base">
-                    Innovation
-                  </h4>
-                  <p class="text-slate-400">
-                    Continuously developing and refining our technology to provide the most advanced solutions.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 class="font-bold text-white text-base">
-                    Reliability
-                  </h4>
-                  <p class="text-slate-400">
-                    Building systems that perform consistently under all conditions, especially during critical events.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 class="font-bold text-white text-base">
-                    Excellence
-                  </h4>
-                  <p class="text-slate-400">
-                    Maintaining the highest standards in everything we do, from engineering to customer service.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 class="font-bold text-white text-base">
-                    Integrity
-                  </h4>
-                  <p class="text-slate-400">
-                    Operating with transparency, honesty, and accountability in all our relationships.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 class="font-bold text-white text-base">
-                    Impact
-                  </h4>
-                  <p class="text-slate-400">
-                    Measuring our success by the tangible difference we make in protecting lives and assets.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div class="mt-10">
+            <SiteClientLogos :logos="clientLogos" />
           </div>
+        </SiteReveal>
+      </div>
+    </section>
+
+    <section class="bg-muted">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <SiteReveal class="lg:col-span-5">
+            <SiteSectionHeader
+              :eyebrow="$t('site.faq.eyebrow')"
+              :title="$t('site.faq.intro')"
+            />
+            <p class="mt-8 text-sm text-muted">
+              {{ $t('site.faq.help') }}
+            </p>
+            <UButton
+              to="#contact"
+              color="primary"
+              icon="i-lucide-mail"
+              class="mt-4 rounded-full px-6 shadow-lg shadow-primary/20"
+              :label="$t('site.cta.talkToUs')"
+            />
+          </SiteReveal>
+
+          <SiteReveal
+            :delay="120"
+            class="lg:col-span-7"
+          >
+            <UAccordion
+              :items="faqItems"
+              :ui="{ item: 'border-b border-default', trigger: 'py-5 text-left' }"
+            />
+          </SiteReveal>
         </div>
       </div>
     </section>
 
-    <!-- 8. CLIENT LOGOS -->
-    <WebClientLogos />
-
-    <!-- 9. FAQ SECTION -->
-    <section
-      id="faq"
-      class="py-20 bg-slate-950 border-t border-slate-800"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#A7E629] block font-mono">
-            Tanya Jawab
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            We have answers to all your questions
-          </h2>
-          <p class="text-slate-400 text-sm">
-            Kumpulan jawaban untuk pertanyaan umum seputar sistem pemantauan dan implementasi di lapangan.
-          </p>
-        </div>
-
-        <WebFaqAccordion />
-      </div>
-    </section>
-
-    <!-- 10. CALL TO ACTION -->
-    <WebContactCta />
+    <SiteContactSection />
   </div>
 </template>
 
 <script setup lang="ts">
+import { clientService } from '~/services/client-service'
+import { faqService } from '~/services/faq-service'
+
+const { t } = useI18n()
+const {
+  siteName,
+  siteDescription,
+  ogImageUrl
+} = useSiteSettings()
+
+const { data: clientsResponse } = await useAsyncData(
+  'public-clients',
+  () => clientService.getPublic(),
+  {
+    lazy: true,
+    server: true
+  }
+)
+
+const { data: faqResponse } = await useAsyncData(
+  'public-faqs',
+  () => faqService.getPublic(),
+  {
+    lazy: true,
+    server: true
+  }
+)
+
+const heroVideo = '/amti/videos/home_amti.mp4'
+const heroPoster = '/amti/img/index/why-choose-us.png'
+const smartVideoUrl = 'https://www.youtube.com/embed/0TvNMWWaF4Q?si=N-3hcc0w4ykDHp9j'
+
+const aboutGallery = [
+  { src: '/amti/img/about/monitoring.JPG', alt: 'Monitoring 1' },
+  { src: '/amti/img/about/jembatan_cipali.JPG', alt: 'Monitoring 2' },
+  { src: '/amti/img/about/astra.JPG', alt: 'Monitoring 3' },
+  { src: '/amti/img/about/kedang_pahu.jpg', alt: 'Monitoring 4' }
+]
+
+const whyChooseUs = [
+  { id: 'tech', icon: '/amti/img/icon/technology.png' },
+  { id: 'customer', icon: '/amti/img/icon/customer_driven.png' },
+  { id: 'listens', icon: '/amti/img/icon/listenncares.png' },
+  { id: 'personalized', icon: '/amti/img/icon/personalized_service.png' }
+]
+
+const valueKeys = ['innovation', 'reliability', 'excellence', 'integrity', 'impact']
+
+const defaultClientLogos = [
+  { name: 'Astra', src: '/amti/img/clients/astra.png', website: null as string | null },
+  { name: 'President', src: '/amti/img/clients/president.png', website: null as string | null },
+  { name: 'ITM', src: '/amti/img/clients/ITM.png', website: null as string | null }
+]
+
+const clientLogos = computed(() => {
+  const list = clientsResponse.value?.data
+  if (Array.isArray(list) && list.length > 0) {
+    const activeClients = list.filter(item => item.isActive !== false)
+    if (activeClients.length > 0) {
+      return activeClients.map(item => ({
+        name: item.name,
+        src: item.logoUrl || item.logo,
+        website: item.website || null
+      }))
+    }
+  }
+  return defaultClientLogos
+})
+
+const faqItemKeys = ['q1', 'q2', 'q3', 'q4', 'q5']
+
+const backendFaqs = computed(() => {
+  const list = faqResponse.value?.data
+  if (Array.isArray(list) && list.length > 0) {
+    return list.filter(item => item.isActive !== false)
+  }
+  return []
+})
+
+const faqItems = computed(() => {
+  if (backendFaqs.value.length > 0) {
+    return backendFaqs.value.map((item, index) => ({
+      label: `${String(item.order || index + 1).padStart(2, '0')}  ${item.question}`,
+      content: item.answer,
+      value: String(item.id ?? index)
+    }))
+  }
+  return faqItemKeys.map((k, index) => ({
+    label: `${String(index + 1).padStart(2, '0')}  ${t(`site.faq.items.${k}.question`)}`,
+    content: t(`site.faq.items.${k}.answer`),
+    value: String(index)
+  }))
+})
+
+const leadingBlocks = computed(() => [
+  {
+    title: t('site.leading.block1.title'),
+    items: [
+      t('site.leading.block1.item1'),
+      t('site.leading.block1.item2'),
+      t('site.leading.block1.item3')
+    ]
+  },
+  {
+    title: t('site.leading.block2.title'),
+    items: [
+      t('site.leading.block2.item1'),
+      t('site.leading.block2.item2'),
+      t('site.leading.block2.item3')
+    ]
+  }
+])
+
+const solutions = computed(() => [
+  {
+    to: '/shms',
+    label: t('site.nav.shms'),
+    title: t('site.solutions.shmsTitle'),
+    body: t('site.solutions.shmsBody'),
+    linkLabel: t('site.solutions.seeShms'),
+    image: '/amti/img/shms/shms-title.png'
+  },
+  {
+    to: '/eews',
+    label: t('site.nav.eews'),
+    title: t('site.solutions.eewsTitle'),
+    body: `${t('site.solutions.eewsBody').slice(0, 180)}…`,
+    linkLabel: t('site.solutions.seeEews'),
+    image: '/amti/img/eews/buildings.webp'
+  }
+])
+
 useSeoMeta({
-  title: 'Asset Monitoring Teknologi Indonesia (AMTI) | EEWS & SHMS',
-  description: 'Earthquake Early Warning System (EEWS) & Structure Health Monitoring System (SHMS). Protect Your Assets with 24/7 Real-Time Sensor-Based Monitoring.',
-  ogTitle: 'Asset Monitoring Teknologi Indonesia (AMTI)',
-  ogDescription: 'Earthquake Early Warning System (EEWS) & Structure Health Monitoring System (SHMS) 24/7 Real-Time Monitoring.'
+  title: () => `${siteName.value} — Earthquake Early Warning & Structure Health Monitoring System`,
+  description: () => siteDescription.value?.slice(0, 180) || t('site.smart.body').slice(0, 180),
+  ogTitle: () => t('site.hero.title'),
+  ogDescription: () => t('site.hero.subtitle'),
+  ogImage: () => ogImageUrl.value || undefined,
+  ogType: 'website'
+})
+
+const heroVideoRef = ref<HTMLVideoElement | null>(null)
+const playHeroVideo = ref(true)
+
+onMounted(() => {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (prefersReduced) {
+    playHeroVideo.value = false
+    return
+  }
+
+  heroVideoRef.value?.play().catch(() => {
+    playHeroVideo.value = false
+  })
 })
 </script>
+
+<style scoped>
+@keyframes amti-hero-in {
+  from { opacity: 0; transform: translate3d(0, 1.75rem, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes amti-hero-zoom {
+  from { transform: scale(1.03); }
+  to { transform: scale(1.12); }
+}
+
+@keyframes amti-cue {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(0.4rem); opacity: 0.9; }
+}
+
+.hero-video {
+  animation: amti-hero-zoom 32s ease-in-out infinite alternate;
+}
+
+.hero-vignette {
+  background: radial-gradient(75% 60% at 50% 45%, transparent 0%, rgba(11, 18, 27, 0.3) 100%);
+}
+
+.hero-cue {
+  animation: amti-cue 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-seq > * {
+    opacity: 0;
+    animation: amti-hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .hero-seq > *:nth-child(1) { animation-delay: 80ms; }
+  .hero-seq > *:nth-child(2) { animation-delay: 180ms; }
+  .hero-seq > *:nth-child(3) { animation-delay: 280ms; }
+  .hero-seq > *:nth-child(4) { animation-delay: 380ms; }
+}
+
+.value-row:hover {
+  background: color-mix(in oklab, var(--ui-bg-muted) 60%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video,
+  .hero-cue {
+    animation: none;
+  }
+}
+</style>

@@ -35,7 +35,6 @@ export const useNavigation = () => {
       }
     ]
 
-    // CMS Group
     const contentChildren: NavItem[] = []
     if (can('categories.view')) {
       contentChildren.push({ id: 'category', label: t('components.sidebar.nav.category'), to: '/app/content/category' })
@@ -60,6 +59,14 @@ export const useNavigation = () => {
         label: t('components.sidebar.nav.faq'),
         to: '/app/faq',
         icon: 'i-lucide-help-circle'
+      })
+    }
+    if (can('clients.view')) {
+      cmsItems.push({
+        id: 'client',
+        label: t('components.sidebar.nav.client'),
+        to: '/app/client',
+        icon: 'i-lucide-building-2'
       })
     }
     if (can('messages.view')) {
@@ -87,7 +94,6 @@ export const useNavigation = () => {
       })
     }
 
-    // User Management Group
     const userMgmtItems: NavItem[] = []
     if (can('users.view')) {
       userMgmtItems.push({

@@ -14,7 +14,6 @@ import { en, id } from '@nuxt/ui/locale'
 
 const { locale } = useI18n()
 
-// Teks bawaan NuxtUI (mis. "No data" pada tabel) ikut bahasa aktif.
 const uiLocale = computed(() => (locale.value === 'id' ? id : en))
 
 useHead({

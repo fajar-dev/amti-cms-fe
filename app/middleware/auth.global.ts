@@ -1,6 +1,5 @@
 import { useAuth } from '~/composables/useAuth'
 
-// Protected routes pattern to required permission
 const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permissions: string[] }> = [
   { pattern: /^\/app\/roles(\/.*)?$/, permissions: ['roles.view'] },
   { pattern: /^\/app\/user(\/.*)?$/, permissions: ['users.view'] },
@@ -17,25 +16,21 @@ const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permissions: string[] }> = [
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { state, service } = useAuth()
-
-  // Only protect routes under /app
   const isProtectedRoute = to.path.startsWith('/app')
   if (!isProtectedRoute) {
     return
   }
 
-  // Require authentication for /app routes
+  const { state, service } = useAuth()
+
   if (!state.token) {
     return navigateTo('/auth/sign-in')
   }
 
-  // Ensure user and role information is populated
   if (!state.user?.role) {
     await service.ensureUserLoaded()
   }
 
-  // Match protected routes
   const matchedRule = ROUTE_PERMISSIONS.find(rule => rule.pattern.test(to.path))
   if (matchedRule) {
     const userPermissions = state.user?.role?.permissions || []
@@ -51,7 +46,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             color: 'error'
           })
         } catch {
-          // Toast fallback
+          /* ignore */
         }
       }
       return navigateTo('/app')

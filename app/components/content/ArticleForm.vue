@@ -1,5 +1,4 @@
 <template>
-  <!-- Loading skeleton saat memuat data artikel -->
   <div
     v-if="isLoading"
     class="space-y-6"
@@ -21,9 +20,7 @@
     class="space-y-6"
   >
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <!-- Left Column: Content (8 cols) -->
       <div class="lg:col-span-8 space-y-6">
-        <!-- Title & Slug Card -->
         <UCard :ui="{ body: 'p-6 space-y-4' }">
           <UFormField
             :label="$t('pages.article.fieldTitle')"
@@ -46,7 +43,6 @@
           </UFormField>
         </UCard>
 
-        <!-- Tiptap Editor Card -->
         <UCard :ui="{ body: 'p-6' }">
           <UFormField
             :label="$t('pages.article.fieldContent')"
@@ -61,15 +57,12 @@
         </UCard>
       </div>
 
-      <!-- Right Column: Settings & Cover (4 cols) -->
       <div class="lg:col-span-4 space-y-6">
-        <!-- Publishing Settings -->
         <UCard :ui="{ body: 'p-6 space-y-4' }">
           <h2 class="text-base font-semibold text-highlighted">
             {{ $t('pages.article.settingsTitle') }}
           </h2>
 
-          <!-- Views Statistic (hanya di mode edit) -->
           <div
             v-if="article"
             class="flex items-center justify-between p-3 rounded-lg bg-muted border border-default"
@@ -87,7 +80,6 @@
           </div>
 
           <UFormField :label="$t('pages.article.fieldAuthor')">
-            <!-- `by` (bukan `value-key`): model-nya adalah objek opsi, bukan nilai mentah. -->
             <USelectMenu
               v-model="selectedAuthor"
               :avatar="selectedAuthor?.avatar"
@@ -129,7 +121,6 @@
           </UFormField>
         </UCard>
 
-        <!-- Cover Image Card -->
         <UCard :ui="{ body: 'p-6 space-y-4' }">
           <div>
             <h2 class="text-base font-semibold text-highlighted">
@@ -182,7 +173,6 @@
       </div>
     </div>
 
-    <!-- Bottom Actions -->
     <div class="flex items-center justify-between pt-4 border-t border-default">
       <UButton
         variant="soft"

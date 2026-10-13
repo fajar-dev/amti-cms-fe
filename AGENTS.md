@@ -163,6 +163,12 @@ app/
 │   ├── content/         # Komponen modul CMS
 │   │   ├── ArticleForm.vue     # Form artikel bersama untuk halaman create & edit
 │   │   └── category/           # AddModal.vue, UpdateModal.vue
+│   ├── site/            # Komponen website publik (dipakai ulang lintas halaman
+│   │                    # publik): SiteNavbar, SiteFooter, SiteBackground,
+│   │                    # SiteCurveDivider, SiteReveal, SiteSectionHeader,
+│   │                    # SiteEntryBlock, SiteCard, SiteFrame,
+│   │                    # SiteClientLogos, SiteContactSection,
+│   │                    # SiteContactForm
 │   └── <feature>/       # Feature-specific components
 │       ├── AddModal.vue      → <FeatureAddModal />
 │       ├── UpdateModal.vue   → <FeatureUpdateModal />
@@ -173,6 +179,7 @@ app/
 │   ├── usePermission.ts # Cek permission RBAC (can(...))
 │   ├── useTableQuery.ts # State search/page/perPage/sort + sortHeader()
 │   ├── useImageUpload.ts# Alur upload + preview gambar (cara baku, lihat Larangan #8)
+│   ├── usePointerGlow.ts# Efek sorot kursor untuk kartu publik (SiteCard)
 │   └── error-helper.ts  # Global error handler
 ├── utils/               # Auto-imported — HANYA fungsi murni, TANPA state reaktif
 │   ├── slug.ts          # slugify()
@@ -182,15 +189,19 @@ app/
 │   ├── html.ts          # isEmptyHtml()
 │   └── chart-colors.ts  # CHART_COLORS/CHART_CATEGORY_PALETTE (token design system)
 ├── layouts/
-│   ├── dashboard.vue    # Sidebar + main content
+│   ├── default.vue      # Chrome website publik (navbar + footer + aksi mengambang)
+│   ├── dashboard.vue    # Sidebar + main content (panel admin)
 │   └── auth.vue         # Split-screen auth
 ├── middleware/
 │   ├── auth.global.ts   # Protected route guard
 │   └── guest.ts         # Guest-only route guard
 ├── pages/
-│   ├── index.vue        # Redirect to /app
+│   ├── index.vue        # Landing website publik (/)
+│   ├── eews.vue         # Halaman produk EEWS (/eews)
+│   ├── shms.vue         # Halaman produk SHMS (/shms)
+│   ├── article/         # Artikel dari CMS (/article, /article/[slug])
 │   ├── auth/            # Auth pages (layout: auth, middleware: guest)
-│   └── app/             # Application / dashboard pages (layout: dashboard)
+│   └── app/             # Panel admin (layout: dashboard, semua di bawah /app)
 │       ├── index.vue    # Dashboard (/app)
 │       └── <feature>/
 │           └── index.vue# CRUD listing page (/app/<feature>)
@@ -223,6 +234,38 @@ tersebut — subfolder `app/utils/<sub>/` **tidak** ikut di-auto-import, jadi ja
 **Tidak ada folder `app/plugins/`.** Persistensi bahasa ditangani `@nuxtjs/i18n` lewat
 `detectBrowserLanguage` di `nuxt.config.ts` (`useCookie: true`, cookie `i18n_redirected`) — bukan plugin custom.
 Lihat `docs/i18n-guide.md` §6.
+
+## Website Publik (rute non-admin)
+
+Rute publik `/`, `/eews`, `/shms`, `/article`, `/article/[slug]` dilayani aplikasi yang sama
+dengan panel admin. Aturan khususnya:
+
+1. **Rendering** — website publik **SSR** (`ssr: true`), sementara `/app/**` dan `/auth/**` tetap
+   **SPA** lewat `routeRules` di `nuxt.config.ts`. Jangan menambah rute admin di luar `/app`.
+2. **Konten & Lokalisasi** — seluruh teks website dilokalisasi melalui `i18n/locales/id.json` dan
+   `en.json` di bawah kunci `"site"`. Aset statis & metadata ditempel langsung di masing-masing
+   komponen Vue (tanpa file `site-content.ts`).
+3. **Istilah Teknis** — istilah teknis `"Earthquake Early Warning"` dan
+   `"Structure Health Monitoring System"` (termasuk singkatan EEWS dan SHMS) dipertahankan
+   dalam bahasa Inggris di kedua locale (`id.json` & `en.json`).
+4. **Komponen** — pakai ulang `app/components/site/*` dan primitif NuxtUI (`UPage*`, `UCard`,
+   `UAccordion`, `UButton`, `UModal`, `UEmpty`). Jangan menulis section baru dari nol.
+5. **Dilarang** — badge di halaman publik, video autoplay (berkasnya besar), dan nilai arbitrary
+   Tailwind. Warna hanya dari design system (`primary`, ramp `blue/green/yellow/red`), bukan warna
+   baru.
+6. **Animasi** — semua efek wajib menghormati `prefers-reduced-motion` (contoh: `SiteReveal.vue`,
+   `SiteBackground.vue`).
+7. **Data artikel** — daftar di `/article` diambil dari endpoint publik `GET /api/articles` (hanya
+   artikel publish); detailnya dari `GET /api/content/articles/slug/:slug`; kunjungan dicatat lewat
+   `POST /api/content/articles/:id/view`. Endpoint admin (`/api/content/articles`) TIDAK dipakai
+   halaman publik.
+8. **Formulir kontak** — `SiteContactForm.vue` mengirim ke `POST /api/messages` (endpoint publik yang
+   sudah ada), dan kirimannya masuk ke menu Messages di panel admin. Jangan membuat modul contact
+   baru; modul `message` di backend sudah menangani ini lengkap dengan test.
+9. **Teks i18n** — vue-i18n membaca `@` sebagai sintaks *linked message*, jadi tanda itu harus
+   ditulis `{'@'}` di `en.json`/`id.json` (contoh yang sudah ada: `pages.settings.contact.emailPlaceholder`).
+   Tanda `@` yang ditulis apa adanya membuat halaman **gagal SSR (500)**.
+
 
 ## Design System
 

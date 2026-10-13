@@ -1,12 +1,10 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <Header
       :title="$t('pages.article.title')"
       :description="$t('pages.article.description')"
     />
 
-    <!-- Data Table -->
     <DataTable
       v-model:search="search"
       v-model:page="page"
@@ -53,7 +51,6 @@
       </template>
     </DataTable>
 
-    <!-- Delete Modal -->
     <DeleteModal
       v-model="showDeleteModal"
       :title="$t('pages.article.deleteTitle')"
@@ -83,7 +80,6 @@ const UAvatar = resolveComponent('UAvatar')
 const { t, locale } = useI18n()
 const toast = useToast()
 
-// State
 const data = ref<Article[]>([])
 const categories = ref<Category[]>([])
 const isLoading = ref(false)
@@ -91,11 +87,9 @@ const selectedArticle = ref<Article | null>(null)
 const showDeleteModal = ref(false)
 const isDeleting = ref(false)
 
-// Filters
 const selectedCategoryFilter = ref<string>('all')
 const selectedStatusFilter = ref<string>('all')
 
-// Pagination meta
 const meta = reactive({
   total: 0,
   from: 0,

@@ -2,18 +2,6 @@ import type { ApiResponse } from '../types/api'
 
 type UploadResponse = ApiResponse<{ path: string }>
 
-/**
- * Alur "pilih file → preview lokal → upload → simpan path → rollback bila gagal".
- *
- * Menyatukan salinan alur yang sebelumnya tersebar di modal user, halaman profil,
- * settings, dan form artikel. Dua jaminan yang ikut diseragamkan:
- * - preview SELALU dipulihkan saat upload gagal (sebelumnya dua modal membiarkan
- *   preview lokal tampil padahal `form.photo` masih menunjuk path lama);
- * - object URL SELALU di-revoke (sebelumnya tidak pernah, sehingga blob tertahan).
- *
- * CATATAN: setelah upload sukses, preview sengaja tetap memakai blob lokal —
- * `path` dari API bukan URL yang bisa ditampilkan.
- */
 interface UseImageUploadOptions {
   upload: (file: File) => Promise<UploadResponse>
   onUploaded: (path: string) => void

@@ -13,8 +13,8 @@ export class AuthService {
   public token = ref<string | null>(null)
 
   constructor() {
-    this.restoreSession() // Sync restore
-    this.validateSession() // Async validation in background
+    this.restoreSession()
+    this.validateSession()
     apiService.setRefreshHandler(this.refreshToken.bind(this))
   }
 
@@ -163,7 +163,6 @@ export class AuthService {
       this.token.value = null
       this.user.value = null
 
-      // Ensure redirect happens
       if (window.location.pathname !== '/auth/sign-in') {
         navigateTo('/auth/sign-in')
       }

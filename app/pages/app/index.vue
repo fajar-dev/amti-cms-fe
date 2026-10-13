@@ -1,14 +1,11 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <Header
       :title="$t('pages.dashboard.title')"
       :description="$t('pages.dashboard.description')"
     />
 
-    <!-- Stat Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-      <!-- Total Articles Card -->
       <NuxtLink
         to="/app/content/article"
         class="group bg-default border border-default hover:border-primary/50 transition-colors p-5 rounded-lg block"
@@ -46,7 +43,6 @@
         </div>
       </NuxtLink>
 
-      <!-- Total Views Card -->
       <div class="bg-default border border-default p-5 rounded-lg">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-muted">{{ $t('pages.dashboard.totalViews') }}</span>
@@ -78,7 +74,6 @@
         </div>
       </div>
 
-      <!-- Messages Card -->
       <NuxtLink
         to="/app/messages"
         class="group bg-default border border-default hover:border-primary/50 transition-colors p-5 rounded-lg block"
@@ -116,7 +111,6 @@
         </div>
       </NuxtLink>
 
-      <!-- Users & Management Card -->
       <NuxtLink
         to="/app/user"
         class="group bg-default border border-default hover:border-primary/50 transition-colors p-5 rounded-lg block"
@@ -150,9 +144,7 @@
       </NuxtLink>
     </div>
 
-    <!-- Charts Row 1: Views Trend (AreaChart) & Category Distribution (DonutChart) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-      <!-- Views Trend Area Chart (8 cols) -->
       <div class="lg:col-span-8 bg-default border border-default p-5 sm:p-6 rounded-lg">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-default pb-4 mb-4">
           <div>
@@ -197,7 +189,6 @@
         </div>
       </div>
 
-      <!-- Categories Donut Chart (4 cols) -->
       <div class="lg:col-span-4 bg-default border border-default p-5 sm:p-6 rounded-lg">
         <div class="border-b border-default pb-4 mb-4">
           <h3 class="text-base font-semibold text-highlighted">
@@ -239,9 +230,7 @@
       </div>
     </div>
 
-    <!-- Charts Row 2: Messages Activity BarChart & Recent Messages -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-      <!-- Messages Bar Chart (6 cols) -->
       <div class="lg:col-span-6 bg-default border border-default p-5 sm:p-6 rounded-lg">
         <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
           <div>
@@ -286,7 +275,6 @@
         </div>
       </div>
 
-      <!-- Recent Messages List (6 cols) -->
       <div class="lg:col-span-6 bg-default border border-default p-5 sm:p-6 rounded-lg flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
@@ -366,7 +354,6 @@
       </div>
     </div>
 
-    <!-- Row 3: Recent Articles -->
     <div class="bg-default border border-default p-5 sm:p-6 rounded-lg">
       <div class="flex items-center justify-between border-b border-default pb-4 mb-4">
         <div>
@@ -499,7 +486,6 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-// States for separate endpoints
 const { t, locale } = useI18n()
 
 const summary = ref<DashboardSummary | null>(null)
@@ -509,7 +495,6 @@ const messagesTrend = ref<MessagesTrendItem[]>([])
 const recentArticles = ref<DashboardRecentArticle[]>([])
 const recentMessages = ref<DashboardRecentMessage[]>([])
 
-// Loading states
 const isLoadingSummary = ref(true)
 const isLoadingViews = ref(true)
 const isLoadingCategories = ref(true)
@@ -517,7 +502,6 @@ const isLoadingMessagesTrend = ref(true)
 const isLoadingRecentArticles = ref(true)
 const isLoadingRecentMessages = ref(true)
 
-// Fetch methods for each separate endpoint
 const fetchSummary = async () => {
   isLoadingSummary.value = true
   try {
@@ -590,7 +574,6 @@ const fetchRecentMessages = async () => {
   }
 }
 
-// Master refresh
 const fetchAll = async () => {
   await Promise.allSettled([
     fetchSummary(),
@@ -606,13 +589,11 @@ onMounted(() => {
   fetchAll()
 })
 
-// Views Trend Chart Config
 const viewsChartCategories = {
   views: { name: t('pages.dashboard.seriesViews'), color: CHART_COLORS.primary },
   articles: { name: t('pages.dashboard.seriesArticles'), color: CHART_COLORS.success }
 }
 
-// Category Distribution Chart Config
 const categoryChartCategories = computed(() => {
   const result: Record<string, { name: string, color: string }> = {}
   categoriesDistribution.value.forEach((item, idx) => {
@@ -624,13 +605,10 @@ const categoryChartCategories = computed(() => {
   return result
 })
 
-// Messages Trend Chart Config
 const messagesChartCategories = {
   unread: { name: t('pages.dashboard.unread'), color: CHART_COLORS.warning },
   read: { name: t('pages.dashboard.read'), color: CHART_COLORS.success }
 }
-
-// Helpers
 </script>
 
 <style scoped>

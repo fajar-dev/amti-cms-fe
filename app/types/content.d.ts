@@ -61,3 +61,17 @@ export interface ArticleView {
   userId: number | null
   viewedAt: string
 }
+
+export interface PublicArticleCard {
+  id: number
+  title: string
+  slug: string
+  description: string | null
+  cover: string | null
+  coverUrl: string | null
+  tags: string[]
+  category: Category | null
+  author: { id: number, name: string } | null
+  publishedAt: string | null
+  createdAt: string
+}

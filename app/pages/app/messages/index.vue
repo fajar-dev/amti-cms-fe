@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <Header
       :title="$t('pages.messages.title')"
       :description="$t('pages.messages.description')"
@@ -32,7 +31,6 @@
       </template>
     </DataTable>
 
-    <!-- Modals -->
     <MessageDetailModal
       v-model="showDetailModal"
       :message="selectedMessage"
@@ -69,17 +67,14 @@ const { t, locale } = useI18n()
 const toast = useToast()
 const { can } = usePermission()
 
-// State
 const data = ref<Message[]>([])
 const isLoading = ref(false)
 const selectedMessage = ref<Message | null>(null)
 
-// Modal states
 const showDetailModal = ref(false)
 const showDeleteModal = ref(false)
 const isDeleting = ref(false)
 
-// Status filter
 const selectedStatusFilter = ref<string>('all')
 const statusFilterOptions = computed(() => [
   { label: t('pages.messages.allStatus'), value: 'all' },
@@ -87,14 +82,12 @@ const statusFilterOptions = computed(() => [
   { label: t('pages.messages.read'), value: 'true' }
 ])
 
-// Pagination meta
 const meta = reactive({
   total: 0,
   from: 0,
   to: 0
 })
 
-// Fetch messages
 async function fetchMessages() {
   isLoading.value = true
   try {
@@ -138,7 +131,6 @@ watch(selectedStatusFilter, () => {
   fetchMessages()
 })
 
-// Table columns
 const columns = computed<TableColumn<Message>[]>(() => {
   const cols: TableColumn<Message>[] = [
     {
@@ -204,7 +196,6 @@ const columns = computed<TableColumn<Message>[]>(() => {
     }
   ]
 
-  // Action column: only view, reply (mailto), and delete as requested
   cols.push({
     id: 'actions',
     header: () => t('pages.messages.columnAction'),
@@ -219,7 +210,6 @@ const columns = computed<TableColumn<Message>[]>(() => {
       const mailto = `mailto:${m.email}?subject=Re: ${encodeURIComponent(m.subject)}`
 
       return h('div', { class: 'flex items-center justify-end gap-1' }, [
-        // Quick Reply button (mailto:)
         h(UButton, {
           'icon': 'i-lucide-reply',
           'color': 'neutral',
@@ -229,7 +219,6 @@ const columns = computed<TableColumn<Message>[]>(() => {
           'title': t('pages.messages.reply'),
           'aria-label': t('pages.messages.reply')
         }),
-        // Dropdown menu for more actions
         h(
           UDropdownMenu,
           {

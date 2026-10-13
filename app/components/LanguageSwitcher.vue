@@ -7,6 +7,7 @@
       color="neutral"
       :variant="variant"
       icon="i-lucide-languages"
+      :class="buttonClass"
       :aria-label="$t('components.languageSwitcher.ariaLabel')"
     />
 
@@ -25,10 +26,12 @@ import type { ButtonProps } from '@nuxt/ui'
 
 interface Props {
   variant?: ButtonProps['variant']
+  buttonClass?: string
 }
 
 withDefaults(defineProps<Props>(), {
-  variant: 'ghost'
+  variant: 'ghost',
+  buttonClass: ''
 })
 
 const { locale, setLocale } = useI18n()

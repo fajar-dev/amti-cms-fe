@@ -1,6 +1,5 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Loading Skeleton -->
     <div
       v-if="isLoading"
       class="space-y-6"
@@ -11,7 +10,6 @@
       <USkeleton class="h-10 w-full" />
     </div>
 
-    <!-- Social Form -->
     <UForm
       v-else
       :schema="socialSchema"
@@ -110,7 +108,6 @@
         </div>
       </div>
 
-      <!-- Action Button -->
       <div
         v-if="canUpdate"
         class="flex justify-end pt-3 border-t border-default"

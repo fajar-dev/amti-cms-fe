@@ -1,6 +1,3 @@
-/**
- * Deteksi konten rich-text (Tiptap) yang kosong.
- */
 const MEDIA_TAGS = ['<img', '<video', '<iframe', '<audio']
 
 export function isEmptyHtml(html?: string | null): boolean {

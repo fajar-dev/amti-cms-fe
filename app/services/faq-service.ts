@@ -36,6 +36,15 @@ export class FaqService {
     }
   }
 
+  async getPublic(): Promise<ApiResponse<Faq[]>> {
+    try {
+      const response = await apiService.client.get<ApiResponse<Faq[]>>('/faqs')
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
   async getById(id: number): Promise<ApiResponse<Faq>> {
     try {
       const response = await apiService.client.get<ApiResponse<Faq>>(

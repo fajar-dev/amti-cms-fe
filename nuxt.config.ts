@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
@@ -8,7 +7,7 @@ export default defineNuxtConfig({
     'nuxt-charts'
   ],
 
-  ssr: false,
+  ssr: true,
 
   devtools: {
     enabled: true
@@ -27,6 +26,11 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.API_BASE_URL
     }
+  },
+
+  routeRules: {
+    '/app/**': { ssr: false },
+    '/auth/**': { ssr: false }
   },
 
   compatibilityDate: '2025-01-15',

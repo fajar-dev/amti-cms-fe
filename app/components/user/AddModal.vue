@@ -5,7 +5,6 @@
     :description="$t('components.user.addModal.description')"
   >
     <template #body>
-      <!-- Avatar Upload Section -->
       <div class="flex flex-col items-center justify-center pb-4 space-y-2">
         <div class="relative group">
           <UAvatar

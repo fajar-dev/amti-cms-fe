@@ -37,7 +37,6 @@
           />
         </UFormField>
 
-        <!-- Permissions Section -->
         <div class="space-y-3 pt-2 border-t border-default">
           <div class="flex items-center justify-between">
             <div>
@@ -69,7 +68,6 @@
             </div>
           </div>
 
-          <!-- Loading state -->
           <div
             v-if="isLoadingPermissions"
             class="py-8 flex justify-center items-center gap-2 text-muted text-sm"
@@ -81,7 +79,6 @@
             <span>{{ $t('common.loading') }}</span>
           </div>
 
-          <!-- Permissions grouped by module -->
           <div
             v-else
             class="space-y-3 max-h-80 overflow-y-auto pr-1"
@@ -216,7 +213,6 @@ async function loadPermissions() {
 watch([open, () => props.role], async ([isOpen, currentRole]) => {
   if (isOpen && currentRole) {
     await loadPermissions()
-    // Fetch full role details to ensure permissions are loaded
     const res = await rbacService.getById(currentRole.id)
     const roleData = res.success ? res.data : currentRole
 

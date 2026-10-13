@@ -1,6 +1,5 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Loading Skeleton -->
     <div
       v-if="isLoading"
       class="space-y-6"
@@ -11,7 +10,6 @@
       <USkeleton class="h-24 w-full" />
     </div>
 
-    <!-- Contact Form -->
     <UForm
       v-else
       :schema="contactSchema"
@@ -44,6 +42,19 @@
           </UFormField>
 
           <UFormField
+            :label="$t('pages.settings.contact.whatsapp', 'Nomor WhatsApp')"
+            name="whatsapp"
+          >
+            <UInput
+              v-model="form.whatsapp"
+              :placeholder="$t('pages.settings.contact.whatsappPlaceholder', '+62 812-8745-6669')"
+              icon="i-lucide-message-circle"
+              class="w-full"
+              :disabled="!canUpdate"
+            />
+          </UFormField>
+
+          <UFormField
             :label="$t('pages.settings.contact.email')"
             name="email"
           >
@@ -52,6 +63,19 @@
               type="email"
               :placeholder="$t('pages.settings.contact.emailPlaceholder')"
               icon="i-lucide-mail"
+              class="w-full"
+              :disabled="!canUpdate"
+            />
+          </UFormField>
+
+          <UFormField
+            :label="$t('pages.settings.contact.mapsUrl', 'Google Maps Embed URL')"
+            name="mapsUrl"
+          >
+            <UInput
+              v-model="form.mapsUrl"
+              :placeholder="$t('pages.settings.contact.mapsUrlPlaceholder', 'https://www.google.com/maps/embed?...')"
+              icon="i-lucide-map"
               class="w-full"
               :disabled="!canUpdate"
             />
@@ -73,7 +97,6 @@
         </div>
       </div>
 
-      <!-- Action Button -->
       <div
         v-if="canUpdate"
         class="flex justify-end pt-3 border-t border-default"
@@ -108,20 +131,26 @@ const isSaving = ref(false)
 
 interface FormState {
   phone: string
+  whatsapp: string
   email: string
   address: string
+  mapsUrl: string
 }
 
 const form = reactive<FormState>({
   phone: '',
+  whatsapp: '',
   email: '',
-  address: ''
+  address: '',
+  mapsUrl: ''
 })
 
 const contactSchema = z.object({
   phone: z.string().optional(),
+  whatsapp: z.string().optional(),
   email: z.string().email('Invalid email address').optional().or(z.literal('')),
-  address: z.string().optional()
+  address: z.string().optional(),
+  mapsUrl: z.string().optional()
 })
 
 const fetchSettings = async () => {
@@ -131,8 +160,10 @@ const fetchSettings = async () => {
     if (response.success && response.data) {
       const data = response.data
       form.phone = data.phone || ''
+      form.whatsapp = data.whatsapp || ''
       form.email = data.email || ''
       form.address = data.address || ''
+      form.mapsUrl = data.mapsUrl || ''
     }
   } catch (error) {
     console.error('Failed to load settings:', error)
@@ -146,8 +177,10 @@ const handleSave = async () => {
   try {
     const payload: SettingContactPayload = {
       phone: form.phone?.trim() || null,
+      whatsapp: form.whatsapp?.trim() || null,
       email: form.email?.trim() || null,
-      address: form.address?.trim() || null
+      address: form.address?.trim() || null,
+      mapsUrl: form.mapsUrl?.trim() || null
     }
 
     const response = await settingService.updateContact(payload)

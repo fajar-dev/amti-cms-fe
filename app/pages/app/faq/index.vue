@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <Header
       :title="$t('pages.faq.title')"
       :description="$t('pages.faq.description')"
@@ -45,7 +44,6 @@
       </template>
     </DataTable>
 
-    <!-- Modals -->
     <FaqAddModal
       v-model="showAddModal"
       @created="fetchFaqs"
@@ -82,18 +80,15 @@ const UBadge = resolveComponent('UBadge')
 const { t, locale } = useI18n()
 const toast = useToast()
 
-// State
 const data = ref<Faq[]>([])
 const isLoading = ref(false)
 const selectedFaq = ref<Faq | null>(null)
 
-// Modal states
 const showAddModal = ref(false)
 const showUpdateModal = ref(false)
 const showDeleteModal = ref(false)
 const isDeleting = ref(false)
 
-// Status filter
 const selectedStatusFilter = ref<string>('all')
 const statusFilterOptions = computed(() => [
   { label: t('pages.faq.allStatus'), value: 'all' },
@@ -101,14 +96,12 @@ const statusFilterOptions = computed(() => [
   { label: t('pages.faq.inactive'), value: 'false' }
 ])
 
-// Pagination meta
 const meta = reactive({
   total: 0,
   from: 0,
   to: 0
 })
 
-// Fetch FAQs
 async function fetchFaqs() {
   isLoading.value = true
   try {
@@ -149,7 +142,6 @@ watch(selectedStatusFilter, () => {
   fetchFaqs()
 })
 
-// Table columns
 const columns = computed<TableColumn<Faq>[]>(() => {
   const cols: TableColumn<Faq>[] = [
     {
@@ -255,7 +247,6 @@ function getRowItems(row: Row<Faq>): DropdownMenuItem[] {
   return items
 }
 
-// Handle delete
 const handleDelete = async () => {
   if (!selectedFaq.value) return
   isDeleting.value = true
@@ -281,7 +272,6 @@ const handleDelete = async () => {
   }
 }
 
-// Initial fetch
 onMounted(() => {
   fetchFaqs()
 })

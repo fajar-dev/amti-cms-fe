@@ -48,6 +48,7 @@
         "category": "Category",
         "article": "Article",
         "faq": "FAQ",
+        "client": "Clients",
         "userManagement": "User Management",
         "users": "Users",
         "roles": "Roles & Permissions",
@@ -140,6 +141,50 @@
         "updatedSuccess": "FAQ updated successfully!"
       }
     },
+    "client": {
+      "addModal": {
+        "title": "Add Client",
+        "description": "Fill in the details below to add a new client logo and profile.",
+        "chooseLogo": "Choose Logo",
+        "remove": "Remove",
+        "nameLabel": "Client Name",
+        "namePlaceholder": "e.g. Astra, Telkom, etc.",
+        "nameRequired": "Client name is required",
+        "logoRequired": "Client logo is required",
+        "websiteLabel": "Client Website",
+        "websitePlaceholder": "https://example.com (optional)",
+        "websiteInvalid": "Invalid website URL format",
+        "orderLabel": "Display Order",
+        "orderPlaceholder": "0",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "uploadSuccess": "Logo uploaded successfully!",
+        "uploadFailed": "Failed to upload logo",
+        "createdSuccess": "Client added successfully!"
+      },
+      "updateModal": {
+        "title": "Edit Client",
+        "description": "Update the client information below.",
+        "chooseLogo": "Change Logo",
+        "remove": "Remove",
+        "nameLabel": "Client Name",
+        "namePlaceholder": "Enter client name",
+        "nameRequired": "Client name is required",
+        "logoRequired": "Client logo is required",
+        "websiteLabel": "Client Website",
+        "websitePlaceholder": "https://example.com (optional)",
+        "websiteInvalid": "Invalid website URL format",
+        "orderLabel": "Display Order",
+        "orderPlaceholder": "0",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "uploadSuccess": "Logo uploaded successfully!",
+        "uploadFailed": "Failed to upload logo",
+        "updatedSuccess": "Client updated successfully!"
+      }
+    },
     "user": {
       "addModal": {
         "title": "Add User",
@@ -227,6 +272,331 @@
       }
     }
   },
+  "site": {
+    "identity": {
+      "name": "AMTI",
+      "fullName": "Asset Monitoring Teknologi Indonesia",
+      "tagline": "We bring the years, experience & stamina to guide our clients.",
+      "address": "Victoria Office Park, Jl. Imam Bonjol Blok A2 No.30, Karawaci, Kota Tangerang 15115",
+      "phone": "+62 812-8745-6669",
+      "email": "amti.solution{'@'}gmail.com",
+      "copyright": "© 2024 AMTI. All Rights Reserved."
+    },
+    "nav": {
+      "home": "Home",
+      "eews": "EEWS",
+      "shms": "SHMS",
+      "article": "Articles",
+      "contact": "Contact Us",
+      "openMenu": "Open menu"
+    },
+    "footer": {
+      "contactUs": "Contact Us.",
+      "explore": "Explore",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Services",
+      "mapTitle": "AMTI Location"
+    },
+    "cta": {
+      "whatsapp": "Chat on WhatsApp",
+      "backToTop": "Back to top",
+      "talkToUs": "Talk to us"
+    },
+    "hero": {
+      "title": "Earthquake Early Warning & Structure Health Monitoring System",
+      "subtitle": "Protect Your Assets with 24/7 Real-Time Sensor-Based Monitoring",
+      "exploreEews": "Explore EEWS",
+      "exploreShms": "Explore SHMS",
+      "watchVideo": "Watch the video",
+      "videoTitle": "AMTI overview",
+      "statMonitoring": "Real-time monitoring",
+      "statSectors": "EEWS sectors",
+      "statStructures": "Structure types",
+      "scrollCue": "Scroll to explore"
+    },
+    "smart": {
+      "eyebrow": "Smart Monitoring",
+      "title": "Stay Ahead with Smart Monitoring",
+      "body": "Our advanced system ensures real-time seismic detection, structural monitoring, instant alerts, and safeguarding your assets and lives. With state-of-the-art technology and trusted expertise, we empower you to prepare, respond, and recover effectively. Make safety your ultimate priority."
+    },
+    "profile": {
+      "label": "COMPANY PROFILE",
+      "title": "Innovative Solutions for Asset Safety and Monitoring",
+      "body": "Asset Monitoring Teknologi Indonesia (AMTI) provides cutting-edge solutions to safeguard and sustain your infrastructure. With advanced technology, we deliver real-time seismic activity detection and early warnings to minimize risks. Our expertise empowers you to protect valuable assets, ensure efficient operations, and enhance resilience against potential disasters. Join us in building a safer and well-prepared future."
+    },
+    "why": {
+      "eyebrow": "Our Advantage",
+      "title": "WHY CHOOSE US?",
+      "items": {
+        "tech": {
+          "title": "SUPERIOR TECHNOLOGY",
+          "body": "We use the latest technology to ensure the best and fastest solutions in every aspect of our services."
+        },
+        "customer": {
+          "title": "CUSTOMER DRIVEN",
+          "body": "You are our top priority. We focus on delivering service that exceeds your expectations."
+        },
+        "listens": {
+          "title": "OUR SOLUTIONS LISTENS",
+          "body": "Our solutions work efficiently and care about your needs. We aim to make a positive impact."
+        },
+        "personalized": {
+          "title": "PERSONALIZED FOR YOU",
+          "body": "Each of our solutions is tailored to your personal needs and specifications."
+        }
+      }
+    },
+    "solutions": {
+      "shmsTitle": "Structure Health Monitoring System (SHMS)",
+      "eewsTitle": "Earthquake Early Warning System (EEWS)",
+      "seeShms": "See SHMS details",
+      "seeEews": "See EEWS details",
+      "shmsBody": "A structure health monitoring (SHM) system is a system that continuously monitors structures like buildings and bridges to assess their integrity and detect damage.",
+      "eewsBody": "By identifying P-waves, the first waves to arrive in an earthquake, our system provides crucial alerts seconds to minutes before the stronger S-waves hit. This early notification allows users to take swift actions, such as moving to a safer location or halting critical operations, ultimately saving lives and minimizing damage."
+    },
+    "about": {
+      "title": "About Us",
+      "headline": "We provide advanced SHMS & EEWS solutions",
+      "body": "Our SHMS (Structure Health Monitoring System) and EEWS (Earthquake Early Warning System) solutions are designed to ensure the safety and integrity of critical infrastructure across various regions. Through real-time monitoring and advanced alert systems, our technology helps detect structural changes and seismic activity early, allowing timely intervention and minimizing risks."
+    },
+    "leading": {
+      "eyebrow": "Our Solutions",
+      "title": "Leading Asset Monitoring Solution",
+      "block1": {
+        "title": "Effortless plug-and-play deployment",
+        "item1": "Deploy without technical expertise",
+        "item2": "Seamlessly integrates with diverse machinery",
+        "item3": "Independent of external systems or integrations"
+      },
+      "block2": {
+        "title": "Immediate insights with advanced software",
+        "item1": "Real-time asset data visualization",
+        "item2": "Enhanced analysis with cutting-edge algorithms",
+        "item3": "Comprehensive system-level performance tracking"
+      }
+    },
+    "mission": {
+      "title": "Our Mission & Values",
+      "lead": "Guided by our commitment to excellence and innovation.",
+      "heading": "Our Mission",
+      "statement": "To protect lives, assets, and infrastructure through innovative monitoring solutions that provide early warning and comprehensive structural health assessment.",
+      "followUp": "We are dedicated to making communities and critical infrastructure more resilient against natural disasters and structural failures through cutting-edge technology and expertise."
+    },
+    "values": {
+      "title": "Our Values",
+      "items": {
+        "innovation": {
+          "name": "Innovation",
+          "description": "Continuously developing and refining our technology to provide the most advanced solutions."
+        },
+        "reliability": {
+          "name": "Reliability",
+          "description": "Building systems that perform consistently under all conditions, especially during critical events."
+        },
+        "excellence": {
+          "name": "Excellence",
+          "description": "Maintaining the highest standards in everything we do, from engineering to customer service."
+        },
+        "integrity": {
+          "name": "Integrity",
+          "description": "Operating with transparency, honesty, and accountability in all our relationships."
+        },
+        "impact": {
+          "name": "Impact",
+          "description": "Measuring our success by the tangible difference we make in protecting lives and assets."
+        }
+      }
+    },
+    "clients": {
+      "aria": "Our clients",
+      "title": "Our Awesome Clients"
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "intro": "We have answers to all your questions, however silly it may sound",
+      "help": "Still have questions? Our team is ready to help.",
+      "items": {
+        "q1": {
+          "question": "What is Asset Monitoring?",
+          "answer": "Asset monitoring refers to the use of technology to continuously track and manage assets in real-time to ensure their proper functioning and timely maintenance."
+        },
+        "q2": {
+          "question": "How does the monitoring system work?",
+          "answer": "The monitoring system uses sensors and data collection tools to gather information about asset conditions. This data is then transmitted to a central system where it is analyzed and used to trigger alerts or maintenance actions."
+        },
+        "q3": {
+          "question": "What are the benefits of asset monitoring?",
+          "answer": "Asset monitoring provides real-time insights into asset performance, helps in early detection of potential issues, reduces maintenance costs, and enhances the overall efficiency and lifespan of assets."
+        },
+        "q4": {
+          "question": "Can the system be customized for specific needs?",
+          "answer": "Yes, our asset monitoring solutions can be customized to meet specific requirements and adapt to various types of assets and industries. We work with you to tailor the system according to your needs."
+        },
+        "q5": {
+          "question": "What kind of support is available?",
+          "answer": "We offer comprehensive support including technical assistance, training, and maintenance services to ensure that your monitoring system operates smoothly and effectively."
+        }
+      }
+    },
+    "contact": {
+      "directHeading": "Get in touch",
+      "formHeading": "Send us a message",
+      "formIntro": "Fill in the form below and our team will follow up with you.",
+      "ctaTitle": "Having a problem? We'll fix it for you!",
+      "ctaBody": "Reach out to us anytime, and let us fix your problems quickly and efficiently.",
+      "name": "Name",
+      "namePlaceholder": "Your full name",
+      "nameRequired": "Name is required",
+      "email": "Email",
+      "emailPlaceholder": "you{'@'}company.com",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "phone": "Phone",
+      "phonePlaceholder": "+62 812-3456-7890",
+      "subject": "Subject",
+      "subjectPlaceholder": "How can we help?",
+      "subjectRequired": "Subject is required",
+      "message": "Message",
+      "messagePlaceholder": "Tell us about your needs or the problem you are facing...",
+      "messageRequired": "Message is required",
+      "submit": "Send message",
+      "responseNote": "We reply on business days.",
+      "successTitle": "Your message has been sent",
+      "successBody": "Thank you for reaching out. The AMTI team will follow up shortly using the email or phone number you provided.",
+      "sendAnother": "Send another message",
+      "errorTitle": "Your message could not be sent. Please try again."
+    },
+    "eews": {
+      "title": "Earthquake Warning System (EEWS)",
+      "body": "By identifying P-waves, the first waves to arrive in an earthquake, our system provides crucial alerts seconds to minutes before the stronger S-waves hit. This early notification allows users to take swift actions, such as moving to a safer location or halting critical operations, ultimately saving lives and minimizing damage.",
+      "sectors": {
+        "buildings": {
+          "title": "BUILDINGS",
+          "tags": ["HOSPITAL", "APARTMENT", "EDUCATIONAL FACILITY", "OFFICE", "MALL", "HOTEL"],
+          "copy": "Earthquakes can cause severe damage, including the collapse of buildings, often on a large scale, and can result in casualties. These sudden events trigger widespread panic and chaos. Building damage may also disrupt electricity supply, cause gas pipe leaks, and even lead to explosions. Public services are disrupted, endangering critical surgical procedures and valuable equipment in hospitals, as well as putting the safety of children in schools at risk. The AMTI Earthquake Early Warning System (EEWS) can reduce the risk of damage and casualties by integrating with Building Management Systems. This EEWS can mitigate earthquake impacts by initiating preventive actions such as activating safe mode for equipment, elevators, and gates, reducing gas pressure, shutting off wastewater lines, cutting power, and issuing warnings via social media, SMS, WhatsApp, alarms, and audiovisual systems. Additionally, the system can automatically halt sensitive procedures to minimize further damage.",
+          "actions": [
+            "Audiovisual alerts",
+            "Equipment on safe mode",
+            "Evacuating people",
+            "Opening doors and gates",
+            "Stopping sensitive operations"
+          ]
+        },
+        "transportation": {
+          "title": "TRANSPORTATION",
+          "tags": ["AIRPORT", "TRAIN", "PORT", "BUS"],
+          "copy": "Earthquakes pose a serious threat to transportation systems such as airports, ports, railways, and vehicles, potentially disrupting operations and endangering passengers and operators. By providing early warnings, authorities can quickly implement safety protocols, protecting lives and critical infrastructure. The Earthquake Early Warning System (EEWS) from AMTI can intervene by activating automatic emergency braking mechanisms for trains, redirecting air traffic and triggering warnings on road signs to prevent accidents and ensure the safety of passengers and workers.",
+          "actions": [
+            "Braking mechanisms",
+            "Reroute air traffic",
+            "Road sign alerts",
+            "Stop buses and evacuate people"
+          ]
+        },
+        "utilities": {
+          "title": "UTILITIES",
+          "tags": ["POWER PLANT", "ELECTRICITY DISTRIBUTION", "WATER SUPPLY", "GAS SUPPLY", "WASTEWATER SYSTEM"],
+          "copy": "Earthquake vibrations can damage pipelines, valves, and pump stations, causing hazardous chemical and water leaks that could disrupt vital supplies of clean water or electricity to the community. The Earthquake Early Warning System (EEWS) from AMTI can trigger preventive actions to protect power plants, such as reducing gas pressure, preventing hydrogen evaporation, safeguarding substations, cutting off wastewater flow, and halting the supply of electricity and water. Additionally, the system can generate post-event reports to assess potential damage to pipelines.",
+          "actions": [
+            "Control water pressure in fire mains",
+            "Duck-cover-hold on",
+            "Post event report",
+            "Shut down substation"
+          ]
+        },
+        "oilGasChemicals": {
+          "title": "OIL, GAS AND CHEMICALS",
+          "tags": ["OIL & GAS FACILITIES", "CHEMICAL PLANT", "REFINERY"],
+          "copy": "Earthquakes can cause explosions, fires, chemical leaks, and environmental damage at oil and gas facilities. With AMTI's earthquake early warning, there is more time to trigger damage control actions, such as lowering or shutting off gas pressure, with maximum response time. This limits potential damage while keeping critical infrastructure and vital services operational. EEWS AMTI also sends alerts via social media, SMS, WhatsApp, alarms, or audiovisual systems to employees, reducing injuries and casualties, and speeding up facility recovery.",
+          "actions": [
+            "Reduce gas pressure",
+            "Shutting off valves",
+            "Control water pressure in fire mains",
+            "Duck-cover-hold on",
+            "Post event report"
+          ]
+        },
+        "mines": {
+          "title": "MINES",
+          "tags": ["TRANSPORTATION", "INFRASTRUCTURE", "MINING EQUIPMENT"],
+          "copy": "Earthquakes can cause significant damage to infrastructure and jeopardize worker safety in mining operations. The Earthquake Early Warning System (EEWS) from AMTI can significantly reduce damage, primarily by warning workers and giving them time to take cover or evacuate before the main tremor hits. Earthquake alerts can also trigger automatic shutdown mechanisms for critical mining equipment and isolate hazardous materials, reducing the risk of damage to machinery and ensuring team safety. Post-event reports can support decision-making processes for resuming operations after an earthquake.",
+          "actions": [
+            "Delay planned explosions",
+            "Stop heavy-machinery operations",
+            "Duck-cover-hold on"
+          ]
+        }
+      }
+    },
+    "shms": {
+      "label": "SHMS",
+      "title": "Structure Health Monitoring System (SHMS)",
+      "body": "A structure health monitoring (SHM) system is a system that continuously monitors structures like buildings and bridges to assess their integrity and detect damage.",
+      "structures": {
+        "bridges": {
+          "title": "BRIDGES",
+          "keywords": ["BRIDGE MONITORING", "STRUCTURAL HEALTH", "STRESS ANALYSIS", "SAFETY ALERTS", "DYNAMIC DISPLACEMENT"],
+          "copy": "Our SHMS is designed to monitor the health of bridges in real time, providing critical insights into structural integrity and potential wear. Timely alerts enable preventive maintenance and ensure long-term safety, helping prevent catastrophic failures and prolonging infrastructure lifespan."
+        },
+        "buildings": {
+          "title": "BUILDINGS",
+          "keywords": ["SKYSCRAPERS", "HOSPITALS", "OFFICES", "MALLS", "RESIDENTIAL BUILDINGS"],
+          "copy": "Our SHMS monitors critical infrastructures, from skyscrapers to hospitals, offering real-time data on structural health. This enables maintenance teams to make informed decisions to prevent costly repairs and improve safety for occupants."
+        },
+        "dam": {
+          "title": "DAM",
+          "keywords": ["WATER RESERVOIR", "SEEPAGE MONITORING", "CONCRETE INTEGRITY", "SEISMIC RESILIENCE", "EARLY WARNING"],
+          "copy": "Continuous structural health monitoring for dams provides real-time detection of seepage, deformation, and hydrostatic pressure changes. By tracking concrete integrity and seismic responses, our system empowers operators to prevent catastrophic failures, safeguard downstream communities, and maintain water resource security."
+        },
+        "landslide": {
+          "title": "LANDSLIDE",
+          "keywords": ["SLOPE STABILITY", "GROUND MOVEMENT", "PORE PRESSURE", "EARLY WARNING", "GEOTECHNICAL MONITORING"],
+          "copy": "Our geotechnical and slope health monitoring system delivers early detection of ground displacement, soil saturation, and slope instability. Continuous real-time sensor analytics provide timely warnings before critical movement occurs, protecting transportation corridors, vital infrastructure, and nearby communities from landslide hazards."
+        },
+        "port": {
+          "title": "PORT",
+          "keywords": ["MARITIME TERMINALS", "QUAY WALL STABILITY", "BERTHING IMPACT", "CORROSION ASSESSMENT", "WAVE ACTION"],
+          "copy": "Designed for harsh marine environments, our SHMS tracks the integrity of quay walls, piers, and heavy cargo berths under dynamic tidal loads and berthing forces. Real-time telemetry detects structural settlement and fatigue early, ensuring uninterrupted harbor logistics and extended terminal longevity."
+        },
+        "railway": {
+          "title": "RAILWAY",
+          "keywords": ["TRACK INTEGRITY", "BRIDGE VIADUCTS", "DYNAMIC DEFLECTION", "BALLAST STABILITY", "HIGH-SPEED RAIL"],
+          "copy": "Rail infrastructure monitoring offers continuous assessment of tracks, viaducts, and overhead structures under repetitive high-speed train loads. Instant alerts on vibration anomalies, track alignment shifts, and foundation stress help maintenance crews prevent derailment risks and optimize maintenance schedules without service disruption."
+        },
+        "tunnels": {
+          "title": "TUNNELS",
+          "keywords": ["UNDERGROUND STRUCTURES", "STRESS MONITORING", "SAFETY ALERTS", "VIBRATION ANALYSIS", "RISK MANAGEMENT"],
+          "copy": "With SHMS, tunnel safety is greatly enhanced through real-time monitoring of structural stress and vibration. This system allows for immediate responses to potential threats, safeguarding both infrastructure and people."
+        }
+      }
+    },
+    "articlePage": {
+      "featuredHeadline": "Discover How Modern Technology is Revolutionizing Asset Management",
+      "title": "In-Depth Articles on Advanced Asset Monitoring Solutions",
+      "body": "Explore our articles to gain deeper insights into asset monitoring technology and how it can benefit your business. Stay informed and make strategic decisions with the latest knowledge."
+    },
+    "wave": {
+      "caption": "How the early warning works",
+      "aria": "Diagram showing P-waves travelling faster than S-waves from an earthquake epicentre to a monitoring station",
+      "epicenter": "Epicentre",
+      "station": "Monitoring station",
+      "pWave": "P-waves (first to arrive)",
+      "sWave": "S-waves (stronger)",
+      "window": "seconds to minutes before the stronger S-waves hit"
+    },
+    "article": {
+      "recentTitle": "Recent Article Posts",
+      "searchPlaceholder": "Search articles...",
+      "empty": "No articles yet",
+      "emptyHint": "Published articles will appear here.",
+      "readMore": "Read More",
+      "uncategorized": "Article",
+      "notFoundTitle": "Article not found",
+      "notFoundBody": "The article you are looking for is not available or has been unpublished.",
+      "backToList": "Back to all articles",
+      "views": "views"
+    }
+  },
   "pages": {
     "dashboard": {
       "title": "Dashboard",
@@ -280,6 +650,27 @@
       "deleteFaq": "Delete FAQ",
       "deleteTitle": "Delete FAQ",
       "deletedSuccess": "FAQ deleted successfully!"
+    },
+    "client": {
+      "title": "Clients & Partners",
+      "description": "Manage the list of client logos and profiles displayed on the website",
+      "searchPlaceholder": "Search by name or website...",
+      "addClient": "Add Client",
+      "filterStatus": "Status",
+      "allStatus": "All Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "columnLogo": "Logo",
+      "columnName": "Client Name",
+      "columnWebsite": "Website",
+      "columnOrder": "Order",
+      "columnStatus": "Status",
+      "columnAction": "Action",
+      "actionsDropdown": "Actions dropdown",
+      "editClient": "Edit Client",
+      "deleteClient": "Delete Client",
+      "deleteTitle": "Delete Client",
+      "deletedSuccess": "Client deleted successfully!"
     },
     "user": {
       "title": "User Management",
@@ -507,12 +898,16 @@
       "contact": {
         "title": "Contact Information",
         "description": "Official contact details displayed to website visitors.",
-        "phone": "Phone Number / WhatsApp",
-        "phonePlaceholder": "+62 812 3456 7890",
+        "phone": "Phone Number",
+        "phonePlaceholder": "+62 812-8745-6669",
+        "whatsapp": "WhatsApp Number",
+        "whatsappPlaceholder": "+62 812-8745-6669",
         "email": "Email Address",
         "emailPlaceholder": "info{'@'}amti.id",
         "address": "Office Address",
         "addressPlaceholder": "Enter full physical or office address...",
+        "mapsUrl": "Google Maps Embed URL",
+        "mapsUrlPlaceholder": "https://www.google.com/maps/embed?pb=...",
         "save": "Save Contact",
         "updatedSuccess": "Contact information updated successfully!"
       },

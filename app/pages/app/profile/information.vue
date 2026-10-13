@@ -1,6 +1,5 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Photo -->
     <div class="flex flex-col sm:flex-row items-center gap-6 pb-4 border-b border-default">
       <div class="relative group">
         <UAvatar
@@ -61,7 +60,6 @@
       </div>
     </div>
 
-    <!-- Form -->
     <UForm
       :schema="infoSchema"
       :state="formInfo"

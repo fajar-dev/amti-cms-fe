@@ -171,7 +171,6 @@ onMounted(async () => {
     await authService.validateResetPassword(email.value, token.value)
     isValidating.value = false
   } catch {
-    // Global error handler already toasted the failure — no second toast here.
     navigateTo('/auth/forgot-password')
   }
 })

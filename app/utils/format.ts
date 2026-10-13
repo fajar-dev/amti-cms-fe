@@ -1,8 +1,3 @@
-/**
- * Format tanggal & waktu yang mengikuti locale i18n aktif.
- */
-
-/** Kode locale i18n → locale Intl. */
 const INTL_LOCALES: Record<string, string> = {
   en: 'en-US',
   id: 'id-ID'
@@ -12,7 +7,6 @@ export function toIntlLocale(locale: string): string {
   return INTL_LOCALES[locale] ?? 'en-US'
 }
 
-/** Contoh: `12 Okt 2026` */
 export function formatDate(value: string | Date | null | undefined, locale: string, fallback = '-'): string {
   if (!value) return fallback
   return new Date(value).toLocaleDateString(toIntlLocale(locale), {
@@ -22,7 +16,6 @@ export function formatDate(value: string | Date | null | undefined, locale: stri
   })
 }
 
-/** Contoh: `12 Okt 2026, 14.30` */
 export function formatDateTime(value: string | Date | null | undefined, locale: string, fallback = '-'): string {
   if (!value) return fallback
   return new Date(value).toLocaleString(toIntlLocale(locale), {
@@ -35,17 +28,12 @@ export function formatDateTime(value: string | Date | null | undefined, locale: 
   })
 }
 
-/** Contoh: `12.345` (id) / `12,345` (en) */
 export function formatNumber(value: number | null | undefined, locale: string): string {
   return (value ?? 0).toLocaleString(toIntlLocale(locale))
 }
 
 type TranslateFn = (key: string, named?: Record<string, unknown>) => string
 
-/**
- * Contoh: `3 jam lalu`.
- * Teksnya lewat i18n (bukan hardcode Bahasa Indonesia) supaya ikut bahasa aktif.
- */
 export function formatTimeAgo(value: string | Date | null | undefined, t: TranslateFn, fallback = '-'): string {
   if (!value) return fallback
 

@@ -1,6 +1,5 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Loading Skeleton -->
     <div
       v-if="isLoading"
       class="space-y-6"
@@ -11,7 +10,6 @@
       <USkeleton class="h-24 w-full" />
     </div>
 
-    <!-- Meta Form -->
     <UForm
       v-else
       :schema="metaSchema"
@@ -19,7 +17,6 @@
       class="space-y-6"
       @submit="handleSave"
     >
-      <!-- Meta SEO Info -->
       <div class="space-y-4">
         <div class="border-b border-default pb-3">
           <h3 class="text-base font-semibold text-highlighted">
@@ -103,7 +100,6 @@
         </div>
       </div>
 
-      <!-- Media & Branding -->
       <div class="space-y-4 pt-2 border-t border-default">
         <div>
           <h3 class="text-base font-semibold text-highlighted">
@@ -115,7 +111,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Logo -->
           <UFormField
             :label="$t('pages.settings.meta.logo')"
             class="w-full"
@@ -161,7 +156,6 @@
             />
           </UFormField>
 
-          <!-- Favicon -->
           <UFormField
             :label="$t('pages.settings.meta.favicon')"
             class="w-full"
@@ -207,7 +201,6 @@
             />
           </UFormField>
 
-          <!-- OpenGraph Image -->
           <UFormField
             :label="$t('pages.settings.meta.ogImage')"
             class="w-full"
@@ -255,7 +248,6 @@
         </div>
       </div>
 
-      <!-- Action Button -->
       <div
         v-if="canUpdate"
         class="flex justify-end pt-3 border-t border-default"
@@ -317,7 +309,6 @@ const metaSchema = z.object({
   siteName: z.string().trim().min(1, t('pages.settings.meta.siteNameRequired'))
 })
 
-// Satu instance upload per media — preview, status upload, dan rollback ditangani bersama.
 const {
   previewUrl: logoPreview,
   isUploading: isUploadingLogo,

@@ -5,7 +5,6 @@
     :description="$t('components.user.updateModal.description')"
   >
     <template #body>
-      <!-- Avatar Upload Section -->
       <div class="flex flex-col items-center justify-center pb-4 space-y-2">
         <div class="relative group">
           <UAvatar
@@ -176,7 +175,6 @@ async function loadRoles() {
   }
 }
 
-// Schema for updating (password is optional, min 6 if filled)
 const schema = z.object({
   name: z.string().min(1, t('components.user.updateModal.nameRequired')),
   email: z.string().min(1, t('components.user.updateModal.emailRequired')).email(t('components.user.updateModal.emailInvalid')),
@@ -216,11 +214,11 @@ const populateForm = () => {
     form.name = props.user.name
     form.email = props.user.email
     form.password = ''
-    form.photo = props.user.photo // will contain the MinIO presigned URL (or path)
+    form.photo = props.user.photo
     form.isActive = props.user.isActive
     form.roleId = props.user.roleId ?? props.user.role?.id ?? null
     photoFile.value = null
-    setPreviewFromUrl(props.user.photo) // display existing photo
+    setPreviewFromUrl(props.user.photo)
   }
 }
 
@@ -234,7 +232,6 @@ const handleSubmit = async () => {
   if (!props.user) return
   isSubmitting.value = true
 
-  // Build payload
   const payload: UserPayload = {
     name: form.name,
     email: form.email,
@@ -243,7 +240,6 @@ const handleSubmit = async () => {
     roleId: form.roleId ?? null
   }
 
-  // Only send password if user filled it
   if (form.password && form.password.trim() !== '') {
     payload.password = form.password
   }

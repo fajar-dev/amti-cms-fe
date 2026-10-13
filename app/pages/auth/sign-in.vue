@@ -1,8 +1,6 @@
 <template>
   <div class="w-full max-w-md mx-auto">
-    <!-- Logo and Header -->
     <div class="flex flex-col gap-5 mb-6">
-      <!-- Logo -->
       <BrandLogo />
       <div class="space-y-1">
         <h1 class="text-3xl font-bold text-highlighted">
@@ -14,14 +12,12 @@
       </div>
     </div>
 
-    <!-- Form fields with standard Nuxt UI v4 validation -->
     <UForm
       :state="state"
       :schema="loginSchema"
       class="space-y-4"
       @submit="handleLogin"
     >
-      <!-- Email Input -->
       <UFormField
         :label="$t('pages.auth.signIn.emailLabel')"
         name="email"
@@ -37,7 +33,6 @@
         />
       </UFormField>
 
-      <!-- Password Input -->
       <UFormField
         :label="$t('pages.auth.signIn.passwordLabel')"
         name="password"
@@ -72,9 +67,7 @@
         </UInput>
       </UFormField>
 
-      <!-- Main Actions -->
       <div class="flex flex-col gap-3 pt-2">
-        <!-- Submit Login Button -->
         <UButton
           type="submit"
           block
@@ -84,13 +77,11 @@
           {{ $t('pages.auth.signIn.login') }}
         </UButton>
 
-        <!-- OR Divider -->
         <USeparator
           :label="$t('pages.auth.signIn.or')"
           color="neutral"
         />
 
-        <!-- Sign In with Google Button -->
         <UButton
           type="button"
           block
@@ -139,7 +130,6 @@
 import { z } from 'zod'
 import { authService } from '~/services/auth-service'
 
-// Bind to the newly extracted Auth Layout
 definePageMeta({
   layout: 'auth',
   middleware: 'guest'
@@ -147,12 +137,10 @@ definePageMeta({
 
 const { t } = useI18n()
 
-// SEO meta configurations for auth flow
 useHead({
   title: t('pages.auth.signIn.title')
 })
 
-// Form state using reactive model representation
 const state = reactive({
   email: '',
   password: ''
@@ -163,7 +151,6 @@ const loading = ref(false)
 const googleLoading = ref(false)
 const toast = useToast()
 
-// Reusable toast notification helper
 const showToast = (type: 'success' | 'error', title: string) => {
   toast.add({
     title,
@@ -172,13 +159,11 @@ const showToast = (type: 'success' | 'error', title: string) => {
   })
 }
 
-// Zod Validation Schema mapped automatically by UForm
 const loginSchema = z.object({
   email: z.string().min(1, t('pages.auth.signIn.emailRequired')),
   password: z.string().min(1, t('pages.auth.signIn.passwordRequired'))
 })
 
-// Google Auth integration using composables
 const { isReady, login: triggerGoogleLogin } = useCodeClient({
   onSuccess: async (response) => {
     try {
@@ -201,7 +186,6 @@ const handleGoogleLogin = () => {
   triggerGoogleLogin()
 }
 
-// Credentials Auth Submission handler
 const handleLogin = async () => {
   loading.value = true
   try {

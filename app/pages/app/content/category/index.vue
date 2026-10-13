@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <Header
       :title="$t('pages.category.title')"
       :description="$t('pages.category.description')"
@@ -33,7 +32,6 @@
       </template>
     </DataTable>
 
-    <!-- Modals -->
     <ContentCategoryAddModal
       v-model="showAddModal"
       @created="fetchCategories"
@@ -69,25 +67,21 @@ const UDropdownMenu = resolveComponent('UDropdownMenu')
 const { t, locale } = useI18n()
 const toast = useToast()
 
-// State
 const data = ref<Category[]>([])
 const isLoading = ref(false)
 const selectedCategory = ref<Category | null>(null)
 
-// Modal states
 const showAddModal = ref(false)
 const showUpdateModal = ref(false)
 const showDeleteModal = ref(false)
 const isDeleting = ref(false)
 
-// Pagination meta
 const meta = reactive({
   total: 0,
   from: 0,
   to: 0
 })
 
-// Fetch categories from API
 async function fetchCategories() {
   isLoading.value = true
   try {
@@ -108,7 +102,6 @@ async function fetchCategories() {
 const { can } = usePermission()
 const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchCategories)
 
-// Table columns
 const columns = computed<TableColumn<Category>[]>(() => {
   const cols: TableColumn<Category>[] = [
     {
@@ -224,7 +217,6 @@ async function handleDelete() {
   }
 }
 
-// Initial fetch
 onMounted(() => {
   fetchCategories()
 })

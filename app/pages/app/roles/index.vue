@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <Header
       :title="$t('pages.roles.title')"
       :description="$t('pages.roles.description')"
@@ -33,7 +32,6 @@
       </template>
     </DataTable>
 
-    <!-- Modals -->
     <RbacAddModal
       v-model="showAddModal"
       @created="fetchRoles"
@@ -72,25 +70,21 @@ const UAvatar = resolveComponent('UAvatar')
 const { t } = useI18n()
 const toast = useToast()
 
-// State
 const data = ref<Role[]>([])
 const isLoading = ref(false)
 const selectedRole = ref<Role | null>(null)
 
-// Modal states
 const showAddModal = ref(false)
 const showUpdateModal = ref(false)
 const showDeleteModal = ref(false)
 const isDeleting = ref(false)
 
-// Pagination meta
 const meta = reactive({
   total: 0,
   from: 0,
   to: 0
 })
 
-// Fetch roles from API
 async function fetchRoles() {
   isLoading.value = true
   try {
@@ -143,7 +137,6 @@ function getRowItems(row: Row<Role>): DropdownMenuItem[] {
   return items
 }
 
-// Table columns
 const columns = computed<TableColumn<Role>[]>(() => {
   const cols: TableColumn<Role>[] = [
     {
@@ -243,7 +236,6 @@ const columns = computed<TableColumn<Role>[]>(() => {
   return cols
 })
 
-// Handle delete
 async function handleDelete() {
   if (!selectedRole.value) return
   isDeleting.value = true

@@ -39,7 +39,7 @@ export class ApiService {
                 color: 'error'
               })
             } catch {
-              // Toast fallback
+              /* ignore */
             }
             if (window.location.pathname !== '/app') {
               navigateTo('/app')
@@ -62,7 +62,7 @@ export class ApiService {
                 return instance(originalRequest)
               }
             } catch {
-              // Refresh failed, proceed to logout
+              /* ignore */
             }
           }
 

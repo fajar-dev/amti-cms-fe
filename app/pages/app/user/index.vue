@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <Header
       :title="$t('pages.user.title')"
       :description="$t('pages.user.description')"
@@ -33,7 +32,6 @@
       </template>
     </DataTable>
 
-    <!-- Modals -->
     <UserAddModal
       v-model="showAddModal"
       @created="fetchUsers"
@@ -70,25 +68,21 @@ const UAvatar = resolveComponent('UAvatar')
 const UBadge = resolveComponent('UBadge')
 const { t, locale } = useI18n()
 
-// State
 const data = ref<User[]>([])
 const isLoading = ref(false)
 const selectedUser = ref<User | null>(null)
 
-// Modal states
 const showAddModal = ref(false)
 const showUpdateModal = ref(false)
 const showDeleteModal = ref(false)
 const isDeleting = ref(false)
 
-// Pagination meta
 const meta = reactive({
   total: 0,
   from: 0,
   to: 0
 })
 
-// Fetch users from API
 async function fetchUsers() {
   isLoading.value = true
   try {
@@ -109,7 +103,6 @@ async function fetchUsers() {
 const { can } = usePermission()
 const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchUsers)
 
-// Table columns
 const columns = computed<TableColumn<User>[]>(() => {
   const cols: TableColumn<User>[] = [
     {
@@ -239,7 +232,6 @@ function getRowItems(row: Row<User>): DropdownMenuItem[] {
   return items
 }
 
-// Handle delete
 const toast = useToast()
 const handleDelete = async () => {
   if (!selectedUser.value) return
@@ -266,7 +258,6 @@ const handleDelete = async () => {
   }
 }
 
-// Initial fetch
 onMounted(() => {
   fetchUsers()
 })

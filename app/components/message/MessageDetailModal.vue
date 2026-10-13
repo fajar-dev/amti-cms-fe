@@ -9,7 +9,6 @@
         v-if="message"
         class="space-y-5"
       >
-        <!-- Header Info Card -->
         <div class="bg-muted/15 border border-default rounded-lg p-4 space-y-3">
           <div class="flex items-start justify-between gap-3">
             <div>
@@ -71,7 +70,6 @@
           </div>
         </div>
 
-        <!-- Message Content -->
         <div class="space-y-2">
           <h4 class="text-xs font-semibold text-muted uppercase tracking-wider">
             {{ $t('pages.messages.message') }}
@@ -88,7 +86,6 @@
         v-if="message"
         class="flex flex-wrap items-center justify-between gap-2 w-full"
       >
-        <!-- Left Action: Delete -->
         <div>
           <UButton
             v-if="can('messages.delete')"
@@ -101,7 +98,6 @@
           </UButton>
         </div>
 
-        <!-- Right Actions: Reply & Status Toggle & Close -->
         <div class="flex items-center gap-2">
           <UButton
             v-if="can('messages.update')"
@@ -153,7 +149,6 @@ const mailtoLink = computed(() => {
   return `mailto:${props.message.email}?subject=${subject}`
 })
 
-// Auto mark as read on view if unread
 watch(open, async (isOpen) => {
   if (isOpen && props.message && !props.message.isRead && can('messages.update')) {
     try {
@@ -162,7 +157,7 @@ watch(open, async (isOpen) => {
         emit('updated', res.data)
       }
     } catch {
-      // Silently ignore background mark-as-read failure
+      /* ignore */
     }
   }
 })

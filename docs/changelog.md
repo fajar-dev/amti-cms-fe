@@ -4,6 +4,89 @@ Semua perubahan penting pada project ini didokumentasikan di file ini.
 
 Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
+## [Unreleased] — 2026-10-13
+
+### Added
+- **Modul Klien & Mitra** di panel admin (`/app/client`):
+  - Service `clientService` (`app/services/client-service.ts`) untuk CRUD dan upload logo klien.
+  - Komponen dialog `AddModal` dan `UpdateModal` (`app/components/client/`) dengan unggah logo interaktif via MinIO.
+  - Halaman manajemen `app/pages/app/client/index.vue` dengan DataTable, pencarian, filter status, pengurutan, dan paginasi.
+  - Navigasi sidebar `/app/client` terintegrasi dengan pengecekan permission `clients.view`.
+- **Integrasi Klien Dinamis di Landing Page**:
+  - Halaman utama (`app/pages/index.vue`) mengambil daftar klien aktif dari endpoint publik backend via `useAsyncData('public-clients', ...)`.
+  - Komponen `SiteClientLogos.vue` mendukung logo interaktif dengan tautan website client (`target="_blank"`, `rel="noopener noreferrer"`).
+  - Fallback otomatis ke logo statis jika backend belum mengembalikan data klien.
+- **Lokalisasi**:
+  - Dukungan dwibahasa penuh (ID & EN) untuk halaman dan modal Klien (`components.client`, `pages.client`).
+
+### Fixed
+- Memperbaiki tautan kartu EEWS, SHMS, dan artikel "read more" di landing page agar navigasi berfungsi secara responsif.
+
+---
+
+## [Unreleased] — 2026-10-12 (website publik)
+
+### Added
+- **Website publik** di aplikasi yang sama dengan panel admin, dengan rute `/`, `/eews`, `/shms`,
+  `/article`, dan `/article/[slug]`.
+- `app/data/site-content.ts` — seluruh konten website (home, about, EEWS, SHMS, artikel) disalin
+  **verbatim** dari amti.co.id dan dikumpulkan di satu file supaya mudah diaudit. Tidak ada kalimat
+  yang dikarang; bagian yang teksnya rusak di situs lama (DAM/LANDSLIDE/PORT/RAILWAY memakai teks
+  HIGHWAY) dibiarkan kosong.
+- Komponen website yang bisa dipakai ulang di `app/components/site/`: `SiteNavbar`, `SiteFooter`,
+  `SiteBackground` (pola garis/grid + kontur + gradient mesh + butiran), `SiteCurveDivider`,
+  `SiteReveal` (animasi saat masuk viewport), `SiteSectionHeader`, `SiteVideoPlayer` (click-to-play),
+  `SiteWaveDiagram` (animasi gelombang P/S), `SiteEntryBlock`, `SiteCard`
+  (permukaan kartu standar + sorot kursor), `SiteFrame` (bingkai media + penanda sudut),
+  `SiteClientLogos` (deretan logo klien), `SiteContactSection` + `SiteContactForm`.
+- **Formulir kontak publik** di halaman utama (bagian `#contact`), mengirim ke endpoint
+  `POST /api/messages` yang **sudah ada** dan publik — jadi tidak ada modul backend baru. Kiriman
+  masuk ke menu **Messages** di panel admin seperti pesan lainnya. Formulir memakai Zod, honeypot
+  anti-bot, dan panel konfirmasi setelah terkirim.
+- `app/composables/usePointerGlow.ts` — efek sorot kursor untuk kartu. Nilai posisi ditulis langsung
+  ke DOM sebagai CSS variable (bukan state reaktif) supaya gerakan mouse tidak memicu render ulang.
+- Strip angka di hero: `24/7` (dikutip dari subjudul) serta jumlah sektor EEWS dan jenis struktur
+  SHMS yang **dihitung dari data halaman**, bukan klaim baru.
+- `app/layouts/default.vue` — chrome website publik (navbar sticky, footer kontak, tombol WhatsApp
+  & kembali ke atas).
+- Pola latar SVG sendiri di `public/amti/patterns/` (garis, grid, kontur) karena pola bawaan
+  `public/grid.svg` dirancang untuk latar gelap.
+- Method `articleService.getPublicList()` + tipe `PublicArticleCard` untuk endpoint publik baru
+  `GET /api/articles` (hanya artikel publish, tanpa `content`).
+
+### Changed
+- **Rendering hybrid**: `ssr: true` dengan `routeRules` — website publik dirender di server agar
+  terindeks mesin pencari, sedangkan `/app/**` dan `/auth/**` tetap SPA seperti sebelumnya.
+- `auth.global.ts` memeriksa rute publik lebih dulu sehingga SSR halaman publik tidak memicu
+  pemanggilan `/auth/me` di server.
+- `BrandLogo.vue` menerima prop opsional `to` (default `/app`) agar bisa dipakai di navbar publik.
+- Halaman `/article` mengambil artikel dari CMS, bukan menyalin excerpt placeholder situs lama;
+  kunjungan artikel dicatat lewat endpoint publik `POST /api/content/articles/:id/view`.
+
+### Fixed
+- Aset asli AMTI (27 gambar + 2 video) dipulihkan ke `public/amti/` dari riwayat git.
+- **Kelas `aspect-*` pecahan tidak pernah ter-generate** (`aspect-4/3`, `aspect-16/10`, `aspect-16/9`
+  tidak ada di CSS hasil build) sehingga semua bingkai gambar/video tidak punya rasio dan foto
+  dirender seukuran aslinya. Diganti ke `aspect-video`/`aspect-square` yang terbukti ter-generate.
+- **Hero berantakan**: `SiteCurveDivider` diberi kelas `absolute` padahal root komponennya sudah
+  `relative`, sehingga kurva tidak ter-posisi absolut dan menjadi anak flex — teks dan kurva duduk
+  berdampingan. Pembatas kurva di hero kemudian **dihapus** (hero berakhir dengan tepi tegas), dan
+  pita teks berjalan di bawahnya juga dihapus.
+- **Halaman utama gagal SSR (500)** karena nilai i18n `nama@perusahaan.com`: vue-i18n membaca `@`
+  sebagai sintaks *linked message*. Ditulis memakai escape yang sudah dipakai proyek ini di kunci
+  lain, yaitu `{'@'}`.
+- `articlePage.title` tempatnya sempat hilang saat halaman artikel ditata ulang; dikembalikan.
+
+### Catatan
+- Video **tidak** autoplay (total 88 MB, tidak ada `ffmpeg` untuk kompres di mesin ini) — diputar
+  lewat modal dengan `preload="metadata"` + poster. Sebaiknya dikompres agar bisa dipakai lebih bebas.
+- Footer sementara memakai kontak asli dari situs (bukan `/api/settings/public`) karena Settings di
+  CMS masih berisi data contoh (`info@amti.id`, `Jakarta, Indonesia`).
+- Halaman `Privacy Policy` dan `Contact` milik situs lama tidak dibuat karena tautannya mati (`#`)
+  dan Anda tidak memintanya.
+
+---
+
 ## [Unreleased] — 2026-10-12
 
 ### Added

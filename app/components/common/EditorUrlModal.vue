@@ -54,12 +54,6 @@
 <script setup lang="ts">
 import { z } from 'zod'
 
-/**
- * Modal input URL untuk editor: menggantikan `window.prompt` yang tidak bisa
- * memakai i18n dan tanpa validasi.
- *
- * URL boleh dikosongkan pada mode link — artinya tautan dilepas.
- */
 const props = withDefaults(defineProps<{
   mode: 'link' | 'image'
   initialUrl?: string

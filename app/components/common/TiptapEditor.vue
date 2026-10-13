@@ -1,11 +1,9 @@
 <template>
   <div class="border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden bg-white dark:bg-neutral-900 focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent transition-all">
-    <!-- Toolbar -->
     <div
       v-if="editor"
       class="flex flex-wrap items-center gap-1 p-2 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950/50"
     >
-      <!-- History -->
       <div class="flex items-center gap-0.5 border-r border-neutral-200 dark:border-neutral-800 pr-1.5 mr-1">
         <UButton
           size="xs"
@@ -25,7 +23,6 @@
         />
       </div>
 
-      <!-- Headings -->
       <div class="flex items-center gap-0.5 border-r border-neutral-200 dark:border-neutral-800 pr-1.5 mr-1">
         <UButton
           size="xs"
@@ -50,7 +47,6 @@
         />
       </div>
 
-      <!-- Formatting -->
       <div class="flex items-center gap-0.5 border-r border-neutral-200 dark:border-neutral-800 pr-1.5 mr-1">
         <UButton
           size="xs"
@@ -82,7 +78,6 @@
         />
       </div>
 
-      <!-- Lists -->
       <div class="flex items-center gap-0.5 border-r border-neutral-200 dark:border-neutral-800 pr-1.5 mr-1">
         <UButton
           size="xs"
@@ -107,7 +102,6 @@
         />
       </div>
 
-      <!-- Insert Media / Link -->
       <div class="flex items-center gap-0.5 border-r border-neutral-200 dark:border-neutral-800 pr-1.5 mr-1">
         <UButton
           size="xs"
@@ -140,7 +134,6 @@
         />
       </div>
 
-      <!-- Clear Formatting -->
       <UButton
         size="xs"
         variant="ghost"
@@ -150,13 +143,11 @@
       />
     </div>
 
-    <!-- Editor Content Area -->
     <EditorContent
       :editor="editor"
       class="tiptap-content p-4 min-h-96 max-h-screen overflow-y-auto outline-none focus:outline-none"
     />
 
-    <!-- Modal input URL (menggantikan window.prompt) -->
     <CommonEditorUrlModal
       v-model="showLinkModal"
       mode="link"
@@ -226,7 +217,6 @@ const editor = useEditor({
   }
 })
 
-// Watch modelValue from outside (e.g. when data is loaded from API)
 watch(
   () => props.modelValue,
   (newValue) => {
@@ -266,7 +256,6 @@ const applyImage = (url: string) => {
 </script>
 
 <style>
-/* Tiptap Typography styles */
 .tiptap-content .ProseMirror {
   outline: none;
   min-height: 280px;

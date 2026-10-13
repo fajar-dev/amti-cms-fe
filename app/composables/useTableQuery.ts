@@ -38,14 +38,6 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
     }, 300)
   })
 
-  /**
-   * Render function untuk header kolom yang bisa diklik — dipakai sebagai `header`
-   * pada definisi kolom UTable. `label` berupa fungsi (mis. `() => t('...')`) supaya
-   * teksnya ikut berubah saat bahasa diganti.
-   *
-   * Chevron dirender `SortableHeader.vue` (memakai `UIcon`) karena `UIcon` tidak bisa
-   * dipakai dari render function di file `.ts` ini.
-   */
   const sortHeader = (label: () => string, column: string, align: 'start' | 'center' | 'end' = 'start') => {
     return () => h(SortableHeader, {
       label,

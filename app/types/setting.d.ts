@@ -12,8 +12,10 @@ export interface Setting {
   ogImage: string | null
   ogImageUrl?: string | null
   phone: string | null
+  whatsapp?: string | null
   email: string | null
   address: string | null
+  mapsUrl?: string | null
   facebook: string | null
   instagram: string | null
   tiktok: string | null
@@ -37,8 +39,10 @@ export interface SettingMetaPayload {
 
 export interface SettingContactPayload {
   phone?: string | null
+  whatsapp?: string | null
   email?: string | null
   address?: string | null
+  mapsUrl?: string | null
 }
 
 export interface SettingSocialPayload {

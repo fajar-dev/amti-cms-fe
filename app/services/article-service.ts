@@ -1,7 +1,7 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import type { ApiResponse } from '../types/api'
-import type { Article, ArticlePayload, ArticleStatus, ArticleView } from '../types/content'
+import type { Article, ArticlePayload, ArticleStatus, ArticleView, PublicArticleCard } from '../types/content'
 import type { SortOrder } from '../composables/useTableQuery'
 
 export interface ArticleQueryFilters {
@@ -33,6 +33,32 @@ export class ArticleService {
       const response = await apiService.client.get<ApiResponse<Article[]>>(
         `/content/articles?${params.toString()}`,
         this.authHeaders
+      )
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
+  async getPublicList(
+    page = 1,
+    perPage = 9,
+    q = '',
+    categoryId?: number,
+    sortBy = '',
+    order: SortOrder = 'DESC'
+  ): Promise<ApiResponse<PublicArticleCard[]>> {
+    try {
+      const params = new URLSearchParams({ page: String(page), limit: String(perPage), q })
+      if (categoryId) {
+        params.set('categoryId', String(categoryId))
+      }
+      if (sortBy) {
+        params.set('sortBy', sortBy)
+        params.set('order', order)
+      }
+      const response = await apiService.client.get<ApiResponse<PublicArticleCard[]>>(
+        `/articles?${params.toString()}`
       )
       return response.data
     } catch (error) {
