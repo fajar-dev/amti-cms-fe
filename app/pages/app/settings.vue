@@ -6,18 +6,6 @@
     >
       <template #tabs>
         <NuxtLink
-          v-if="can('settings.meta.view') || can('settings.view')"
-          to="/app/settings/meta"
-          class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
-          :class="[
-            $route.path === '/app/settings/meta' || $route.path === '/app/settings'
-              ? 'border-primary text-primary font-semibold'
-              : 'border-transparent text-muted hover:text-highlighted'
-          ]"
-        >
-          {{ $t('pages.settings.index.tabMeta') }}
-        </NuxtLink>
-        <NuxtLink
           v-if="can('settings.contact.view') || can('settings.view')"
           to="/app/settings/contact"
           class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
@@ -59,10 +47,7 @@ definePageMeta({
     (to) => {
       const { can } = usePermission()
       if (to.path === '/app/settings') {
-        if (can('settings.meta.view') || can('settings.view')) {
-          return navigateTo('/app/settings/meta')
-        }
-        if (can('settings.contact.view')) {
+        if (can('settings.contact.view') || can('settings.view')) {
           return navigateTo('/app/settings/contact')
         }
         if (can('settings.social.view')) {

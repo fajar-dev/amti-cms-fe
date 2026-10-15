@@ -16,7 +16,10 @@
       "minutes": "{count} mnt lalu",
       "hours": "{count} jam lalu",
       "days": "{count} hari lalu"
-    }
+    },
+    "removeMedia": "Hapus media",
+    "previewImage": "Pratinjau gambar: {name}",
+    "closePreview": "Tutup pratinjau"
   },
   "components": {
     "editorUrlModal": {
@@ -54,6 +57,7 @@
         "roles": "Peran & Hak Akses",
         "settings": "Pengaturan",
         "messages": "Pesan",
+        "liveChat": "Live Chat",
         "feedback": "Feedback"
       }
     },
@@ -466,13 +470,69 @@
       "sendAnother": "Kirim pesan lain",
       "errorTitle": "Pesan gagal dikirim. Silakan coba lagi."
     },
+    "chat": {
+      "widgetTitle": "Live Chat Dukungan",
+      "onlineSupport": "Tim kami siap membantu Anda",
+      "waitingAgent": "Menunggu respon agen AMTI...",
+      "connectedWith": "Terhubung dengan {name}",
+      "ticketResolved": "Tiket percakapan telah diselesaikan",
+      "ticketClosed": "Percakapan telah ditutup",
+      "endChat": "Akhiri Percakapan",
+      "minimize": "Kecilkan Chat",
+      "formTitle": "Mulai Percakapan",
+      "formSubtitle": "Silakan lengkapi informasi Anda untuk terhubung langsung dengan tim kami.",
+      "nameLabel": "Nama Lengkap",
+      "namePlaceholder": "Nama lengkap Anda",
+      "phoneLabel": "Nomor Telepon",
+      "phonePlaceholder": "081234567890",
+      "emailLabel": "Email",
+      "emailPlaceholder": "nama{'@'}perusahaan.com",
+      "companyLabel": "Perusahaan / Instansi",
+      "companyPlaceholder": "Nama perusahaan Anda",
+      "nameRequired": "Nama lengkap wajib diisi",
+      "phoneRequired": "Nomor telepon wajib diisi",
+      "emailRequired": "Email wajib diisi",
+      "emailInvalid": "Format email tidak valid",
+      "companyRequired": "Nama perusahaan wajib diisi",
+      "initialMessageLabel": "Pesan Awal (Opsional)",
+      "initialMessagePlaceholder": "Ceritakan pertanyaan atau kebutuhan Anda...",
+      "startButton": "Mulai Percakapan",
+      "startFailed": "Gagal memulai percakapan. Silakan coba kembali.",
+      "ticketLabel": "Tiket",
+      "status": {
+        "waiting": "Menunggu",
+        "in_progress": "Berlangsung",
+        "resolved": "Selesai",
+        "closed": "Ditutup"
+      },
+      "waitingNotice": "Agen kami akan segera bergabung ke percakapan ini. Harap menunggu sejenak.",
+      "sessionEndedNotice": "Sesi percakapan ini telah berakhir.",
+      "startNewChat": "Mulai Chat Baru",
+      "attachFile": "Lampirkan Dokumen atau Gambar",
+      "inputPlaceholder": "Ketik pesan Anda...",
+      "openChat": "Buka Live Chat",
+      "closeChat": "Tutup Live Chat",
+      "image": "Lampiran gambar",
+      "document": "Lampiran dokumen",
+      "messageTooLong": "Pesan maksimal 2000 karakter",
+      "messageRequired": "Tulis pesan atau tambahkan lampiran",
+      "removeAttachment": "Hapus lampiran",
+      "sendMessage": "Kirim pesan"
+    },
     "eews": {
       "title": "Earthquake Warning System (EEWS)",
       "body": "Dengan mendeteksi gelombang P, gelombang pertama yang tiba saat gempa bumi, sistem Earthquake Early Warning System (EEWS) kami memberikan peringatan krusial beberapa detik hingga menit sebelum gelombang S yang lebih destruktif tiba. Notifikasi dini ini memungkinkan tindakan cepat seperti evakuasi atau penghentian operasi kritis untuk menyelamatkan nyawa dan meminimalkan kerusakan.",
       "sectors": {
         "buildings": {
           "title": "GEDUNG & BANGUNAN",
-          "tags": ["RUMAH SAKIT", "APARTEMEN", "FASILITAS PENDIDIKAN", "KANTOR", "MALL", "HOTEL"],
+          "tags": [
+            "RUMAH SAKIT",
+            "APARTEMEN",
+            "FASILITAS PENDIDIKAN",
+            "KANTOR",
+            "MALL",
+            "HOTEL"
+          ],
           "copy": "Gempa bumi dapat menyebabkan kerusakan parah termasuk keruntuhan bangunan dalam skala besar dan korban jiwa. Peristiwa mendadak ini memicu kepanikan luas. Kerusakan bangunan juga dapat memutus pasokan listrik, memicu kebocoran pipa gas, hingga ledakan. Layanan publik terganggu, membahayakan prosedur operasi kritis di rumah sakit, serta keselamatan siswa di sekolah. AMTI Earthquake Early Warning System (EEWS) dapat mengurangi risiko kerusakan dan korban jiwa melalui integrasi dengan Building Management System (BMS). EEWS ini memitigasi dampak gempa dengan tindakan pencegahan otomatis seperti mode aman elevator dan gerbang, penurunan tekanan gas, pemutusan aliran limbah dan listrik, serta peringatan melalui alarm, SMS, WhatsApp, dan sistem audio-visual. Selain itu, sistem dapat menghentikan operasi sensitif secara otomatis guna meminimalkan kerugian lanjutan.",
           "actions": [
             "Peringatan audio-visual",
@@ -484,7 +544,12 @@
         },
         "transportation": {
           "title": "TRANSPORTASI",
-          "tags": ["BANDARA", "KERETA API", "PELABUHAN", "BUS"],
+          "tags": [
+            "BANDARA",
+            "KERETA API",
+            "PELABUHAN",
+            "BUS"
+          ],
           "copy": "Gempa bumi menimbulkan ancaman serius bagi sistem transportasi seperti bandara, pelabuhan, kereta api, dan armada kendaraan, yang berpotensi mengganggu operasional serta membahayakan penumpang dan operator. Peringatan dini memungkinkan otoritas menerapkan protokol keselamatan secara cepat, melindungi penumpang dan infrastruktur kritis. Earthquake Early Warning System (EEWS) dari AMTI dapat memicu pengereman darurat otomatis kereta api, pengalihan rute lalu lintas udara, serta peringatan pada rambu jalan digital guna mencegah kecelakaan dan memastikan keselamatan bersama.",
           "actions": [
             "Mekanisme pengereman otomatis",
@@ -495,7 +560,13 @@
         },
         "utilities": {
           "title": "UTILITAS & ENERGI",
-          "tags": ["PEMBANGKIT LISTRIK", "DISTRIBUSI LISTRIK", "PASOKAN AIR", "PASOKAN GAS", "SISTEM AIR LIMBAH"],
+          "tags": [
+            "PEMBANGKIT LISTRIK",
+            "DISTRIBUSI LISTRIK",
+            "PASOKAN AIR",
+            "PASOKAN GAS",
+            "SISTEM AIR LIMBAH"
+          ],
           "copy": "Getaran gempa dapat merusak pipa, katup, dan stasiun pompa, memicu kebocoran kimia berbahaya atau terputusnya pasokan vital air bersih dan listrik bagi masyarakat. Earthquake Early Warning System (EEWS) dari AMTI dapat memicu aksi preventif untuk melindungi pembangkit dan gardu listrik, seperti penurunan tekanan gas, pencegahan penguapan hidrogen, proteksi gardu induk, isolasi aliran pipa limbah, serta penghentian aman aliran listrik dan air. Sistem juga menerbitkan laporan pasca-kejadian untuk asesmen cepat integritas jaringan pipa.",
           "actions": [
             "Kontrol tekanan air hidran",
@@ -506,7 +577,11 @@
         },
         "oilGasChemicals": {
           "title": "MINYAK, GAS & KIMIA",
-          "tags": ["FASILITAS MIGAS", "PABRIK KIMIA", "KILANG MINYAK"],
+          "tags": [
+            "FASILITAS MIGAS",
+            "PABRIK KIMIA",
+            "KILANG MINYAK"
+          ],
           "copy": "Gempa bumi berpotensi memicu ledakan, kebakaran, kebocoran kimia, dan pencemaran lingkungan pada fasilitas minyak dan gas. Dengan peringatan dini dari Earthquake Early Warning System (EEWS) AMTI, tersedia waktu maksimal untuk memicu langkah pengendalian kerusakan, seperti menurunkan atau menutup aliran gas secara otomatis. Langkah ini membatasi kerusakan potensial sembari menjaga infrastruktur kritis tetap aman. EEWS AMTI juga mengirim peringatan instan via alarm, WhatsApp, SMS, dan sistem audio-visual kepada seluruh pekerja untuk meminimalkan korban cedera dan mempercepat pemulihan fasilitas.",
           "actions": [
             "Turunkan tekanan gas",
@@ -518,7 +593,11 @@
         },
         "mines": {
           "title": "PERTAMBANGAN",
-          "tags": ["TRANSPORTASI TAMBANG", "INFRASTRUKTUR", "ALAT BERAT"],
+          "tags": [
+            "TRANSPORTASI TAMBANG",
+            "INFRASTRUKTUR",
+            "ALAT BERAT"
+          ],
           "copy": "Gempa bumi dapat menimbulkan kerusakan signifikan pada infrastruktur tambang dan membahayakan keselamatan para pekerja operasional. Earthquake Early Warning System (EEWS) dari AMTI memberikan peringatan dini sehingga para pekerja memiliki waktu untuk berlindung atau dievakuasi sebelum getaran utama tiba. Peringatan gempa juga dapat memicu penghentian otomatis mesin alat berat, menunda peledakan terencana, dan mengisolasi material berbahaya guna melindungi armada mesin dan keselamatan regu kerja.",
           "actions": [
             "Tunda peledakan terencana",
@@ -535,37 +614,79 @@
       "structures": {
         "bridges": {
           "title": "JEMBATAN",
-          "keywords": ["PEMANTAUAN JEMBATAN", "KESEHATAN STRUKTUR", "ANALISIS TEGANGAN", "PERINGATAN KESELAMATAN", "PERGESERAN DINAMIS"],
+          "keywords": [
+            "PEMANTAUAN JEMBATAN",
+            "KESEHATAN STRUKTUR",
+            "ANALISIS TEGANGAN",
+            "PERINGATAN KESELAMATAN",
+            "PERGESERAN DINAMIS"
+          ],
           "copy": "Solusi Structure Health Monitoring System (SHMS) kami dirancang untuk memantau kondisi jembatan secara real-time, memberikan wawasan kritis terhadap integritas struktur dan potensi keausan. Peringatan dini memungkinkan pemeliharaan preventif dan menjamin keselamatan jangka panjang, mencegah kegagalan katastropik, serta memperpanjang usia pakai infrastruktur."
         },
         "buildings": {
           "title": "GEDUNG & BANGUNAN TINGGI",
-          "keywords": ["GEDUNG PENCAKAR LANGIT", "RUMAH SAKIT", "PERKANTORAN", "PUSAT PERBELANJAAN", "HUNIAN TINGGI"],
+          "keywords": [
+            "GEDUNG PENCAKAR LANGIT",
+            "RUMAH SAKIT",
+            "PERKANTORAN",
+            "PUSAT PERBELANJAAN",
+            "HUNIAN TINGGI"
+          ],
           "copy": "Structure Health Monitoring System (SHMS) kami memantau infrastruktur penting dari gedung pencakar langit hingga rumah sakit, menghadirkan data kesehatan struktur secara real-time untuk membantu tim pemeliharaan mengambil keputusan tepat, mencegah biaya renovasi besar, serta meningkatkan keamanan penghuni."
         },
         "dam": {
           "title": "BENDUNGAN",
-          "keywords": ["WADUK & RESERVOIR", "PEMANTAUAN REMBESAN", "INTEGRITAS BETON", "KETAHANAN SEISMIK", "PERINGATAN DINI"],
+          "keywords": [
+            "WADUK & RESERVOIR",
+            "PEMANTAUAN REMBESAN",
+            "INTEGRITAS BETON",
+            "KETAHANAN SEISMIK",
+            "PERINGATAN DINI"
+          ],
           "copy": "Pemantauan kesehatan struktur bendungan secara kontinu memberikan deteksi dini rembesan air, deformasi tubuh bendungan, dan perubahan tekanan hidrostatik. Dengan melacak integritas beton dan respons seismik, operator dapat mencegah kegagalan struktural, melindungi masyarakat di hilir, dan menjaga ketahanan cadangan air."
         },
         "landslide": {
           "title": "LERENG & RAWAN LONGSOR",
-          "keywords": ["STABILITAS LERENG", "PERGERAKAN TANAH", "TEKANAN AIR PORI", "PERINGATAN DINI", "PEMANTAUAN GEOTEKNIK"],
+          "keywords": [
+            "STABILITAS LERENG",
+            "PERGERAKAN TANAH",
+            "TEKANAN AIR PORI",
+            "PERINGATAN DINI",
+            "PEMANTAUAN GEOTEKNIK"
+          ],
           "copy": "Sistem pemantauan geoteknik dan stabilitas lereng kami menghadirkan deteksi dini pergeseran tanah, saturasi air pori, dan ketidakstabilan tebing. Analitik sensor real-time memberikan peringatan dini sebelum pergerakan kritis terjadi, mengamankan jalur transportasi, infrastruktur vital, dan pemukiman dari bahaya tanah longsor."
         },
         "port": {
           "title": "PELABUHAN & DERMAGA",
-          "keywords": ["TERMINAL MARITIM", "STABILITAS DINDING DERMAGA", "BENTURAN KAPAL", "PENILAIAN KOROSI", "PENGARUH GELOMBANG"],
+          "keywords": [
+            "TERMINAL MARITIM",
+            "STABILITAS DINDING DERMAGA",
+            "BENTURAN KAPAL",
+            "PENILAIAN KOROSI",
+            "PENGARUH GELOMBANG"
+          ],
           "copy": "Dirancang untuk lingkungan laut yang menantang, sistem Structure Health Monitoring System (SHMS) kami memantau integritas dinding dermaga (quay wall), trestle, dan dermaga kargo di bawah beban pasang surut serta benturan sandar kapal. Telemetri real-time mendeteksi penurunan tanah dan kelelahan material lebih awal, menjaga kelancaran logistik pelabuhan dan memperpanjang umur operasional terminal."
         },
         "railway": {
           "title": "JALUR KERETA API & VIADUK",
-          "keywords": ["INTEGRITAS REL", "JEMBATAN VIADUK", "DEFLEKSI DINAMIS", "STABILITAS BALLAST", "KERETA CEPAT"],
+          "keywords": [
+            "INTEGRITAS REL",
+            "JEMBATAN VIADUK",
+            "DEFLEKSI DINAMIS",
+            "STABILITAS BALLAST",
+            "KERETA CEPAT"
+          ],
           "copy": "Pemantauan infrastruktur perkeretaapian menyediakan penilaian berkelanjutan terhadap rel, viaduk, dan jembatan layang di bawah beban dinamis kereta api berkecepatan tinggi. Notifikasi anomali getaran dan pergeseran geometri rel membantu tim pemeliharaan mencegah risiko anjlok dan mengoptimalkan jadwal perbaikan tanpa mengganggu operasional kereta."
         },
         "tunnels": {
           "title": "TEROWONGAN",
-          "keywords": ["STRUKTUR BAWAH TANAH", "PEMANTAUAN TEGANGAN", "PERINGATAN KESELAMATAN", "ANALISIS GETARAN", "MANAJEMEN RISIKO"],
+          "keywords": [
+            "STRUKTUR BAWAH TANAH",
+            "PEMANTAUAN TEGANGAN",
+            "PERINGATAN KESELAMATAN",
+            "ANALISIS GETARAN",
+            "MANAJEMEN RISIKO"
+          ],
           "copy": "Dengan Structure Health Monitoring System (SHMS), keselamatan terowongan ditingkatkan secara signifikan melalui pemantauan real-time terhadap tegangan dinding, pergeseran batuan, dan getaran. Sistem ini memungkinkan penanganan cepat terhadap potensi bahaya, melindungi infrastruktur dan keselamatan pengguna jalan."
         }
       }
@@ -594,7 +715,11 @@
       "notFoundTitle": "Artikel tidak ditemukan",
       "notFoundBody": "Artikel yang Anda cari tidak tersedia atau sudah tidak dipublikasikan.",
       "backToList": "Kembali ke daftar artikel",
-      "views": "tayangan"
+      "views": "tayangan",
+      "latestTitle": "Artikel Terbaru",
+      "latestBody": "Informasi dan wawasan seputar sistem peringatan dini, pemantauan struktur, dan keselamatan aset.",
+      "viewAll": "Lihat Semua Artikel",
+      "loadError": "Artikel belum dapat dimuat. Silakan coba lagi nanti."
     }
   },
   "pages": {
@@ -671,6 +796,30 @@
       "deleteClient": "Hapus Klien",
       "deleteTitle": "Hapus Klien",
       "deletedSuccess": "Klien berhasil dihapus!"
+    },
+    "chat": {
+      "title": "Live Chat Dukungan",
+      "description": "Kelola tiket dan tanggapi percakapan langsung dengan calon customer secara realtime.",
+      "queueTitle": "Antrean Tiket",
+      "live": "Realtime",
+      "searchPlaceholder": "Cari tiket, nama, perusahaan...",
+      "tabWaiting": "Menunggu",
+      "tabMine": "Chat Saya",
+      "tabAll": "Semua Tiket",
+      "loadingTickets": "Memuat daftar tiket...",
+      "noTickets": "Tidak ada tiket chat",
+      "noTicketsDesc": "Belum ada tiket pada kategori filter ini.",
+      "unread": "pesan baru",
+      "unassigned": "Belum ada agen",
+      "claimTicket": "Ambil Tiket",
+      "selectTicketTitle": "Pilih Tiket Percakapan",
+      "selectTicketDesc": "Pilih salah satu tiket di sebelah kiri untuk melihat pesan atau mulai menanggapi calon customer.",
+      "claimThisTicket": "Ambil & Tangani Tiket Ini",
+      "resolveTicket": "Selesaikan Tiket",
+      "claimToReplyNotice": "Tiket ini masih menunggu respon. Ambil tiket untuk mulai membalas pesan calon customer.",
+      "ticketClosedNotice": "Tiket percakapan ini telah diselesaikan atau ditutup.",
+      "replyPlaceholder": "Ketik balasan Anda ke calon customer...",
+      "justNow": "Baru saja"
     },
     "user": {
       "title": "Manajemen Pengguna",
@@ -864,36 +1013,9 @@
     "settings": {
       "index": {
         "title": "Pengaturan Website",
-        "description": "Kelola identitas website, meta SEO, informasi kontak, dan tautan sosial media",
-        "tabMeta": "Meta Website",
+        "description": "Kelola informasi kontak dan tautan sosial media",
         "tabContact": "Kontak",
         "tabSocial": "Sosial Media"
-      },
-      "meta": {
-        "title": "Informasi & Meta SEO",
-        "description": "Pengaturan nama website, deskripsi, kata kunci meta, dan media pendukung.",
-        "siteName": "Nama Website",
-        "siteNamePlaceholder": "Contoh: AMTI CMS",
-        "siteNameRequired": "Nama website wajib diisi",
-        "siteDescription": "Deskripsi Website",
-        "siteDescriptionPlaceholder": "Deskripsi singkat website untuk mesin pencari...",
-        "metaKeywords": "Kata Kunci Meta",
-        "metaKeywordsPlaceholder": "amti, cms, teknologi, berita",
-        "metaKeywordsHelp": "Pisahkan kata kunci dengan tanda koma",
-        "author": "Penulis / Author",
-        "authorPlaceholder": "AMTI Team",
-        "copyright": "Teks Hak Cipta",
-        "copyrightPlaceholder": "© 2026 AMTI. All rights reserved.",
-        "mediaTitle": "Media Website",
-        "mediaDescription": "Kelola logo, favicon, dan gambar pratinjau sosial media website.",
-        "logo": "Logo Website",
-        "logoHint": "Format PNG, JPG, SVG, atau WebP. Maks 2MB.",
-        "favicon": "Favicon",
-        "faviconHint": "Format ICO atau PNG. Ukuran ideal 32x32 atau 64x64.",
-        "ogImage": "OpenGraph Image (Social Share)",
-        "ogImageHint": "Ukuran ideal 1200x630 untuk pratinjau media sosial.",
-        "save": "Simpan Meta",
-        "updatedSuccess": "Pengaturan meta website berhasil diperbarui!"
       },
       "contact": {
         "title": "Informasi Kontak",
@@ -928,10 +1050,7 @@
         "youtubePlaceholder": "https://youtube.com/{'@'}namachannel",
         "save": "Simpan Sosial Media",
         "updatedSuccess": "Tautan sosial media berhasil diperbarui!"
-      },
-      "uploadSuccess": "Berkas berhasil diunggah!",
-      "uploadFailed": "Gagal mengunggah berkas",
-      "removeMedia": "Hapus"
+      }
     },
     "messages": {
       "title": "Pesan Masuk",

@@ -8,18 +8,9 @@
 
     <SiteFooter />
 
-    <div class="fixed bottom-6 right-5 z-40 flex flex-col items-end gap-3">
-      <UButton
-        :to="whatsappHref"
-        target="_blank"
-        rel="noopener noreferrer"
-        icon="i-lucide-message-circle"
-        color="success"
-        size="xl"
-        class="rounded-full shadow-lg"
-        :aria-label="$t('site.cta.whatsapp')"
-      />
+    <SiteLiveChatWidget />
 
+    <div class="fixed bottom-24 right-6 z-40 flex flex-col items-end gap-3">
       <UButton
         v-show="showBackToTop"
         icon="i-lucide-arrow-up"
@@ -35,8 +26,6 @@
 </template>
 
 <script setup lang="ts">
-const { whatsappHref } = useSiteSettings()
-
 const showBackToTop = ref(false)
 
 function scrollToTop() {

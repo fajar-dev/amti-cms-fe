@@ -68,16 +68,6 @@
 
             <div class="mt-10 flex flex-wrap items-center gap-3">
               <UButton
-                :to="whatsappHref"
-                target="_blank"
-                rel="noopener noreferrer"
-                color="secondary"
-                size="lg"
-                icon="i-lucide-message-circle"
-                class="rounded-full px-6 shadow-lg shadow-amber-500/20"
-                :label="$t('site.cta.whatsapp')"
-              />
-              <UButton
                 v-for="social in siteSocials"
                 :key="social.name"
                 :to="social.href"
@@ -124,7 +114,6 @@ const {
   phoneHref,
   email,
   emailHref,
-  whatsappHref,
   siteSocials
 } = useSiteSettings()
 </script>

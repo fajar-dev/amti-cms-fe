@@ -44,3 +44,18 @@ export function formatTimeAgo(value: string | Date | null | undefined, t: Transl
   if (diffSec < 86400) return t('common.timeAgo.hours', { count: Math.floor(diffSec / 3600) })
   return t('common.timeAgo.days', { count: Math.floor(diffSec / 86400) })
 }
+
+export function formatTime(value: string | Date | null | undefined, locale: string, fallback = '-'): string {
+  if (!value) return fallback
+  return new Date(value).toLocaleTimeString(toIntlLocale(locale), {
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+export function formatFileSize(bytes: number, locale: string): string {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '0 B'
+  const units = ['B', 'KB', 'MB', 'GB']
+  const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1)
+  return `${formatNumber(Math.round(bytes / 1024 ** index * 10) / 10, locale)} ${units[index]}`
+}

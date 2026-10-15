@@ -9,10 +9,9 @@ const ROUTE_PERMISSIONS: Array<{ pattern: RegExp, permissions: string[] }> = [
   { pattern: /^\/app\/content\/article$/, permissions: ['articles.view'] },
   { pattern: /^\/app\/faq(\/.*)?$/, permissions: ['faqs.view'] },
   { pattern: /^\/app\/messages(\/.*)?$/, permissions: ['messages.view'] },
-  { pattern: /^\/app\/settings\/meta$/, permissions: ['settings.meta.view', 'settings.view'] },
   { pattern: /^\/app\/settings\/contact$/, permissions: ['settings.contact.view', 'settings.view'] },
   { pattern: /^\/app\/settings\/social$/, permissions: ['settings.social.view', 'settings.view'] },
-  { pattern: /^\/app\/settings(\/.*)?$/, permissions: ['settings.view', 'settings.meta.view', 'settings.contact.view', 'settings.social.view'] }
+  { pattern: /^\/app\/settings(\/.*)?$/, permissions: ['settings.view', 'settings.contact.view', 'settings.social.view'] }
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {

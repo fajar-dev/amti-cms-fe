@@ -11,12 +11,12 @@
         <div class="lg:col-span-4">
           <div class="flex items-center gap-3">
             <img
-              :src="logoUrl || '/logo-light.png'"
+              src="/logo-light.png"
               alt=""
               class="h-11 w-auto"
             >
             <span class="leading-tight">
-              <span class="block text-lg font-semibold tracking-tight">{{ siteName }}</span>
+              <span class="block text-lg font-semibold tracking-tight">{{ $t('site.identity.name') }}</span>
               <span class="block text-sm text-white/70">{{ $t('site.identity.fullName') }}</span>
             </span>
           </div>
@@ -95,10 +95,10 @@
         </div>
       </div>
 
-      <USeparator class="my-10 border-white/10" />
+      <USeparator class="my-10 border-white/30" />
 
-      <div class="flex flex-col gap-3 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
-        <p>{{ copyright }}</p>
+      <div class="flex flex-col gap-3 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between">
+        <p>{{ $t('site.identity.copyright') }}</p>
         <div class="flex flex-wrap items-center gap-6">
           <NuxtLink
             to="/privacy-policy"
@@ -120,15 +120,12 @@
 
 <script setup lang="ts">
 const {
-  siteName,
-  logoUrl,
   address,
   phone,
   phoneHref,
   email,
   emailHref,
   mapsUrl,
-  copyright,
   siteSocials
 } = useSiteSettings()
 </script>

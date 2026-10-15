@@ -1,16 +1,5 @@
 export interface Setting {
   id: number
-  siteName: string
-  siteDescription: string | null
-  metaKeywords: string | null
-  author: string | null
-  copyright: string | null
-  logo: string | null
-  logoUrl?: string | null
-  favicon: string | null
-  faviconUrl?: string | null
-  ogImage: string | null
-  ogImageUrl?: string | null
   phone: string | null
   whatsapp?: string | null
   email: string | null
@@ -24,17 +13,6 @@ export interface Setting {
   youtube: string | null
   createdAt: string
   updatedAt: string
-}
-
-export interface SettingMetaPayload {
-  siteName: string
-  siteDescription?: string | null
-  metaKeywords?: string | null
-  author?: string | null
-  copyright?: string | null
-  logo?: string | null
-  favicon?: string | null
-  ogImage?: string | null
 }
 
 export interface SettingContactPayload {

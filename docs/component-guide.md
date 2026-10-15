@@ -593,3 +593,11 @@ const open = defineModel<boolean>({ default: false })
 > **Empty state `DataTable` tidak perlu diisi manual** — `DataTable.vue` sudah memasang `<UEmpty>` lewat slot
 > `#empty` milik `UTable`, jadi semua halaman CRUD otomatis punya tampilan "tidak ada data" (teksnya dari
 > `components.dataTable.emptyTitle` / `emptyDescription`). Jangan buat empty state sendiri di halaman.
+
+### Shared live chat components
+
+- `ChatMessageBubble`: one message renderer for visitor and staff views; `ownSender` controls alignment.
+- `ChatComposer`: Nuxt UI/Zod message form with attachment preview and translated validation, emits `sent` and `selected`.
+- `ChatAttachmentButton`: Nuxt UI file picker for already-uploaded attachments; no local image object URLs are created.
+- `useVisitorChat` / `useStaffChat`: API orchestration and state; `useChatPolling`: serial polling and unmount cleanup. A failed poll stops retries to avoid repeated API-error toasts.
+- The ticket queue is a conversation selector, using server pagination internally and infinite scroll in the UI; it is not a CRUD data table.

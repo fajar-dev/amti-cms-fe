@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-const { t, tm } = useI18n()
+const { t, tm, rt } = useI18n()
 
 interface SectorMeta {
   id: string
@@ -109,7 +109,33 @@ const sectorMetas: SectorMeta[] = [
 
 function getMessageArray(key: string): string[] {
   const raw = (tm as (k: string) => unknown)(key)
-  return Array.isArray(raw) ? (raw as unknown[]).map(String) : []
+  if (!Array.isArray(raw)) return []
+  return raw.map((item, index) => {
+    if (typeof item === 'string') return item
+    try {
+      const resolved = (rt as (m: unknown) => string)(item)
+      if (typeof resolved === 'string' && resolved && resolved !== '[object Object]') {
+        return resolved
+      }
+    } catch {
+      // fallback
+    }
+    try {
+      const indexed = (t as (k: string) => string)(`${key}.${index}`)
+      if (typeof indexed === 'string' && indexed && indexed !== `${key}.${index}`) {
+        return indexed
+      }
+    } catch {
+      // fallback
+    }
+    if (item && typeof item === 'object') {
+      const obj = item as Record<string, unknown>
+      if (typeof obj.source === 'string') return obj.source
+      if (typeof obj.body === 'string') return obj.body
+      if (typeof obj.static === 'string') return obj.static
+    }
+    return ''
+  }).filter(Boolean)
 }
 
 const sectors = computed(() => sectorMetas.map((meta) => {

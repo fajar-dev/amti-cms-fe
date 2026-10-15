@@ -17,7 +17,7 @@
         :aria-label="$t('site.identity.fullName')"
       >
         <img
-          :src="logoUrl || (overDark ? '/logo-light.png' : '/logo.png')"
+          :src="overDark ? '/logo-light.png' : '/logo.png'"
           alt=""
           class="h-10 w-auto transition-transform duration-500"
           :class="scrolled ? 'scale-95' : 'scale-100'"
@@ -26,7 +26,7 @@
           <span
             class="block text-base font-semibold tracking-tight"
             :class="overDark ? 'text-white' : 'text-highlighted'"
-          >{{ siteName }}</span>
+          >{{ $t('site.identity.name') }}</span>
           <span
             class="block text-xs"
             :class="overDark ? 'text-white/60' : 'text-muted'"
@@ -182,8 +182,6 @@ const { t } = useI18n()
 const route = useRoute()
 
 const {
-  siteName,
-  logoUrl,
   address,
   phone,
   phoneHref,

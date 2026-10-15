@@ -148,12 +148,12 @@
             :class="index % 2 === 1 ? 'lg:mt-10' : ''"
           >
             <div class="group overflow-hidden rounded-3xl border border-default shadow-sm">
-              <img
+              <CommonImagePreview
                 :src="photo.src"
                 :alt="photo.alt"
-                loading="lazy"
-                class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              >
+                class="w-full"
+                image-class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
             </div>
           </SiteReveal>
         </div>
@@ -417,6 +417,8 @@
       </div>
     </section>
 
+    <SiteLatestArticles />
+
     <SiteContactSection />
   </div>
 </template>
@@ -426,11 +428,6 @@ import { clientService } from '~/services/client-service'
 import { faqService } from '~/services/faq-service'
 
 const { t } = useI18n()
-const {
-  siteName,
-  siteDescription,
-  ogImageUrl
-} = useSiteSettings()
 
 const { data: clientsResponse } = await useAsyncData(
   'public-clients',
@@ -555,11 +552,11 @@ const solutions = computed(() => [
 ])
 
 useSeoMeta({
-  title: () => `${siteName.value} — Earthquake Early Warning & Structure Health Monitoring System`,
-  description: () => siteDescription.value?.slice(0, 180) || t('site.smart.body').slice(0, 180),
+  title: () => `${t('site.identity.name')} — Earthquake Early Warning & Structure Health Monitoring System`,
+  description: () => t('site.smart.body').slice(0, 180),
   ogTitle: () => t('site.hero.title'),
   ogDescription: () => t('site.hero.subtitle'),
-  ogImage: () => ogImageUrl.value || undefined,
+  ogImage: '/logo.png',
   ogType: 'website'
 })
 

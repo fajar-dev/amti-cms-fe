@@ -16,7 +16,10 @@
       "minutes": "{count} min ago",
       "hours": "{count} h ago",
       "days": "{count} d ago"
-    }
+    },
+    "removeMedia": "Remove media",
+    "previewImage": "Preview image: {name}",
+    "closePreview": "Close preview"
   },
   "components": {
     "editorUrlModal": {
@@ -54,6 +57,7 @@
         "roles": "Roles & Permissions",
         "settings": "Settings",
         "messages": "Messages",
+        "liveChat": "Live Chat",
         "feedback": "Feedback"
       }
     },
@@ -466,13 +470,69 @@
       "sendAnother": "Send another message",
       "errorTitle": "Your message could not be sent. Please try again."
     },
+    "chat": {
+      "widgetTitle": "Live Chat Support",
+      "onlineSupport": "Our team is here to help",
+      "waitingAgent": "Waiting for an AMTI agent...",
+      "connectedWith": "Connected with {name}",
+      "ticketResolved": "Ticket has been resolved",
+      "ticketClosed": "Conversation has ended",
+      "endChat": "End Conversation",
+      "minimize": "Minimize Chat",
+      "formTitle": "Start Conversation",
+      "formSubtitle": "Please fill in your details to connect directly with our team.",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "Your full name",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "+62 812-3456-7890",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name{'@'}company.com",
+      "companyLabel": "Company / Organization",
+      "companyPlaceholder": "Your company name",
+      "nameRequired": "Full name is required",
+      "phoneRequired": "Phone number is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "companyRequired": "Company name is required",
+      "initialMessageLabel": "Initial Message (Optional)",
+      "initialMessagePlaceholder": "Tell us how we can help you...",
+      "startButton": "Start Conversation",
+      "startFailed": "Failed to start conversation. Please try again.",
+      "ticketLabel": "Ticket",
+      "status": {
+        "waiting": "Waiting",
+        "in_progress": "In Progress",
+        "resolved": "Resolved",
+        "closed": "Closed"
+      },
+      "waitingNotice": "An agent will join this conversation shortly. Please stay on this page.",
+      "sessionEndedNotice": "This conversation has ended.",
+      "startNewChat": "Start New Chat",
+      "attachFile": "Attach Document or Image",
+      "inputPlaceholder": "Type your message...",
+      "openChat": "Open Live Chat",
+      "closeChat": "Close Live Chat",
+      "image": "Image attachment",
+      "document": "Document attachment",
+      "messageTooLong": "Message must be at most 2000 characters",
+      "messageRequired": "Enter a message or attach a file",
+      "removeAttachment": "Remove attachment",
+      "sendMessage": "Send message"
+    },
     "eews": {
       "title": "Earthquake Warning System (EEWS)",
       "body": "By identifying P-waves, the first waves to arrive in an earthquake, our system provides crucial alerts seconds to minutes before the stronger S-waves hit. This early notification allows users to take swift actions, such as moving to a safer location or halting critical operations, ultimately saving lives and minimizing damage.",
       "sectors": {
         "buildings": {
           "title": "BUILDINGS",
-          "tags": ["HOSPITAL", "APARTMENT", "EDUCATIONAL FACILITY", "OFFICE", "MALL", "HOTEL"],
+          "tags": [
+            "HOSPITAL",
+            "APARTMENT",
+            "EDUCATIONAL FACILITY",
+            "OFFICE",
+            "MALL",
+            "HOTEL"
+          ],
           "copy": "Earthquakes can cause severe damage, including the collapse of buildings, often on a large scale, and can result in casualties. These sudden events trigger widespread panic and chaos. Building damage may also disrupt electricity supply, cause gas pipe leaks, and even lead to explosions. Public services are disrupted, endangering critical surgical procedures and valuable equipment in hospitals, as well as putting the safety of children in schools at risk. The AMTI Earthquake Early Warning System (EEWS) can reduce the risk of damage and casualties by integrating with Building Management Systems. This EEWS can mitigate earthquake impacts by initiating preventive actions such as activating safe mode for equipment, elevators, and gates, reducing gas pressure, shutting off wastewater lines, cutting power, and issuing warnings via social media, SMS, WhatsApp, alarms, and audiovisual systems. Additionally, the system can automatically halt sensitive procedures to minimize further damage.",
           "actions": [
             "Audiovisual alerts",
@@ -484,7 +544,12 @@
         },
         "transportation": {
           "title": "TRANSPORTATION",
-          "tags": ["AIRPORT", "TRAIN", "PORT", "BUS"],
+          "tags": [
+            "AIRPORT",
+            "TRAIN",
+            "PORT",
+            "BUS"
+          ],
           "copy": "Earthquakes pose a serious threat to transportation systems such as airports, ports, railways, and vehicles, potentially disrupting operations and endangering passengers and operators. By providing early warnings, authorities can quickly implement safety protocols, protecting lives and critical infrastructure. The Earthquake Early Warning System (EEWS) from AMTI can intervene by activating automatic emergency braking mechanisms for trains, redirecting air traffic and triggering warnings on road signs to prevent accidents and ensure the safety of passengers and workers.",
           "actions": [
             "Braking mechanisms",
@@ -495,7 +560,13 @@
         },
         "utilities": {
           "title": "UTILITIES",
-          "tags": ["POWER PLANT", "ELECTRICITY DISTRIBUTION", "WATER SUPPLY", "GAS SUPPLY", "WASTEWATER SYSTEM"],
+          "tags": [
+            "POWER PLANT",
+            "ELECTRICITY DISTRIBUTION",
+            "WATER SUPPLY",
+            "GAS SUPPLY",
+            "WASTEWATER SYSTEM"
+          ],
           "copy": "Earthquake vibrations can damage pipelines, valves, and pump stations, causing hazardous chemical and water leaks that could disrupt vital supplies of clean water or electricity to the community. The Earthquake Early Warning System (EEWS) from AMTI can trigger preventive actions to protect power plants, such as reducing gas pressure, preventing hydrogen evaporation, safeguarding substations, cutting off wastewater flow, and halting the supply of electricity and water. Additionally, the system can generate post-event reports to assess potential damage to pipelines.",
           "actions": [
             "Control water pressure in fire mains",
@@ -506,7 +577,11 @@
         },
         "oilGasChemicals": {
           "title": "OIL, GAS AND CHEMICALS",
-          "tags": ["OIL & GAS FACILITIES", "CHEMICAL PLANT", "REFINERY"],
+          "tags": [
+            "OIL & GAS FACILITIES",
+            "CHEMICAL PLANT",
+            "REFINERY"
+          ],
           "copy": "Earthquakes can cause explosions, fires, chemical leaks, and environmental damage at oil and gas facilities. With AMTI's earthquake early warning, there is more time to trigger damage control actions, such as lowering or shutting off gas pressure, with maximum response time. This limits potential damage while keeping critical infrastructure and vital services operational. EEWS AMTI also sends alerts via social media, SMS, WhatsApp, alarms, or audiovisual systems to employees, reducing injuries and casualties, and speeding up facility recovery.",
           "actions": [
             "Reduce gas pressure",
@@ -518,7 +593,11 @@
         },
         "mines": {
           "title": "MINES",
-          "tags": ["TRANSPORTATION", "INFRASTRUCTURE", "MINING EQUIPMENT"],
+          "tags": [
+            "TRANSPORTATION",
+            "INFRASTRUCTURE",
+            "MINING EQUIPMENT"
+          ],
           "copy": "Earthquakes can cause significant damage to infrastructure and jeopardize worker safety in mining operations. The Earthquake Early Warning System (EEWS) from AMTI can significantly reduce damage, primarily by warning workers and giving them time to take cover or evacuate before the main tremor hits. Earthquake alerts can also trigger automatic shutdown mechanisms for critical mining equipment and isolate hazardous materials, reducing the risk of damage to machinery and ensuring team safety. Post-event reports can support decision-making processes for resuming operations after an earthquake.",
           "actions": [
             "Delay planned explosions",
@@ -535,37 +614,79 @@
       "structures": {
         "bridges": {
           "title": "BRIDGES",
-          "keywords": ["BRIDGE MONITORING", "STRUCTURAL HEALTH", "STRESS ANALYSIS", "SAFETY ALERTS", "DYNAMIC DISPLACEMENT"],
+          "keywords": [
+            "BRIDGE MONITORING",
+            "STRUCTURAL HEALTH",
+            "STRESS ANALYSIS",
+            "SAFETY ALERTS",
+            "DYNAMIC DISPLACEMENT"
+          ],
           "copy": "Our SHMS is designed to monitor the health of bridges in real time, providing critical insights into structural integrity and potential wear. Timely alerts enable preventive maintenance and ensure long-term safety, helping prevent catastrophic failures and prolonging infrastructure lifespan."
         },
         "buildings": {
           "title": "BUILDINGS",
-          "keywords": ["SKYSCRAPERS", "HOSPITALS", "OFFICES", "MALLS", "RESIDENTIAL BUILDINGS"],
+          "keywords": [
+            "SKYSCRAPERS",
+            "HOSPITALS",
+            "OFFICES",
+            "MALLS",
+            "RESIDENTIAL BUILDINGS"
+          ],
           "copy": "Our SHMS monitors critical infrastructures, from skyscrapers to hospitals, offering real-time data on structural health. This enables maintenance teams to make informed decisions to prevent costly repairs and improve safety for occupants."
         },
         "dam": {
           "title": "DAM",
-          "keywords": ["WATER RESERVOIR", "SEEPAGE MONITORING", "CONCRETE INTEGRITY", "SEISMIC RESILIENCE", "EARLY WARNING"],
+          "keywords": [
+            "WATER RESERVOIR",
+            "SEEPAGE MONITORING",
+            "CONCRETE INTEGRITY",
+            "SEISMIC RESILIENCE",
+            "EARLY WARNING"
+          ],
           "copy": "Continuous structural health monitoring for dams provides real-time detection of seepage, deformation, and hydrostatic pressure changes. By tracking concrete integrity and seismic responses, our system empowers operators to prevent catastrophic failures, safeguard downstream communities, and maintain water resource security."
         },
         "landslide": {
           "title": "LANDSLIDE",
-          "keywords": ["SLOPE STABILITY", "GROUND MOVEMENT", "PORE PRESSURE", "EARLY WARNING", "GEOTECHNICAL MONITORING"],
+          "keywords": [
+            "SLOPE STABILITY",
+            "GROUND MOVEMENT",
+            "PORE PRESSURE",
+            "EARLY WARNING",
+            "GEOTECHNICAL MONITORING"
+          ],
           "copy": "Our geotechnical and slope health monitoring system delivers early detection of ground displacement, soil saturation, and slope instability. Continuous real-time sensor analytics provide timely warnings before critical movement occurs, protecting transportation corridors, vital infrastructure, and nearby communities from landslide hazards."
         },
         "port": {
           "title": "PORT",
-          "keywords": ["MARITIME TERMINALS", "QUAY WALL STABILITY", "BERTHING IMPACT", "CORROSION ASSESSMENT", "WAVE ACTION"],
+          "keywords": [
+            "MARITIME TERMINALS",
+            "QUAY WALL STABILITY",
+            "BERTHING IMPACT",
+            "CORROSION ASSESSMENT",
+            "WAVE ACTION"
+          ],
           "copy": "Designed for harsh marine environments, our SHMS tracks the integrity of quay walls, piers, and heavy cargo berths under dynamic tidal loads and berthing forces. Real-time telemetry detects structural settlement and fatigue early, ensuring uninterrupted harbor logistics and extended terminal longevity."
         },
         "railway": {
           "title": "RAILWAY",
-          "keywords": ["TRACK INTEGRITY", "BRIDGE VIADUCTS", "DYNAMIC DEFLECTION", "BALLAST STABILITY", "HIGH-SPEED RAIL"],
+          "keywords": [
+            "TRACK INTEGRITY",
+            "BRIDGE VIADUCTS",
+            "DYNAMIC DEFLECTION",
+            "BALLAST STABILITY",
+            "HIGH-SPEED RAIL"
+          ],
           "copy": "Rail infrastructure monitoring offers continuous assessment of tracks, viaducts, and overhead structures under repetitive high-speed train loads. Instant alerts on vibration anomalies, track alignment shifts, and foundation stress help maintenance crews prevent derailment risks and optimize maintenance schedules without service disruption."
         },
         "tunnels": {
           "title": "TUNNELS",
-          "keywords": ["UNDERGROUND STRUCTURES", "STRESS MONITORING", "SAFETY ALERTS", "VIBRATION ANALYSIS", "RISK MANAGEMENT"],
+          "keywords": [
+            "UNDERGROUND STRUCTURES",
+            "STRESS MONITORING",
+            "SAFETY ALERTS",
+            "VIBRATION ANALYSIS",
+            "RISK MANAGEMENT"
+          ],
           "copy": "With SHMS, tunnel safety is greatly enhanced through real-time monitoring of structural stress and vibration. This system allows for immediate responses to potential threats, safeguarding both infrastructure and people."
         }
       }
@@ -594,7 +715,11 @@
       "notFoundTitle": "Article not found",
       "notFoundBody": "The article you are looking for is not available or has been unpublished.",
       "backToList": "Back to all articles",
-      "views": "views"
+      "views": "views",
+      "latestTitle": "Latest Articles",
+      "latestBody": "Updates and insights on early warning systems, structural monitoring, and asset safety.",
+      "viewAll": "View All Articles",
+      "loadError": "Articles could not be loaded. Please try again later."
     }
   },
   "pages": {
@@ -864,36 +989,9 @@
     "settings": {
       "index": {
         "title": "Website Settings",
-        "description": "Manage website identity, meta SEO, contact information, and social media links",
-        "tabMeta": "Website Meta",
+        "description": "Manage contact information and social media links",
         "tabContact": "Contact",
         "tabSocial": "Social Media"
-      },
-      "meta": {
-        "title": "Information & Meta SEO",
-        "description": "Configure website name, description, meta keywords, and branding media.",
-        "siteName": "Site Name",
-        "siteNamePlaceholder": "e.g. AMTI CMS",
-        "siteNameRequired": "Site name is required",
-        "siteDescription": "Site Description",
-        "siteDescriptionPlaceholder": "Short description of website for search engines...",
-        "metaKeywords": "Meta Keywords",
-        "metaKeywordsPlaceholder": "amti, cms, technology, news",
-        "metaKeywordsHelp": "Separate keywords with commas",
-        "author": "Author",
-        "authorPlaceholder": "AMTI Team",
-        "copyright": "Copyright Text",
-        "copyrightPlaceholder": "© 2026 AMTI. All rights reserved.",
-        "mediaTitle": "Branding & Media",
-        "mediaDescription": "Manage website logo, favicon, and social media preview images.",
-        "logo": "Website Logo",
-        "logoHint": "PNG, JPG, SVG, or WebP. Max 2MB.",
-        "favicon": "Favicon",
-        "faviconHint": "ICO or PNG format. Ideal size 32x32 or 64x64.",
-        "ogImage": "OpenGraph Image (Social Share)",
-        "ogImageHint": "Ideal size 1200x630 for social media link preview.",
-        "save": "Save Meta",
-        "updatedSuccess": "Website meta settings updated successfully!"
       },
       "contact": {
         "title": "Contact Information",
@@ -928,10 +1026,7 @@
         "youtubePlaceholder": "https://youtube.com/{'@'}channelname",
         "save": "Save Social Media",
         "updatedSuccess": "Social media links updated successfully!"
-      },
-      "uploadSuccess": "File uploaded successfully!",
-      "uploadFailed": "Failed to upload file",
-      "removeMedia": "Remove"
+      }
     },
     "messages": {
       "title": "Messages",
@@ -961,6 +1056,30 @@
       "noPhone": "No phone provided",
       "statusUpdatedSuccess": "Message status updated successfully!",
       "deletedSuccess": "Message deleted successfully!"
+    },
+    "chat": {
+      "title": "Live Support Chat",
+      "description": "Manage tickets and respond to live customer conversations in real time.",
+      "queueTitle": "Ticket Queue",
+      "live": "Live",
+      "searchPlaceholder": "Search tickets, visitor, company...",
+      "tabWaiting": "Waiting",
+      "tabMine": "My Active",
+      "tabAll": "All Tickets",
+      "loadingTickets": "Loading tickets...",
+      "noTickets": "No chat tickets",
+      "noTicketsDesc": "There are no tickets in this tab filter.",
+      "unread": "unread",
+      "unassigned": "Unassigned",
+      "claimTicket": "Claim Ticket",
+      "selectTicketTitle": "Select a Conversation Ticket",
+      "selectTicketDesc": "Select a ticket from the left queue to view messages or reply to the customer.",
+      "claimThisTicket": "Claim & Handle Ticket",
+      "resolveTicket": "Resolve Ticket",
+      "claimToReplyNotice": "This ticket is awaiting response. Claim ticket to start replying to customer messages.",
+      "ticketClosedNotice": "This ticket conversation has been resolved or closed.",
+      "replyPlaceholder": "Type your reply to the customer...",
+      "justNow": "Just now"
     }
   }
 }

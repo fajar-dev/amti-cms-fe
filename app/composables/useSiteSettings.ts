@@ -36,16 +36,6 @@ export function useSiteSettings() {
 
   const settings = computed(() => response.value?.data ?? null)
 
-  const siteName = computed(() => settings.value?.siteName || t('site.identity.name'))
-  const siteDescription = computed(() => settings.value?.siteDescription || t('site.smart.body'))
-  const metaKeywords = computed(() => settings.value?.metaKeywords || 'amti, eews, shms, asset monitoring')
-  const author = computed(() => settings.value?.author || t('site.identity.fullName'))
-  const copyright = computed(() => settings.value?.copyright || t('site.identity.copyright'))
-
-  const logoUrl = computed(() => settings.value?.logoUrl || null)
-  const faviconUrl = computed(() => settings.value?.faviconUrl || null)
-  const ogImageUrl = computed(() => settings.value?.ogImageUrl || null)
-
   const phone = computed(() => settings.value?.phone || t('site.identity.phone'))
   const phoneHref = computed(() => formatPhoneHref(settings.value?.phone || DEFAULT_PHONE))
 
@@ -81,14 +71,6 @@ export function useSiteSettings() {
     settings,
     status,
     refresh,
-    siteName,
-    siteDescription,
-    metaKeywords,
-    author,
-    copyright,
-    logoUrl,
-    faviconUrl,
-    ogImageUrl,
     phone,
     phoneHref,
     whatsapp,

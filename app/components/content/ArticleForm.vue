@@ -135,18 +135,19 @@
             v-if="previewUrl"
             class="relative rounded-lg overflow-hidden border border-default aspect-video group"
           >
-            <img
+            <CommonImagePreview
               :src="previewUrl"
               :alt="$t('common.imagePreview')"
-              class="w-full h-full object-cover"
-            >
+              image-class="w-full h-full object-cover"
+              class="block h-full w-full"
+            />
             <UButton
               icon="i-lucide-x"
               size="xs"
               color="neutral"
               variant="solid"
               class="absolute top-2 right-2 rounded-full"
-              :aria-label="$t('pages.settings.removeMedia')"
+              :aria-label="$t('common.removeMedia')"
               @click="removeCover"
             />
             <div

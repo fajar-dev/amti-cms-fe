@@ -73,10 +73,12 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+const ImagePreview = resolveComponent('CommonImagePreview')
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UBadge = resolveComponent('UBadge')
 const UAvatar = resolveComponent('UAvatar')
+const UIcon = resolveComponent('UIcon')
 const { t, locale } = useI18n()
 const toast = useToast()
 
@@ -167,10 +169,11 @@ const columns = computed<TableColumn<Article>[]>(() => {
         const slug = row.original.slug
 
         const thumbnail = url
-          ? h('img', {
+          ? h(ImagePreview, {
               src: url,
               alt: title,
-              class: 'size-11 rounded-lg object-cover border border-default shrink-0'
+              class: 'size-11 rounded-lg border border-default shrink-0',
+              imageClass: 'size-11 object-cover transition-opacity hover:opacity-90'
             })
           : h('div', {
               class: 'size-11 rounded-lg bg-muted border border-default flex items-center justify-center text-muted shrink-0'
@@ -179,13 +182,28 @@ const columns = computed<TableColumn<Article>[]>(() => {
             ])
 
         const content = h('div', { class: 'flex flex-col min-w-0' }, [
-          h('span', { class: 'font-medium text-highlighted line-clamp-1 text-sm' }, title),
-          h('span', { class: 'text-xs text-muted' }, `${slug}`)
+          h('div', { class: 'flex items-center gap-1.5' }, [
+            h('span', { class: 'font-medium text-highlighted group-hover:text-primary group-hover:underline line-clamp-1 text-sm transition-colors' }, title),
+            h(UIcon, { name: 'i-lucide-external-link', class: 'size-3 text-muted group-hover:text-primary shrink-0 transition-colors' })
+          ]),
+          h('span', { class: 'text-xs text-muted truncate' }, slug)
         ])
+
+        if (!slug) {
+          return h('div', { class: 'flex items-center gap-3 py-0.5 min-w-56' }, [
+            thumbnail,
+            content
+          ])
+        }
 
         return h('div', { class: 'flex items-center gap-3 py-0.5 min-w-56' }, [
           thumbnail,
-          content
+          h('a', {
+            href: `/article/${slug}`,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            class: 'group min-w-0 cursor-pointer'
+          }, [content])
         ])
       }
     },

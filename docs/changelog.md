@@ -1,5 +1,62 @@
 # 📋 Changelog
 
+## 2026-10-14 — Shared image lightbox
+
+- Connect image previews in dashboard clients, articles and chat, plus public company-profile gallery and chat.
+- Use the shared Lightbox with NuxtUI modal accessibility and SSR-safe state; keep article title links and document downloads intact.
+
+## 2026-10-14 — Landing page latest articles
+
+- Show the four latest published articles before the contact section, ordered by publication date, with responsive cards and a link to the article listing.
+- Share SiteArticleCard with the article listing; include loading, empty and error states and English/Indonesian copy.
+
+## 2026-10-14 — Static website SEO
+
+- Keep only Contact and Social Media in Settings. Remove the meta form, upload service and obsolete translations/permissions. Website identity, logos and home-page SEO now use static localized content and bundled assets.
+
+## 2026-10-13 — Ticket queue proportions and selection
+
+- Set the queue to 7 of 24 columns on large desktop screens, balancing readable ticket details with conversation space.
+- Apply the active ticket color only to its left border and reserve that space on all rows to prevent selection shifts.
+
+## 2026-10-13 — Use ticket IDs in live chat
+
+- Display the session ID as #ID in the queue, conversation header and public widget instead of the generated ticket number.
+- Remove long-ticket-number tooltips and truncation from those labels.
+
+
+## 2026-10-13 — Balance live chat density
+
+- Keep message/body text at text-sm while reducing timestamps and ticket metadata to text-xs.
+- Use compact headers, medium avatars/search fields and small supporting actions/badges; preserve neutral contact colors and Geist.
+
+
+## 2026-10-13 — Live chat typography
+
+- Use the dashboard's text-sm body typography and text-base section headings instead of undersized chat-specific text.
+- Restore configured input/action/badge sizes; use standard avatar sizing and align queue metadata with the larger avatars.
+- Keep visitor names, company details, email and phone links neutral, including hover styling on queue names.
+- Increase shared message, timestamp, system-notice and attachment text to text-sm.
+
+
+## 2026-10-13 — Live chat visual consistency and infinite scroll
+
+- Fill the dashboard content height with flex/grid sizing and internal scrolling; use UAvatar alt-based initials like the existing user components.
+- Match dashboard cards with a single default ring, rounded-lg corners and consistent padding; remove duplicate card borders and responsive body padding.
+- Replace ticket pagination controls with infinite scroll; preserve loaded pages during polling, deduplicate IDs, and reset on tab/search changes.
+- Render system messages as plain centered text with the time above them.
+- Remove monospace ticket styling so all live-chat text inherits Geist.
+- Remove the initial-message field from the visitor form and request payload; compact the ticket/status row and waiting notice, and remove duplicated responsive card padding.
+
+
+## 2026-10-13 — Live chat refactor
+
+- Move visitor and staff orchestration to `useVisitorChat` / `useStaffChat`; share serial polling with lifecycle cleanup.
+- Share message rendering, validated message composition and Nuxt UI file selection through `components/chat`.
+- Centralize time/file-size formatting, remove arbitrary Tailwind values, and localize attachment labels and validation.
+- Filter assigned tickets on the server, paginate the queue, enforce action permissions in UI, and ignore stale conversation responses.
+- Use session metadata polling while minimized so unread messages are not marked read prematurely.
+
 Semua perubahan penting pada project ini didokumentasikan di file ini.
 
 Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`

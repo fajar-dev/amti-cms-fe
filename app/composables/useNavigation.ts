@@ -77,7 +77,15 @@ export const useNavigation = () => {
         icon: 'i-lucide-mail'
       })
     }
-    if (can('settings.view') || can('settings.meta.view') || can('settings.contact.view') || can('settings.social.view')) {
+    if (can('livechat.view')) {
+      cmsItems.push({
+        id: 'chat',
+        label: t('components.sidebar.nav.liveChat'),
+        to: '/app/chat',
+        icon: 'i-lucide-messages-square'
+      })
+    }
+    if (can('settings.view') || can('settings.contact.view') || can('settings.social.view')) {
       cmsItems.push({
         id: 'settings',
         label: t('components.sidebar.nav.settings'),

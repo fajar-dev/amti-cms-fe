@@ -74,6 +74,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+const ImagePreview = resolveComponent('CommonImagePreview')
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UBadge = resolveComponent('UBadge')
@@ -150,13 +151,14 @@ const columns = computed<TableColumn<Client>[]>(() => {
       header: () => t('pages.client.columnLogo'),
       cell: ({ row }) => {
         const logo = row.original.logoUrl || row.original.logo
-        return h('div', { class: 'size-12 rounded-xl border border-default bg-muted/60 p-1 flex items-center justify-center overflow-hidden' }, [
-          h('img', {
-            src: logo,
-            alt: row.original.name,
-            class: 'max-h-full max-w-full object-contain'
-          })
-        ])
+        return logo
+          ? h(ImagePreview, {
+              src: logo,
+              alt: row.original.name,
+              class: 'size-12 rounded-xl border border-default bg-muted/60 p-1',
+              imageClass: 'max-h-full max-w-full object-contain mx-auto'
+            })
+          : h(UIcon, { name: 'i-lucide-image', class: 'size-6 text-muted' })
       }
     },
     {
@@ -174,7 +176,7 @@ const columns = computed<TableColumn<Client>[]>(() => {
           href: website,
           target: '_blank',
           rel: 'noopener noreferrer',
-          class: 'text-primary hover:underline flex items-center gap-1 text-xs truncate max-w-xs'
+          class: 'text-primary hover:underline flex items-center gap-1 truncate max-w-xs'
         }, [
           h('span', { class: 'truncate' }, website),
           h(UIcon, { name: 'i-lucide-external-link', class: 'size-3 shrink-0' })

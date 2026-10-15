@@ -8,12 +8,12 @@
       <div class="flex flex-col items-center justify-center pb-4 space-y-2">
         <div class="relative group">
           <div class="size-24 rounded-2xl border-2 border-default flex items-center justify-center bg-muted overflow-hidden">
-            <img
+            <CommonImagePreview
               v-if="previewUrl || form.logo"
               :src="previewUrl || form.logo"
-              :alt="form.name || 'Client Logo'"
-              class="max-h-16 max-w-20 object-contain"
-            >
+              :alt="form.name || $t('common.imagePreview')"
+              image-class="max-h-16 max-w-20 object-contain"
+            />
             <UIcon
               v-else
               name="i-lucide-building-2"
